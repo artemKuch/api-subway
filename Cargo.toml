@@ -1,0 +1,58 @@
+[workspace]
+members = [
+  "crates/api-subway-core",
+  "crates/api-subway-analyzers",
+  "crates/api-subway-renderer",
+  "crates/api-subway-cli",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+authors = ["api-subway contributors"]
+repository = "https://github.com/api-subway/api-subway"
+
+[workspace.dependencies]
+api-subway-core = { version = "0.1.0", path = "crates/api-subway-core" }
+api-subway-analyzers = { version = "0.1.0", path = "crates/api-subway-analyzers" }
+api-subway-renderer = { version = "0.1.0", path = "crates/api-subway-renderer" }
+clap = { version = "4.6.2", features = ["derive"] }
+globset = "0.4.18"
+ignore = "0.4.25"
+oxc_allocator = "0.140.0"
+oxc_ast = "0.140.0"
+oxc_parser = "0.140.0"
+oxc_resolver = "11.24.2"
+oxc_semantic = "0.140.0"
+oxc_span = "0.140.0"
+rayon = "1.11.0"
+regex = "1.12.3"
+serde = { version = "1.0.228", features = ["derive"] }
+serde-saphyr = { version = "0.0.29", default-features = false, features = ["deserialize"] }
+serde_json = "1.0.149"
+tempfile = "3.27.0"
+thiserror = "2.0.18"
+toml = "0.9.8"
+tree-sitter = "0.26.11"
+tree-sitter-python = "0.25.0"
+unicode-width = "0.2.2"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unused_lifetimes = "deny"
+unused_qualifications = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+# Parser and renderer pipelines are intentionally sequential; splitting them only to satisfy a
+# line-count heuristic would hide the control flow. Layout inputs are capped below f32 precision.
+too_many_lines = "allow"
+cast_precision_loss = "allow"

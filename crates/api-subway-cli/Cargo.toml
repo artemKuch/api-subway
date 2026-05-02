@@ -1,0 +1,28 @@
+[package]
+name = "api-subway"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Generate trustworthy SVG and HTML API maps in the visual language of a subway map"
+keywords = ["api", "documentation", "static-analysis", "cli"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "api-subway"
+path = "src/main.rs"
+
+[dependencies]
+api-subway-analyzers.workspace = true
+api-subway-core.workspace = true
+api-subway-renderer.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true
