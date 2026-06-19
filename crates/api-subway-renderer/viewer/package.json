@@ -1,0 +1,17 @@
+{
+  "name": "@api-subway/viewer",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --minify --target=es2022 --outfile=dist/viewer.js",
+    "test": "playwright test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  }
+}
