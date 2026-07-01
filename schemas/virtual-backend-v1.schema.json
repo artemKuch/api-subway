@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-subway.dev/schemas/virtual-backend-v1.schema.json",
+  "title": "api-subway virtual backend",
+  "$comment": "This schema validates structure. The importer additionally enforces a 2,000,000-byte document limit, 100,000 aggregate record JSON nodes, maximum record depth 20, and unique scalar primary keys present on every record.",
+  "x-api-subway-runtime": {
+    "maxDocumentBytes": 2000000,
+    "maxRecordJsonNodes": 100000,
+    "maxRecordJsonDepth": 20,
+    "primaryKey": {
+      "requiredOnEveryRecord": true,
+      "allowedTypes": ["string", "number"],
+      "uniqueWithinResource": true
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resources"],
+  "properties": {
+    "resources": {
+      "type": "object",
+      "maxProperties": 200,
+      "propertyNames": {
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": ".*\\S.*"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/resource"
+      }
+    }
+  },
+  "$defs": {
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryKey", "records"],
+      "properties": {
+        "primaryKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": ".*\\S.*"
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 2000,
+          "items": {
+            "$ref": "#/$defs/jsonObject"
+          }
+        }
+      }
+    },
+    "jsonObject": {
+      "type": "object",
+      "maxProperties": 300,
+      "additionalProperties": {
+        "$ref": "#/$defs/jsonValue"
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string" },
+        {
+          "type": "array",
+          "maxItems": 2000,
+          "items": { "$ref": "#/$defs/jsonValue" }
+        },
+        { "$ref": "#/$defs/jsonObject" }
+      ]
+    }
+  }
+}
