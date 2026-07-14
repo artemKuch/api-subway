@@ -1,0 +1,1317 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Synthetic 10",
+    "root": ".",
+    "frameworks": [
+      "synthetic"
+    ]
+  },
+  "endpoints": [
+    {
+      "id": "ep-f8a3ba70a96b08ea",
+      "method": "PUT",
+      "path": "/admin/action-02",
+      "display_path": "/admin/action-02",
+      "district": "ADMIN",
+      "framework": "synthetic",
+      "operation_id": "operation2",
+      "tags": [
+        "admin"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/admin.ts",
+          "line": 3,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-10a5cae1d523b3fa",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/admin.ts",
+              "line": 3,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-bea2b28cf01c0231",
+      "method": "PATCH",
+      "path": "/admin/action-08",
+      "display_path": "/admin/action-08",
+      "district": "ADMIN",
+      "framework": "synthetic",
+      "operation_id": "operation8",
+      "tags": [
+        "admin"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/admin.ts",
+          "line": 9,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-10a5cae1d523b3fa",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/admin.ts",
+              "line": 9,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-834d8bded2d2873c",
+      "method": "DELETE",
+      "path": "/billing/action-04",
+      "display_path": "/billing/action-04",
+      "district": "BILLING",
+      "framework": "synthetic",
+      "operation_id": "operation4",
+      "tags": [
+        "billing"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/billing.ts",
+          "line": 5,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/billing.ts",
+              "line": 5,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-c786d5a5c228f0ea",
+      "method": "GET",
+      "path": "/events/action-05",
+      "display_path": "/events/action-05",
+      "district": "EVENTS",
+      "framework": "synthetic",
+      "operation_id": "operation5",
+      "tags": [
+        "events"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/events.ts",
+          "line": 6,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/events.ts",
+              "line": 6,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-eb33c83b205d2d8f",
+      "method": "GET",
+      "path": "/orders",
+      "display_path": "/orders",
+      "district": "ORDERS",
+      "framework": "synthetic",
+      "operation_id": "operation1",
+      "tags": [
+        "orders"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/orders.ts",
+          "line": 2,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f49dabc17276d594"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/orders.ts",
+              "line": 2,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-37402d6d850a79b0",
+      "method": "PUT",
+      "path": "/orders/{id}",
+      "display_path": "/orders/{id}",
+      "district": "ORDERS",
+      "framework": "synthetic",
+      "operation_id": "operation7",
+      "tags": [
+        "orders"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/orders.ts",
+          "line": 8,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-b0db8bff287580b9"
+            }
+          ],
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-10a5cae1d523b3fa",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/orders.ts",
+              "line": 8,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-ee8e6086d1a60837",
+      "method": "PATCH",
+      "path": "/reports/item-03/{id}",
+      "display_path": "/reports/item-03/{id}",
+      "district": "REPORTS",
+      "framework": "synthetic",
+      "operation_id": "operation3",
+      "tags": [
+        "reports"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/reports.ts",
+          "line": 4,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-b0db8bff287580b9"
+            }
+          ],
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-10a5cae1d523b3fa",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/reports.ts",
+              "line": 4,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-887f76278cee0202",
+      "method": "DELETE",
+      "path": "/reports/item-09/{id}",
+      "display_path": "/reports/item-09/{id}",
+      "district": "REPORTS",
+      "framework": "synthetic",
+      "operation_id": "operation9",
+      "tags": [
+        "reports"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/reports.ts",
+          "line": 10,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-b0db8bff287580b9"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/reports.ts",
+              "line": 10,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-fd37d13a64c7f0e7",
+      "method": "GET",
+      "path": "/users/item-00/{id}",
+      "display_path": "/users/item-00/{id}",
+      "district": "USERS",
+      "framework": "synthetic",
+      "operation_id": "operation0",
+      "tags": [
+        "users"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/users.ts",
+          "line": 1,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-b0db8bff287580b9"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/users.ts",
+              "line": 1,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-a7d282ab09212f45",
+      "method": "POST",
+      "path": "/users/item-06/{id}",
+      "display_path": "/users/item-06/{id}",
+      "district": "USERS",
+      "framework": "synthetic",
+      "operation_id": "operation6",
+      "tags": [
+        "users"
+      ],
+      "sources": [
+        {
+          "file": "src/routes/users.ts",
+          "line": 7,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-b0db8bff287580b9"
+            }
+          ],
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-10a5cae1d523b3fa",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "201",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-dbb52d0e919fc26f"
+              }
+            ]
+          },
+          {
+            "status": "400",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-f549feac7b59ad70"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Synthetic OpenAPI request and response contract",
+            "source": {
+              "file": "src/routes/users.ts",
+              "line": 7,
+              "column": 1
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "schemas": [
+    {
+      "id": "schema-10a5cae1d523b3fa",
+      "name": "Request payload",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "email",
+          "schema_id": "schema-c26ce9f558f312d2",
+          "required": true
+        },
+        {
+          "name": "name",
+          "schema_id": "schema-6a503e2480209777",
+          "required": true
+        },
+        {
+          "name": "role",
+          "schema_id": "schema-349b5505bbdef74e",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-349b5505bbdef74e",
+      "name": "Role",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "admin"
+        },
+        {
+          "kind": "string",
+          "value": "member"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-6a503e2480209777",
+      "name": "Text",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-b0db8bff287580b9",
+      "name": "Identifier",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-c26ce9f558f312d2",
+      "name": "Email",
+      "kind": "string",
+      "format": "email",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-dbb52d0e919fc26f",
+      "name": "Response payload",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "email",
+          "schema_id": "schema-c26ce9f558f312d2",
+          "required": true
+        },
+        {
+          "name": "id",
+          "schema_id": "schema-b0db8bff287580b9",
+          "required": true
+        },
+        {
+          "name": "name",
+          "schema_id": "schema-6a503e2480209777",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-f49dabc17276d594",
+      "name": "Response list",
+      "kind": "array",
+      "items": "schema-dbb52d0e919fc26f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-f549feac7b59ad70",
+      "name": "Error",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "message",
+          "schema_id": "schema-6a503e2480209777",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Synthetic contract schema",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "dep-30077558c4dc9970",
+      "name": "Prisma",
+      "kind": "datastore"
+    },
+    {
+      "id": "dep-338461291c49604e",
+      "name": "Notifications",
+      "kind": "service"
+    },
+    {
+      "id": "dep-4d6bb8d80c541a37",
+      "name": "Auth",
+      "kind": "middleware",
+      "pinned": true
+    },
+    {
+      "id": "dep-7000052920b3703f",
+      "name": "Redis",
+      "kind": "datastore"
+    },
+    {
+      "id": "dep-8131156da958fe2c",
+      "name": "Rate limit",
+      "kind": "middleware"
+    },
+    {
+      "id": "dep-8d2f5ae0c4ad5ea5",
+      "name": "Audit",
+      "kind": "service"
+    },
+    {
+      "id": "dep-f3acd7a497d57ff6",
+      "name": "OpenAI",
+      "kind": "external"
+    },
+    {
+      "id": "dep-f464ac88d2f4fc49",
+      "name": "Stripe",
+      "kind": "external"
+    }
+  ],
+  "relations": [
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Redis",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 8,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-f3acd7a497d57ff6",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for OpenAI",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 8,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-834d8bded2d2873c",
+      "dependency_id": "dep-338461291c49604e",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Notifications",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 5,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-834d8bded2d2873c",
+      "dependency_id": "dep-4d6bb8d80c541a37",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Auth",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 5,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-887f76278cee0202",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Redis",
+          "source": {
+            "file": "src/routes/reports.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-a7d282ab09212f45",
+      "dependency_id": "dep-30077558c4dc9970",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Prisma",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-a7d282ab09212f45",
+      "dependency_id": "dep-338461291c49604e",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Notifications",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-a7d282ab09212f45",
+      "dependency_id": "dep-4d6bb8d80c541a37",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Auth",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-bea2b28cf01c0231",
+      "dependency_id": "dep-338461291c49604e",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Notifications",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 9,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-bea2b28cf01c0231",
+      "dependency_id": "dep-4d6bb8d80c541a37",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Auth",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 9,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-bea2b28cf01c0231",
+      "dependency_id": "dep-8131156da958fe2c",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Rate limit",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 9,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-bea2b28cf01c0231",
+      "dependency_id": "dep-8d2f5ae0c4ad5ea5",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Audit",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 9,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-bea2b28cf01c0231",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Stripe",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 9,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-c786d5a5c228f0ea",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Redis",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-c786d5a5c228f0ea",
+      "dependency_id": "dep-8131156da958fe2c",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Rate limit",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-c786d5a5c228f0ea",
+      "dependency_id": "dep-8d2f5ae0c4ad5ea5",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Audit",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-c786d5a5c228f0ea",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Stripe",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Redis",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 2,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-ee8e6086d1a60837",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Redis",
+          "source": {
+            "file": "src/routes/reports.ts",
+            "line": 4,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-ee8e6086d1a60837",
+      "dependency_id": "dep-f3acd7a497d57ff6",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for OpenAI",
+          "source": {
+            "file": "src/routes/reports.ts",
+            "line": 4,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-30077558c4dc9970",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Prisma",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-338461291c49604e",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Notifications",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-4d6bb8d80c541a37",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Auth",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-8131156da958fe2c",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Rate limit",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-8d2f5ae0c4ad5ea5",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Audit",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-f8a3ba70a96b08ea",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Stripe",
+          "source": {
+            "file": "src/routes/admin.ts",
+            "line": 3,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-fd37d13a64c7f0e7",
+      "dependency_id": "dep-338461291c49604e",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Notifications",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-fd37d13a64c7f0e7",
+      "dependency_id": "dep-4d6bb8d80c541a37",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Synthetic evidence for Auth",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 1,
+            "column": 1
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": []
+}
