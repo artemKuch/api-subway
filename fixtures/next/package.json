@@ -1,0 +1,11 @@
+{
+  "name": "next-commerce-api",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "latest",
+    "next": "latest",
+    "openai": "latest",
+    "stripe": "latest",
+    "zod": "latest"
+  }
+}
