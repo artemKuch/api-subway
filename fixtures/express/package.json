@@ -1,0 +1,9 @@
+{
+  "name": "express-orders-api",
+  "private": true,
+  "dependencies": {
+    "express": "latest",
+    "stripe": "latest",
+    "zod": "latest"
+  }
+}
