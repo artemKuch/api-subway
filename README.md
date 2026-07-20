@@ -36,17 +36,17 @@ These are local measurements, not universal latency guarantees. The fixture, env
 
 ## Quick start
 
+Download the native archive for macOS, glibc-based Linux, or Windows from the [latest GitHub Release](https://github.com/artemKuch/api-subway/releases/latest), or install the tagged source with Rust 1.95+:
+
 ```bash
-# npm
-npx api-subway generate . --out docs/api-subway
+cargo install --locked \
+  --git https://github.com/artemKuch/api-subway \
+  --tag v0.1.0 api-subway
 
-# Python tool runners
-uvx api-subway generate . --out docs/api-subway
-
-# Rust
-cargo install api-subway
 api-subway generate . --out docs/api-subway
 ```
+
+The release bundle already contains npm packages and Python wheels, but npm, PyPI, and crates.io publication is not enabled yet. `npx api-subway`, `uvx api-subway`, and `cargo install api-subway` will become available only after those registry releases exist.
 
 By default the command detects supported frameworks and writes:
 

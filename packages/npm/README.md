@@ -4,6 +4,8 @@ This package selects the native `api-subway` binary for the current platform. It
 
 Supported binaries are macOS 11+ (arm64/x64), glibc-based Linux with glibc 2.35+ (arm64/x64), and Windows x64. musl/Alpine is not supported in v0.1.
 
+After this launcher is published to npm:
+
 ```bash
 npx api-subway generate . --out docs/api-subway
 ```
