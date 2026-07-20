@@ -280,7 +280,7 @@ def build_sbom(version: str) -> dict[str, object]:
                 "externalReferences": [
                     {
                         "type": "vcs",
-                        "url": "https://github.com/api-subway/api-subway",
+                        "url": "https://github.com/artemKuch/api-subway",
                     }
                 ],
             },

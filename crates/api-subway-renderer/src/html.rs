@@ -33,7 +33,7 @@ pub fn render_html(map: &ApiMapV1, options: &RenderOptions) -> Result<String, Re
     )
     .expect("writing to a string cannot fail");
     output.push_str(
-        "<div class=\"app-shell\"><header class=\"topbar\"><a class=\"product\" href=\"https://github.com/api-subway/api-subway\" aria-label=\"api-subway project\"><span class=\"product-mark\" aria-hidden=\"true\">⌁</span><span>api-subway</span></a><div class=\"project-chip\"><span class=\"live-dot\"></span>",
+        "<div class=\"app-shell\"><header class=\"topbar\"><a class=\"product\" href=\"https://github.com/artemKuch/api-subway\" aria-label=\"api-subway project\"><span class=\"product-mark\" aria-hidden=\"true\">⌁</span><span>api-subway</span></a><div class=\"project-chip\"><span class=\"live-dot\"></span>",
     );
     write!(output, "{}</div>", escape_xml(title)).expect("writing to a string cannot fail");
     output.push_str(

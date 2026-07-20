@@ -21,10 +21,10 @@ classifiers = [
 api-subway = "api_subway.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/api-subway/api-subway"
-Repository = "https://github.com/api-subway/api-subway"
-Documentation = "https://github.com/api-subway/api-subway#readme"
-Changelog = "https://github.com/api-subway/api-subway/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/artemKuch/api-subway"
+Repository = "https://github.com/artemKuch/api-subway"
+Documentation = "https://github.com/artemKuch/api-subway#readme"
+Changelog = "https://github.com/artemKuch/api-subway/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 include-package-data = true

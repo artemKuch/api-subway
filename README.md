@@ -1,12 +1,38 @@
 # api-subway
 
-`api-subway` turns an application API into a deterministic subway map. Every `HTTP method + path` is a station; middleware, services, integrations, and data clients are colored lines backed by source evidence.
+[![CI](https://github.com/artemKuch/api-subway/actions/workflows/ci.yml/badge.svg)](https://github.com/artemKuch/api-subway/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/artemKuch/api-subway)](https://github.com/artemKuch/api-subway/releases)
+[![Built with Rust](https://img.shields.io/badge/built%20with-Rust-df5b38.svg)](https://www.rust-lang.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
 
-![Example api-subway map](docs/api-subway.svg)
+**Fast, local API maps and contract debugging — built in Rust.**
 
-The committed example is generated from [`fixtures/demo`](fixtures/demo), not from hand-authored map data: Express supplies the stations and middleware, the call graph supplies service/client/data lines, and local OpenAPI supplies the executable request/response contracts.
+`api-subway` turns a codebase into a subway map: every `HTTP method + path` is a station, while middleware, services, data clients, and external integrations become lines. One command produces a README-safe SVG, a standalone interactive HTML explorer, and an optional deterministic JSON model.
 
-The CLI works locally without starting the target application, installing its dependencies, or sending source code over the network. It writes a GitHub-safe SVG for README files, a standalone interactive HTML explorer, and an optional stable JSON model.
+It analyzes source code without starting the application, installing its dependencies, uploading code, or making network requests.
+
+![Local API debugging with PUT and GET order endpoints](docs/images/local-api-debugging.jpg)
+
+The HTML map is more than a diagram. Open several endpoint windows, edit schema-backed requests, run them against one browser-local JSON backend, and watch related responses update immediately. In the example above, `PUT /orders/{id}` changes an order and the open `GET /orders` window reflects the same `total: 149.9` value.
+
+## Why api-subway
+
+- **Understand an unfamiliar API quickly.** Routes become readable districts; shared dependencies become visible lines.
+- **Debug contracts locally.** Request and response views switch between typed schema fields and JSON.
+- **Explore state across endpoints.** `POST`, `PUT`, `PATCH`, and `DELETE` update one shared virtual backend used by every open window.
+- **Know what is proven.** Solid lines are exact relations; dashed lines are bounded inferences; unresolved dynamic behavior becomes a diagnostic.
+- **Keep docs reproducible.** Stable ordering and timestamp-free output make generated artifacts suitable for README files and CI.
+
+## Fast by default
+
+The analyzer is a native Rust CLI built on Oxc for JavaScript/TypeScript and Tree-sitter for Python. On the recorded Apple Silicon baseline, a route-dense synthetic project analyzed in:
+
+| Source | Median |
+| ---: | ---: |
+| 1,000 files / ~100k LOC | 94.7 ms |
+| 10,000 files / ~1M LOC | 639.4 ms |
+
+These are local measurements, not universal latency guarantees. The fixture, environment, and reproduction commands are documented in [BENCHMARKS.md](BENCHMARKS.md).
 
 ## Quick start
 
@@ -22,175 +48,100 @@ cargo install api-subway
 api-subway generate . --out docs/api-subway
 ```
 
-The default command detects supported frameworks and writes `api-subway.svg` plus `api-subway.html`:
+By default the command detects supported frameworks and writes:
+
+| Artifact | Purpose |
+| --- | --- |
+| `api-subway.svg` | Static GitHub-safe map for a README |
+| `api-subway.html` | Standalone explorer and local contract sandbox |
+| `api-subway.json` | Stable `ApiMapV1` model when `--format json` is requested |
+
+Commit the SVG and HTML, then use `check` in CI:
 
 ```bash
-api-subway generate [ROOT] [OPTIONS]
-api-subway check [ROOT] [OPTIONS]
+api-subway check . --out docs/api-subway
 ```
 
-`check` performs the same analysis without writing. It exits with `1` when committed artifacts are stale and `2` for fatal errors or strict diagnostics, which makes it suitable for CI.
+`check` writes nothing. It returns `1` when committed artifacts are stale and `2` for fatal errors or strict diagnostics.
+
+## Local API debugging
+
+Click a station in `api-subway.html` to open a movable endpoint window.
+
+1. Fill path, query, header, cookie, or body fields from the extracted contract.
+2. Switch the request between **Schema** and **JSON** without losing edits.
+3. Run the endpoint against the shared in-memory store.
+4. Inspect the response as typed fields or JSON.
+5. Keep related windows open to see mutations propagate in real time.
+
+**Open backend** exposes the complete virtual store as editable JSON. Applying changes replaces the current store atomically and resets open endpoint windows. Import, export, record-count, nesting-depth, and file-size limits keep the sandbox bounded.
+
+The sandbox models contract-safe CRUD behavior; it is not an emulator for application code. It never executes target handlers, middleware, authorization, database queries, transforms, or third-party calls. Ambiguous action routes are explicitly marked `inferred`.
 
 ## Supported inputs
 
 | Input | v0.1 coverage |
 | --- | --- |
-| Next.js App Router | `route.js/ts/tsx`, route groups, dynamic/catch-all segments, `proxy.ts`, and legacy `middleware.ts` constant matchers |
-| Express 4/5 | direct routes, `route()` chains, handler arrays, ordered `use()`, nested router mounts, and statically resolved Zod `parse`/`safeParse` contracts |
-| FastAPI | `FastAPI`, `APIRouter`, decorators, `api_route`, router prefixes, middleware, `Depends`, `Annotated`, sub-dependencies, and Pydantic request/response models |
-| OpenAPI 3.0/3.1 | local JSON/YAML operations, parameters, request bodies, responses, schemas, tags, `operationId`, and security schemes |
+| Next.js App Router | Route handlers, route groups, dynamic/catch-all segments, `proxy.ts`, and legacy `middleware.ts` matchers |
+| Express 4/5 | Direct routes, `route()` chains, handler arrays, ordered `use()`, nested mounts, and common static Zod contracts |
+| FastAPI | `FastAPI`, `APIRouter`, decorators, prefixes, middleware, `Depends`, `Annotated`, sub-dependencies, and common Pydantic models |
+| OpenAPI 3.0/3.1 | Local JSON/YAML operations, parameters, bodies, responses, schemas, tags, security, and local `$ref` |
 
-Next Pages API, NestJS, Fastify, Hono, Django, Flask, Spring, ASP.NET, runtime tracing, and cloud analysis are intentionally outside v0.1.
+Next Pages API, NestJS, Fastify, Hono, Django, Flask, Spring, ASP.NET, runtime tracing, and cloud analysis are outside v0.1.
 
-## Evidence, not guesses
+## What the lines mean
 
-Every relation stores its evidence and confidence:
+Relations come from framework declarations, reachable AST calls, local call/import traces, OpenAPI security, or explicit configuration rules.
 
-- `exact` means a framework declaration or an AST call to a known package client was proven. It renders as a solid line.
-- `inferred` means the call itself was proven but its local boundary role (`services/`, `repositories/`, `clients/`, and similar conventions) came from a bounded classifier, or a configured rule matched. It renders as a dashed line.
-- unresolved dynamic paths, mounts, and matchers become diagnostics instead of invented stations.
+- `exact` — a declaration or known-client call was proven; rendered solid.
+- `inferred` — a reachable local boundary or configured rule matched; rendered dashed.
+- unresolved — a dynamic path, mount, matcher, or call could not be resolved safely; reported as a diagnostic instead of guessed.
 
-JavaScript/TypeScript calls are taken from Oxc AST nodes and Python calls from Tree-sitter nodes. Analysis follows imported handlers, local helpers, service/repository/client boundaries, and shared wrappers cycle-safely. An imported package creates no line until a reachable function actually calls it; evidence points to that call site and retains the local call trace that led there. Computed members that cannot be resolved emit `dynamic-dependency-call` instead of selecting a method by name.
+The JSON model keeps repository-relative `file:line:column` evidence. Generated artifacts omit source snippets, payload examples from source, absolute paths, and timestamps. See [docs/ACCURACY.md](docs/ACCURACY.md) for the acceptance corpus and known blind spots.
 
-Evidence remains available in the deterministic JSON model with repository-relative `file:line:column` locations and drives the solid/dashed visual language on the map. Endpoint windows stay focused on executable request and response contracts. Generated artifacts contain no source snippets, source payload examples, absolute paths, timestamps, or external runtime assets.
+## CLI
 
-The committed multi-file accuracy corpus and known blind spots are documented in [docs/ACCURACY.md](docs/ACCURACY.md). Its exact manifest catches both missing and extra dependency relations; it is an acceptance suite, not a marketing claim about arbitrary repositories.
-
-## Live virtual backend
-
-The standalone HTML map includes a stateful virtual backend that runs entirely in the browser. The viewer creates one bounded JSON store from the normalized contracts when the page loads, then plans an operation for every station:
-
-- collection `GET` reads a resource and item `GET` reads by path key;
-- `POST` creates, `PUT` replaces, `PATCH` merges, and `DELETE` removes a record;
-- `HEAD` and `OPTIONS` return virtual protocol results;
-- non-REST action routes return a contract-shaped result and are explicitly marked `inferred`.
-
-Clicking stations opens independent draggable request windows. Multiple windows can stay open at once, and every one uses the same current store. For example, running `PUT /orders/{id}` updates the store; an open live `GET /orders` reruns immediately and shows the changed record. Request bodies and responses both have Schema/JSON views. Schema fields expose required markers, formats, enums, and constraints, while JSON mode provides direct payload editing; changes stay synchronized in both directions. Before display, every result is projected through the schema declared for that endpoint and status: undeclared store-only fields are removed, nested objects and arrays are projected recursively, and missing required values are generated deterministically. Requests and responses are validated against the available contract, and exact/inferred behavior is visible rather than implied.
-
-**Open backend** adds a movable JSON editor for the complete virtual store. Applying edited JSON atomically replaces the current store and resets every open endpoint window to its default request and response state. The store can also be reset, imported, or exported. Its editable format contains only the `resources` object and is documented by [`schemas/virtual-backend-v1.schema.json`](schemas/virtual-backend-v1.schema.json). Resource, record, object, recursion, and file-size budgets protect the standalone viewer from oversized input.
-
-The JSON Schema describes the portable document shape. Runtime validation additionally requires every record to contain the resource's declared scalar `primaryKey`, requires those keys to be unique using URL-comparable string identity, and enforces a maximum nesting depth.
-
-This is an executable contract sandbox, not target-code emulation. It never imports or runs application handlers, middleware, database clients, transforms, or business rules. CRUD behavior is exact only where the URL shape and contract prove it; ambiguous action behavior is schema-shaped and marked inferred. Static contract extraction in v0.1 supports local OpenAPI schemas, FastAPI/Pydantic annotations, and common static Zod declarations used through `parse` or `safeParse`. Dynamic transforms, refinements, computed schemas, and unproven response behavior remain diagnostics or inferred evidence.
-
-## CLI options
+```text
+api-subway generate [ROOT] [OPTIONS]
+api-subway check [ROOT] [OPTIONS]
+```
 
 | Option | Meaning |
 | --- | --- |
-| `--framework auto\|next\|express\|fastapi` | Select an adapter; repeat to combine adapters |
-| `--format svg\|html\|json` | Select output formats; repeat as needed |
-| `--openapi FILE` | Merge a local OpenAPI document; repeat as needed |
+| `--framework auto\|next\|express\|fastapi` | Select one or more analyzers |
+| `--format svg\|html\|json` | Select one or more output formats |
+| `--openapi FILE` | Merge a local OpenAPI document; repeatable |
 | `--config FILE` | Use a TOML configuration file |
 | `--theme auto\|paper\|midnight` | Select the artifact theme |
-| `--strict` | Return exit code `2` for warning/error diagnostics |
+| `--strict` | Fail on warning or error diagnostics |
 
-Configuration is loaded from `ROOT/.api-subway.toml` by default. See [`.api-subway.example.toml`](.api-subway.example.toml) for all v1 fields and custom dependency rules.
+Configuration defaults to `ROOT/.api-subway.toml`. The complete versioned example is [`.api-subway.example.toml`](.api-subway.example.toml).
 
-## Visual grammar
+## Static map
 
-- Stations are ordered by canonical path and then `GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD, ANY`.
-- Districts use the first static URL segment.
-- A shared dependency becomes a line when it reaches at least two stations or is pinned.
-- README SVG limits the map to the most connected lines; HTML retains every line with search, method/kind filters, pan, zoom, theme switching, draggable live endpoint windows, the shared JSON backend, and contract validation.
-- Interchange rings mark endpoints connected to multiple visible lines. Exact and inferred meaning is encoded with line style as well as color.
+The committed map below is generated from [`fixtures/demo`](fixtures/demo), not hand-authored data.
 
-## Configuration
+![Generated api-subway map](docs/api-subway.svg)
 
-```toml
-version = 1
-frameworks = ["auto"]
-openapi = ["openapi.yaml"]
+## Project documentation
 
-[output]
-base = "docs/api-subway"
-formats = ["svg", "html", "json"]
-theme = "auto"
+| Document | Audience |
+| --- | --- |
+| [docs/ACCURACY.md](docs/ACCURACY.md) | Supported static forms, evidence semantics, and blind spots |
+| [SECURITY.md](SECURITY.md) | Trust boundaries, resource limits, and vulnerability reporting |
+| [BENCHMARKS.md](BENCHMARKS.md) | Recorded performance baseline and reproduction |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Architecture, analyzer rules, and required checks |
+| [RELEASE.md](RELEASE.md) | Maintainer release and artifact-verification runbook |
+| [CHANGELOG.md](CHANGELOG.md) | User-visible changes by version |
 
-[scan]
-exclude = ["generated/**", "vendor/**"]
-
-[map]
-group_by = "path-prefix"
-max_lines = 12
-min_line_stations = 2
-include_routes = ["/api/**"]
-exclude_routes = ["/api/internal/**"]
-
-[[dependency]]
-name = "Billing service"
-kind = "service"
-packages = ["@acme/billing"]
-path_globs = ["src/billing/**"]
-pin = true
-```
-
-Unknown configuration keys, unsupported framework names, malformed globs, and invalid configuration versions fail fast.
-
-## Architecture
-
-The repository is a Cargo workspace with clear ownership boundaries:
-
-```text
-crates/
-  api-subway-core/       stable ApiMapV1, config, paths, diagnostics
-  api-subway-analyzers/  Oxc + Tree-sitter indexes and framework adapters
-  api-subway-renderer/   layout, safe SVG, standalone HTML, TS viewer
-  api-subway-cli/        commands, deterministic I/O, exit codes
-packages/
-  npm/                   native platform package selector
-  python/                native platform wheel launcher
-```
-
-JavaScript and TypeScript use Oxc parsing, semantic analysis, and Node/TS resolution. Python uses `tree-sitter-python` plus a workspace-only import resolver. Handler traversal is cycle-safe and remains inside the selected root.
-
-Regenerate the real interactive example after analyzer or viewer changes with:
+## Build from source
 
 ```bash
-cargo run -p api-subway -- generate fixtures/demo \
-  --format svg --format html --format json \
-  --out "$PWD/docs/api-subway" --theme midnight
+cargo build --release --locked -p api-subway
+./target/release/api-subway generate fixtures/demo --out /tmp/api-subway
 ```
 
-## Development
-
-```bash
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
-cargo build --release -p api-subway
-
-cd crates/api-subway-renderer/viewer
-npm ci
-npm run typecheck
-npm run build
-npm test
-```
-
-Golden JSON/SVG/HTML artifacts cover 10, 40, and 100 stations. Framework fixtures cover positive and deliberately unresolved cases. Release tags build native artifacts, npm platform packages, and Python platform wheels for macOS arm64/x64, Linux arm64/x64, and Windows x64.
-
-The published macOS binaries require macOS 11 or newer. Linux artifacts target glibc/manylinux 2.35; musl/Alpine is not supported in v0.1.
-
-Contributor workflow and analyzer evidence rules are in [CONTRIBUTING.md](CONTRIBUTING.md). The tag-to-registry process and consumer verification commands are in [RELEASE.md](RELEASE.md).
-
-Performance measurements use a release build and stay outside ordinary CI time gates. The default benchmark creates 1,000 route files with approximately 100,000 lines; the larger budget can be reproduced with `--files 10000 --lines-per-file 100`:
-
-```bash
-python scripts/benchmark.py --binary target/release/api-subway
-```
-
-The script reports min/median/max wall time and throughput as JSON so benchmark results can be recorded without making normal CI sensitive to runner variance. See [BENCHMARKS.md](BENCHMARKS.md) for the current baseline.
-
-## Security model
-
-- Target code is parsed, never imported or executed.
-- Dependency installation and network access are not part of analysis.
-- Directory traversal does not follow symlinks, and OpenAPI inputs resolving outside the root are rejected.
-- Source and OpenAPI JSON/YAML inputs have explicit size and structure budgets.
-- The virtual backend is in-memory browser state only; JSON import is validated and bounded before it atomically replaces the current store.
-- SVG excludes scripts, external resources, and `foreignObject`; all untrusted names are escaped.
-- Standalone HTML uses an explicit local-only Content Security Policy; release bundles include checksums, a CycloneDX SBOM, and GitHub artifact attestations.
-
-See [SECURITY.md](SECURITY.md) for trust boundaries, exact resource limits, vulnerability reporting, and supply-chain controls.
+The workspace separates the stable model, analyzers, renderer, and CLI into owned crates. Contributor setup and the full verification matrix live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

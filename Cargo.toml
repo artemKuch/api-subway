@@ -13,7 +13,7 @@ edition = "2024"
 rust-version = "1.95"
 license = "MIT"
 authors = ["api-subway contributors"]
-repository = "https://github.com/api-subway/api-subway"
+repository = "https://github.com/artemKuch/api-subway"
 
 [workspace.dependencies]
 api-subway-core = { version = "0.1.0", path = "crates/api-subway-core" }

@@ -40,7 +40,7 @@ def version_exists(crate: str, version: str) -> bool:
         headers={
             "User-Agent": (
                 "api-subway-release/0.1 "
-                "(https://github.com/api-subway/api-subway)"
+                "(https://github.com/artemKuch/api-subway)"
             )
         },
     )

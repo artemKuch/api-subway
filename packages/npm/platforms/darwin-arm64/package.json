@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/api-subway/api-subway.git"
+    "url": "git+https://github.com/artemKuch/api-subway.git"
   },
   "os": ["darwin"],
   "cpu": ["arm64"],

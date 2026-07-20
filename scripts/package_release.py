@@ -174,7 +174,7 @@ def build_python_wheel(
             "License-Expression: MIT\n"
             "License-File: LICENSE\n"
             "Requires-Python: >=3.9\n"
-            "Project-URL: Repository, https://github.com/api-subway/api-subway\n"
+            "Project-URL: Repository, https://github.com/artemKuch/api-subway\n"
             "\n"
         ).encode(),
         0o644,
