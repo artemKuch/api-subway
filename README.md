@@ -5,6 +5,10 @@
 [![Built with Rust](https://img.shields.io/badge/built%20with-Rust-df5b38.svg)](https://www.rust-lang.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
 
+[![npm](https://img.shields.io/npm/v/api-subway?logo=npm&label=npm)](https://www.npmjs.com/package/api-subway)
+[![PyPI](https://img.shields.io/pypi/v/api-subway?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/api-subway/)
+[![crates.io](https://img.shields.io/crates/v/api-subway?logo=rust&label=crates.io)](https://crates.io/crates/api-subway)
+
 **Fast, local API maps and contract debugging — built in Rust.**
 
 `api-subway` turns a codebase into a subway map: every `HTTP method + path` is a station, while middleware, services, data clients, and external integrations become lines. One command produces a README-safe SVG, a standalone interactive HTML explorer, and an optional deterministic JSON model.
@@ -36,17 +40,23 @@ These are local measurements, not universal latency guarantees. The fixture, env
 
 ## Quick start
 
-Download the native archive for macOS, glibc-based Linux, or Windows from the [latest GitHub Release](https://github.com/artemKuch/api-subway/releases/latest), or install the tagged source with Rust 1.95+:
+Run the native CLI directly through npm or PyPI:
 
 ```bash
-cargo install --locked \
-  --git https://github.com/artemKuch/api-subway \
-  --tag v0.1.0 api-subway
+npx api-subway generate . --out docs/api-subway
 
+# or
+uvx api-subway generate . --out docs/api-subway
+```
+
+Install it permanently with Rust 1.95+:
+
+```bash
+cargo install --locked api-subway
 api-subway generate . --out docs/api-subway
 ```
 
-The release bundle already contains npm packages and Python wheels, but npm, PyPI, and crates.io publication is not enabled yet. `npx api-subway`, `uvx api-subway`, and `cargo install api-subway` will become available only after those registry releases exist.
+Prebuilt native archives for macOS, glibc-based Linux, and Windows are also available from the [latest GitHub Release](https://github.com/artemKuch/api-subway/releases/latest). npm and PyPI install the same platform-specific Rust binaries; the Cargo package builds the CLI from its published source.
 
 By default the command detects supported frameworks and writes:
 
