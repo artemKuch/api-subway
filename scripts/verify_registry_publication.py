@@ -147,12 +147,10 @@ def publication_issues(
         payload = _load(label, crate_version_url(crate, version), fetcher, issues)
         if payload is None:
             continue
-        crate_metadata = payload.get("crate")
         version_metadata = payload.get("version")
         if (
-            not isinstance(crate_metadata, dict)
-            or crate_metadata.get("id") != crate
-            or not isinstance(version_metadata, dict)
+            not isinstance(version_metadata, dict)
+            or version_metadata.get("crate") != crate
             or version_metadata.get("num") != version
         ):
             issues.append(f"{label}: metadata mismatch")

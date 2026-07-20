@@ -235,8 +235,7 @@ class ReleaseMetadataTest(unittest.TestCase):
         }
         for crate in verify_registry_publication.CARGO_CRATES:
             payloads[verify_registry_publication.crate_version_url(crate, version)] = {
-                "crate": {"id": crate},
-                "version": {"num": version},
+                "version": {"crate": crate, "num": version},
             }
 
         self.assertEqual(
@@ -274,7 +273,7 @@ class ReleaseMetadataTest(unittest.TestCase):
                 for crate in verify_registry_publication.CARGO_CRATES
                 if url == verify_registry_publication.crate_version_url(crate, version)
             )
-            return {"crate": {"id": crate}, "version": {"num": version}}
+            return {"version": {"crate": crate, "num": version}}
 
         self.assertIn(
             "PyPI api-subway==0.1.0: wheel set is incomplete",
