@@ -177,6 +177,9 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
       - name: Resolve release version
         id: release-version
         shell: bash
