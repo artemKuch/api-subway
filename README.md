@@ -11,13 +11,15 @@
 
 **Fast, local API maps and contract debugging — built in Rust.**
 
+**[Try the live interactive demo →](https://artemkuch.github.io/api-subway/)**
+
 `api-subway` turns a codebase into a subway map: every `HTTP method + path` is a station, while middleware, services, data clients, and external integrations become lines. One command produces a README-safe SVG, a standalone interactive HTML explorer, and an optional deterministic JSON model.
 
 It analyzes source code without starting the application, installing its dependencies, uploading code, or making network requests.
 
-![Local API debugging with PUT and GET order endpoints](docs/images/local-api-debugging.jpg)
+[![Local API debugging with PUT and GET order endpoints](docs/images/api-subway-demo.gif)](https://artemkuch.github.io/api-subway/)
 
-The HTML map is more than a diagram. Open several endpoint windows, edit schema-backed requests, run them against one browser-local JSON backend, and watch related responses update immediately. In the example above, `PUT /orders/{id}` changes an order and the open `GET /orders` window reflects the same `total: 149.9` value.
+The HTML map is more than a diagram. Open several endpoint windows, edit schema-backed requests, run them against one browser-local JSON backend, and watch related responses update immediately. In the demo above, `PUT /orders/{id}` changes an order and the open `GET /orders` window reflects the same `total: 149.9` value. [Watch the original MP4](docs/videos/api-subway-api-debugging.mp4).
 
 ## Why api-subway
 

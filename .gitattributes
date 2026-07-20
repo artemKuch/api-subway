@@ -1,0 +1,5 @@
+fixtures/golden/*.html linguist-generated=true
+docs/api-subway.html linguist-generated=true
+docs/api-subway.json linguist-generated=true
+docs/api-subway.svg linguist-generated=true
+crates/api-subway-renderer/viewer/dist/viewer.js linguist-generated=true
