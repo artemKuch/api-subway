@@ -1,0 +1,231 @@
+name: Publish registries
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Stable release version without the v prefix
+        required: true
+        type: string
+      confirmation:
+        description: Type "publish X.Y.Z" for the selected version
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-registries-${{ inputs.version }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  authorize:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Validate publication request
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "::error::Registry publication must be dispatched from main"
+            exit 1
+          fi
+          if [[ ! "$RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "::error::Version must use the stable X.Y.Z format"
+            exit 1
+          fi
+          if [[ "$CONFIRMATION" != "publish $RELEASE_VERSION" ]]; then
+            echo "::error::Confirmation must be exactly: publish $RELEASE_VERSION"
+            exit 1
+          fi
+
+  verify-release:
+    needs: authorize
+    runs-on: ubuntu-22.04
+    permissions:
+      attestations: read
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: refs/tags/v${{ inputs.version }}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Verify release tag
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          TAG="v$RELEASE_VERSION"
+          if [[ "$(git cat-file -t "$TAG")" != "tag" ]]; then
+            echo "::error::$TAG must be an annotated tag"
+            exit 1
+          fi
+          TAG_COMMIT="$(git rev-list -n 1 "$TAG")"
+          if [[ "$(git rev-parse HEAD)" != "$TAG_COMMIT" ]]; then
+            echo "::error::Checkout does not match $TAG"
+            exit 1
+          fi
+          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
+          git merge-base --is-ancestor "$TAG_COMMIT" refs/remotes/origin/main
+          RELEASE_VERSION="$RELEASE_VERSION" PYTHONPATH=scripts python -c \
+            'import os; from release_artifacts import validate_repository_version; validate_repository_version(os.environ["RELEASE_VERSION"])'
+      - name: Download immutable GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          TAG="v$RELEASE_VERSION"
+          STATE="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --json isDraft,isPrerelease \
+            --jq 'if (.isDraft or .isPrerelease) then "blocked" else "ready" end')"
+          if [[ "$STATE" != "ready" ]]; then
+            echo "::error::$TAG must be a published stable GitHub release"
+            exit 1
+          fi
+          mkdir dist
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir dist
+      - name: Verify release contents and provenance
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python scripts/verify_release.py --directory dist --version "$RELEASE_VERSION"
+          for asset in dist/*; do
+            if [[ "$(basename "$asset")" == "SHA256SUMS" ]]; then
+              continue
+            fi
+            gh attestation verify "$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yml" \
+              --source-ref "refs/tags/v$RELEASE_VERSION" >/dev/null
+          done
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: verified-release-${{ inputs.version }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 3
+
+  publish-npm:
+    needs: verify-release
+    runs-on: ubuntu-22.04
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+          ref: refs/tags/v${{ inputs.version }}
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: verified-release-${{ inputs.version }}
+          path: dist
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Validate npm bootstrap credentials
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [[ -n "${NODE_AUTH_TOKEN:-}" ]]; then
+            npm whoami --registry https://registry.npmjs.org >/dev/null
+          else
+            echo "NPM_TOKEN is absent; npm Trusted Publishing must already be configured"
+          fi
+      - name: Publish npm packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: python scripts/publish_npm.py --directory dist --version "${{ inputs.version }}"
+
+  publish-pypi:
+    needs: verify-release
+    runs-on: ubuntu-22.04
+    environment:
+      name: release
+      url: https://pypi.org/project/api-subway/${{ inputs.version }}/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: verified-release-${{ inputs.version }}
+          path: dist
+      - name: Select Python distributions
+        shell: bash
+        run: |
+          mkdir pypi-dist
+          cp dist/*.whl pypi-dist/
+          if [[ "$(find pypi-dist -maxdepth 1 -type f -name '*.whl' | wc -l)" -ne 5 ]]; then
+            echo "::error::Expected five platform wheels"
+            exit 1
+          fi
+      - name: Publish Python wheels with trusted publishing
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
+        with:
+          packages-dir: pypi-dist/
+          skip-existing: true
+
+  publish-crates:
+    needs: verify-release
+    runs-on: ubuntu-22.04
+    environment: release
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+          ref: refs/tags/v${{ inputs.version }}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@35a842e360814583e976785eeda0bd0655cb8e83 # 1.97.0
+      - name: Validate crates.io credentials
+        shell: bash
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: |
+          if [[ -z "${CARGO_REGISTRY_TOKEN:-}" ]]; then
+            echo "::error::CARGO_REGISTRY_TOKEN is not configured"
+            exit 1
+          fi
+      - name: Publish Cargo crates
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: python scripts/publish_crates.py --version "${{ inputs.version }}"
+
+  verify-publication:
+    needs: [publish-npm, publish-pypi, publish-crates]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Verify public registry metadata
+        run: python scripts/verify_registry_publication.py --version "${{ inputs.version }}"

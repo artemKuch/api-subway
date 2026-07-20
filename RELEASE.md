@@ -1,16 +1,14 @@
 # Release process
 
-`api-subway` releases are built from annotated `vMAJOR.MINOR.PATCH` tags that already exist on `main`. GitHub Actions verifies the source, builds every supported native target, produces attestations, and creates the GitHub Release.
-
-Registry publication is a separate guarded step. It runs only when the repository variable `PUBLISH_REGISTRIES` is exactly `true`.
+`api-subway` releases are built from annotated `vMAJOR.MINOR.PATCH` tags that already exist on `main`. GitHub Actions verifies the source, builds every supported native target, produces attestations, and creates the GitHub Release. Publishing that immutable release to npm, PyPI, and crates.io is a separate manually approved workflow.
 
 ## One-time repository setup
 
 - Create a protected GitHub environment named `release` with required reviewers.
 - Protect `main` and `v*` tags; allow release tags only from commits reachable from `main`.
-- Reserve `api-subway` on npm, PyPI, and crates.io plus the `@api-subway/*` npm scope.
-- Configure `NPM_TOKEN` and `CARGO_REGISTRY_TOKEN` in the `release` environment.
-- Configure a PyPI Trusted Publisher for this repository, workflow, and environment.
+- Create the `api-subway` npm organization so the `@api-subway/*` platform packages can be published.
+- Configure `NPM_TOKEN` and `CARGO_REGISTRY_TOKEN` as secrets in the `release` environment. The npm token is required only to create the packages for the first time.
+- Configure a pending PyPI Trusted Publisher with project `api-subway`, owner `artemKuch`, repository `api-subway`, workflow `publish-registries.yml`, and environment `release`.
 
 GitHub Release creation, provenance, and SBOM attestations use `GITHUB_TOKEN` and OIDC. No signing key is stored in the repository.
 
@@ -38,17 +36,24 @@ Stable `X.Y.Z` versions only. Metadata mismatches, malformed tags, or tags not r
 
 ## Automated release gates
 
-The release workflow:
+The `Release` workflow:
 
 1. runs Rust, viewer, schema, release-tool, and OSV checks;
 2. builds and smoke-tests five native targets;
 3. packages native archives, npm platform packages, and Python wheels;
 4. verifies the complete artifact manifest and checksums;
 5. generates a CycloneDX SBOM and Sigstore-backed attestations;
-6. creates the GitHub Release;
-7. publishes registries only when explicitly enabled.
+6. creates the GitHub Release.
 
 Linux packages target glibc/manylinux 2.35; musl/Alpine is not supported in v0.1. macOS binaries require macOS 11 or newer. Windows packages target x64 MSVC.
+
+## Publish registries
+
+Open **Actions → Publish registries → Run workflow** from `main`. Enter the stable version without the `v` prefix and confirm with `publish X.Y.Z`.
+
+The workflow downloads the existing GitHub Release instead of rebuilding it. It verifies the annotated tag, repository versions, checksums, archive contents, and GitHub attestations before three independent publication jobs start. A final job waits until every npm package, Python wheel, and Cargo crate is visible through its public registry API.
+
+The first npm publication uses `NPM_TOKEN`. After all six npm packages exist, configure npm Trusted Publishing for each package with owner `artemKuch`, repository `api-subway`, workflow `publish-registries.yml`, environment `release`, and the `npm publish` permission. The token can then be removed; the workflow supports OIDC automatically.
 
 ## Verify a downloaded release
 

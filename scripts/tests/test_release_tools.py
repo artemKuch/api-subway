@@ -18,6 +18,7 @@ import generate_sbom
 import package_release
 import validate_schemas
 import verify_release
+import verify_registry_publication
 from release_artifacts import (
     CHECKSUMS_FILE,
     RELEASE_TARGETS,
@@ -215,6 +216,70 @@ class ReleaseMetadataTest(unittest.TestCase):
             write_manifest_target.write_text("placeholder", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "non-regular"):
                 verify_release_bundle(directory, "0.1.0")
+
+    def test_registry_publication_requires_every_package(self) -> None:
+        version = "0.1.0"
+        payloads: dict[str, dict[str, object]] = {}
+        for package in verify_registry_publication.NPM_PACKAGES:
+            payloads[verify_registry_publication.npm_version_url(package, version)] = {
+                "name": package,
+                "version": version,
+                "dist": {"integrity": "sha512-example"},
+            }
+        payloads[verify_registry_publication.pypi_version_url(version)] = {
+            "info": {"version": version},
+            "urls": [
+                {"filename": f"api_subway-{version}-py3-none-{target.wheel}.whl"}
+                for target in RELEASE_TARGETS
+            ],
+        }
+        for crate in verify_registry_publication.CARGO_CRATES:
+            payloads[verify_registry_publication.crate_version_url(crate, version)] = {
+                "crate": {"id": crate},
+                "version": {"num": version},
+            }
+
+        self.assertEqual(
+            verify_registry_publication.publication_issues(version, payloads.get),
+            [],
+        )
+
+        missing_url = verify_registry_publication.npm_version_url("api-subway", version)
+        del payloads[missing_url]
+        self.assertIn(
+            "npm api-subway@0.1.0: not found",
+            verify_registry_publication.publication_issues(version, payloads.get),
+        )
+
+    def test_registry_publication_rejects_incomplete_wheel_set(self) -> None:
+        version = "0.1.0"
+
+        def fetcher(url: str) -> dict[str, object] | None:
+            if url == verify_registry_publication.pypi_version_url(version):
+                return {"info": {"version": version}, "urls": []}
+            if "registry.npmjs.org" in url:
+                package = next(
+                    package
+                    for package in verify_registry_publication.NPM_PACKAGES
+                    if url
+                    == verify_registry_publication.npm_version_url(package, version)
+                )
+                return {
+                    "name": package,
+                    "version": version,
+                    "dist": {"integrity": "sha512-example"},
+                }
+            crate = next(
+                crate
+                for crate in verify_registry_publication.CARGO_CRATES
+                if url == verify_registry_publication.crate_version_url(crate, version)
+            )
+            return {"crate": {"id": crate}, "version": {"num": version}}
+
+        self.assertIn(
+            "PyPI api-subway==0.1.0: wheel set is incomplete",
+            verify_registry_publication.publication_issues(version, fetcher),
+        )
 
     def test_complete_synthetic_bundle_passes_archive_validation(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
