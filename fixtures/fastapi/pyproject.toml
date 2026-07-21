@@ -1,0 +1,4 @@
+[project]
+name = "fastapi-inventory-api"
+version = "0.1.0"
+dependencies = ["fastapi", "httpx", "sqlalchemy", "stripe"]

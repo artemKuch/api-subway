@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  title: Store API
+  version: 1.0.0
+security:
+  - bearerAuth: []
+paths:
+  /api/users/{id}:
+    get:
+      operationId: getUser
+      tags: [Users]
+      description: This description must never be copied into generated artifacts.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /reports:
+    post:
+      operationId: createReport
+      tags: [Reports]
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReport"
+      responses:
+        "201":
+          description: Created report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          example: example-secret@internal.test
+    CreateReport:
+      type: object
+      required: [name, role]
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        role:
+          type: string
+          enum: [admin, member]
+    Report:
+      allOf:
+        - $ref: "#/components/schemas/CreateReport"
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+              format: uuid
