@@ -1,0 +1,10 @@
+{
+  "name": "dependency-call-graph-fixture",
+  "private": true,
+  "dependencies": {
+    "express": "latest",
+    "pg": "latest",
+    "stripe": "latest",
+    "twilio": "latest"
+  }
+}
