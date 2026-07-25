@@ -1,0 +1,9 @@
+{
+  "name": "next-saas-corpus",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "6.0.0",
+    "next": "16.0.0",
+    "openai": "6.0.0"
+  }
+}

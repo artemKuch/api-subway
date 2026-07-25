@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "name": "Express 5 commerce service",
+      "root": "express-commerce",
+      "framework": "express",
+      "endpoints": [
+        "GET /api/v1/orders",
+        "GET /api/v1/orders/{orderId}",
+        "GET /health",
+        "POST /api/v1/orders"
+      ],
+      "relations": {
+        "datastore:Orders": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{orderId}",
+          "POST /api/v1/orders"
+        ],
+        "datastore:Postgres client": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{orderId}",
+          "POST /api/v1/orders"
+        ],
+        "external:Notifications": ["POST /api/v1/orders"],
+        "external:Twilio": ["POST /api/v1/orders"],
+        "middleware:json": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{orderId}",
+          "GET /health",
+          "POST /api/v1/orders"
+        ],
+        "middleware:requireSession": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{orderId}",
+          "POST /api/v1/orders"
+        ],
+        "service:Orders": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{orderId}",
+          "POST /api/v1/orders"
+        ]
+      }
+    },
+    {
+      "name": "Next.js 16 SaaS routes",
+      "root": "next-saas",
+      "framework": "next",
+      "endpoints": [
+        "GET /api/projects",
+        "GET /api/projects/{projectId}",
+        "POST /api/projects"
+      ],
+      "relations": {
+        "datastore:Prisma": [
+          "GET /api/projects",
+          "GET /api/projects/{projectId}",
+          "POST /api/projects"
+        ],
+        "external:OpenAI": ["POST /api/projects"],
+        "middleware:Next Proxy": [
+          "GET /api/projects",
+          "GET /api/projects/{projectId}",
+          "POST /api/projects"
+        ],
+        "service:Projects": [
+          "GET /api/projects",
+          "GET /api/projects/{projectId}",
+          "POST /api/projects"
+        ]
+      }
+    },
+    {
+      "name": "FastAPI operations service",
+      "root": "fastapi-operations",
+      "framework": "fastapi",
+      "endpoints": [
+        "GET /api/v1/orders",
+        "GET /api/v1/orders/{order_id}",
+        "GET /health",
+        "POST /api/v1/orders"
+      ],
+      "relations": {
+        "datastore:SQLAlchemy": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{order_id}"
+        ],
+        "external:Stripe": ["POST /api/v1/orders"],
+        "middleware:require_tenant": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{order_id}",
+          "POST /api/v1/orders"
+        ],
+        "service:Orders": [
+          "GET /api/v1/orders",
+          "GET /api/v1/orders/{order_id}",
+          "POST /api/v1/orders"
+        ]
+      }
+    }
+  ]
+}

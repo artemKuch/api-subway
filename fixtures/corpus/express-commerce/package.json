@@ -1,0 +1,9 @@
+{
+  "name": "express-commerce-corpus",
+  "private": true,
+  "dependencies": {
+    "express": "5.1.0",
+    "pg": "8.16.0",
+    "twilio": "5.10.0"
+  }
+}

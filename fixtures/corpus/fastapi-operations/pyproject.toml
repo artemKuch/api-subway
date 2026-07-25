@@ -1,0 +1,8 @@
+[project]
+name = "fastapi-operations-corpus"
+version = "0.1.0"
+dependencies = [
+  "fastapi==0.118.0",
+  "sqlalchemy==2.0.0",
+  "stripe==13.0.0",
+]
