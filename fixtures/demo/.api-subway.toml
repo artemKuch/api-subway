@@ -1,0 +1,8 @@
+version = 1
+frameworks = ["express"]
+openapi = ["openapi.yaml"]
+
+[map]
+title = "Live commerce API"
+max_lines = 12
+min_line_stations = 2

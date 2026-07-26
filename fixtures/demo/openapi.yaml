@@ -1,0 +1,283 @@
+openapi: 3.1.0
+info:
+  title: Live commerce API
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      operationId: listUsers
+      tags: [Users]
+      responses:
+        '200':
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      operationId: createUser
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not found
+  /orders:
+    get:
+      operationId: listOrders
+      tags: [Orders]
+      responses:
+        '200':
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      operationId: createOrder
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Created order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /orders/{id}:
+    put:
+      operationId: updateOrder
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: Updated order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /billing/invoices:
+    get:
+      operationId: listInvoices
+      tags: [Billing]
+      responses:
+        '200':
+          description: Invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+  /billing/refunds:
+    post:
+      operationId: refundPayment
+      tags: [Billing]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundInput'
+      responses:
+        '201':
+          description: Refund
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Refund'
+  /events:
+    get:
+      operationId: listEvents
+      tags: [Events]
+      responses:
+        '200':
+          description: Events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /health:
+    get:
+      operationId: health
+      tags: [System]
+      responses:
+        '200':
+          description: Health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+components:
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    UserInput:
+      type: object
+      additionalProperties: false
+      required: [email, name, role]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        role:
+          type: string
+          enum: [admin, member]
+    User:
+      type: object
+      additionalProperties: false
+      required: [email, id, name, role]
+      properties:
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, member]
+    OrderInput:
+      type: object
+      additionalProperties: false
+      required: [customerId, status, total]
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [draft, paid, shipped]
+        total:
+          type: number
+          minimum: 0
+    Order:
+      type: object
+      additionalProperties: false
+      required: [customerId, id, status, total]
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [draft, paid, shipped]
+        total:
+          type: number
+          minimum: 0
+    Invoice:
+      type: object
+      additionalProperties: false
+      required: [amount, id, state]
+      properties:
+        amount:
+          type: number
+          minimum: 0
+        id:
+          type: string
+        state:
+          type: string
+          enum: [open, paid, void]
+    RefundInput:
+      type: object
+      additionalProperties: false
+      required: [amount, paymentId, reason]
+      properties:
+        amount:
+          type: number
+          minimum: 0
+        paymentId:
+          type: string
+        reason:
+          type: string
+          minLength: 3
+    Refund:
+      type: object
+      additionalProperties: false
+      required: [amount, id, paymentId, state]
+      properties:
+        amount:
+          type: number
+          minimum: 0
+        id:
+          type: string
+        paymentId:
+          type: string
+        state:
+          type: string
+          enum: [pending, succeeded, failed]
+    Event:
+      type: object
+      additionalProperties: false
+      required: [id, type]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [order.created, order.updated, user.created]
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]

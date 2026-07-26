@@ -1,0 +1,13 @@
+{
+  "name": "api-subway-live-demo",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "latest",
+    "express": "latest",
+    "ioredis": "latest",
+    "openai": "latest",
+    "pg": "latest",
+    "stripe": "latest",
+    "twilio": "latest"
+  }
+}
