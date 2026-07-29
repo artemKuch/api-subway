@@ -1,0 +1,36 @@
+{
+  "name": "api-subway",
+  "version": "0.1.0",
+  "description": "Generate a trustworthy API map in the visual language of a subway map",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-subway/api-subway.git"
+  },
+  "homepage": "https://github.com/api-subway/api-subway#readme",
+  "bugs": {
+    "url": "https://github.com/api-subway/api-subway/issues"
+  },
+  "keywords": ["api", "documentation", "static-analysis", "cli"],
+  "bin": {
+    "api-subway": "bin/api-subway.js"
+  },
+  "files": [
+    "bin/api-subway.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node scripts/smoke.mjs"
+  },
+  "optionalDependencies": {
+    "@api-subway/darwin-arm64": "0.1.0",
+    "@api-subway/darwin-x64": "0.1.0",
+    "@api-subway/linux-arm64": "0.1.0",
+    "@api-subway/linux-x64": "0.1.0",
+    "@api-subway/win32-x64": "0.1.0"
+  }
+}

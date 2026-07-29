@@ -1,0 +1,15 @@
+{
+  "name": "@api-subway/linux-arm64",
+  "version": "0.1.0",
+  "description": "Native api-subway binary for Linux arm64",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-subway/api-subway.git"
+  },
+  "os": ["linux"],
+  "cpu": ["arm64"],
+  "libc": ["glibc"],
+  "preferUnplugged": true,
+  "files": ["bin/api-subway"]
+}

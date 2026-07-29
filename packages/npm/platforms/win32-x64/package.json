@@ -1,0 +1,14 @@
+{
+  "name": "@api-subway/win32-x64",
+  "version": "0.1.0",
+  "description": "Native api-subway binary for Windows x64",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-subway/api-subway.git"
+  },
+  "os": ["win32"],
+  "cpu": ["x64"],
+  "preferUnplugged": true,
+  "files": ["bin/api-subway.exe"]
+}

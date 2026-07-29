@@ -1,0 +1,14 @@
+{
+  "name": "@api-subway/darwin-x64",
+  "version": "0.1.0",
+  "description": "Native api-subway binary for macOS x64",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-subway/api-subway.git"
+  },
+  "os": ["darwin"],
+  "cpu": ["x64"],
+  "preferUnplugged": true,
+  "files": ["bin/api-subway"]
+}
