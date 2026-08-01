@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "api-subway"
+version = "0.1.0"
+description = "Generate a trustworthy API map in the visual language of a subway map"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "api-subway contributors" }]
+keywords = ["api", "documentation", "static-analysis", "cli"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Rust",
+  "Topic :: Software Development :: Documentation",
+]
+
+[project.scripts]
+api-subway = "api_subway.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/api-subway/api-subway"
+Repository = "https://github.com/api-subway/api-subway"
+Documentation = "https://github.com/api-subway/api-subway#readme"
+Changelog = "https://github.com/api-subway/api-subway/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+api_subway = ["bin/*"]
