@@ -1,0 +1,171 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: dtolnay/rust-toolchain@35a842e360814583e976785eeda0bd0655cb8e83 # 1.97.0
+        with:
+          components: clippy, rustfmt
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Run strict Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Run workspace tests
+        run: cargo test --workspace --locked
+      - name: Build release binary
+        run: cargo build --release --locked -p api-subway
+      - name: Verify publishable Cargo packages
+        run: |
+          cargo package --locked -p api-subway-core
+          cargo package --locked -p api-subway-analyzers --list >/dev/null
+          cargo package --locked -p api-subway-renderer --list >/dev/null
+          cargo package --locked -p api-subway --list >/dev/null
+      - name: Verify golden artifacts are current
+        run: |
+          cargo run --locked -q -p api-subway-renderer --example generate_goldens
+          git diff --exit-code -- fixtures/golden
+      - name: Verify committed demo artifacts are current
+        run: |
+          target/release/api-subway generate fixtures/demo \
+            --format svg --format html --format json \
+            --out "$GITHUB_WORKSPACE/docs/api-subway" --theme midnight
+          git diff --exit-code -- docs/api-subway.svg docs/api-subway.html docs/api-subway.json
+
+  minimum-rust:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: dtolnay/rust-toolchain@f133eefe930d61f0d9371efd474daf0125ed3dd1 # 1.95.0
+      - name: Check declared MSRV
+        run: cargo check --workspace --all-targets --locked
+
+  viewer:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: crates/api-subway-renderer/viewer
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: crates/api-subway-renderer/viewer/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Build embedded viewer
+        run: |
+          npm run build
+          git diff --exit-code -- dist/viewer.js
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
+  schemas-and-release-tools:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Install schema validator
+        run: python -m pip install --disable-pip-version-check jsonschema==4.26.0
+      - name: Validate committed JSON documents
+        run: python scripts/validate_schemas.py
+      - name: Test deterministic release tooling
+        run: python -m unittest discover -s scripts/tests -v
+      - name: Generate and parse CycloneDX SBOM
+        run: |
+          python scripts/generate_sbom.py --version 0.1.0 --output /tmp/api-subway.cdx.json
+          python -m json.tool /tmp/api-subway.cdx.json >/dev/null
+
+  wrapper-compatibility:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            node: 18
+            python: "3.9"
+            executable: target/release/api-subway
+          - runner: macos-14
+            node: 22
+            python: "3.13"
+            executable: target/release/api-subway
+          - runner: windows-2025
+            node: 22
+            python: "3.12"
+            executable: target/release/api-subway.exe
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: dtolnay/rust-toolchain@35a842e360814583e976785eeda0bd0655cb8e83 # 1.97.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: cargo build --release --locked -p api-subway
+      - name: Smoke-test npm launcher
+        working-directory: packages/npm
+        env:
+          API_SUBWAY_TEST_BINARY: ${{ github.workspace }}/${{ matrix.executable }}
+        run: npm test
+      - name: Smoke-test Python launcher
+        working-directory: packages/python
+        env:
+          API_SUBWAY_TEST_BINARY: ${{ github.workspace }}/${{ matrix.executable }}
+        run: python -m unittest discover -s tests -v
+
+  distribution-smoke:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: dtolnay/rust-toolchain@35a842e360814583e976785eeda0bd0655cb8e83 # 1.97.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - run: cargo build --release --locked -p api-subway
+      - name: Build deterministic release packages
+        run: >-
+          python scripts/package_release.py
+          --binary target/release/api-subway
+          --target x86_64-unknown-linux-gnu
+          --npm-platform linux-x64
+          --wheel-platform manylinux_2_35_x86_64
+          --version 0.1.0
+      - name: Install and run the generated wheel
+        run: |
+          python -m pip install --no-deps --target /tmp/api-subway-wheel dist/*.whl
+          PYTHONPATH=/tmp/api-subway-wheel python -m api_subway --version
+      - name: Smoke-test benchmark harness
+        run: >-
+          python scripts/benchmark.py
+          --binary target/release/api-subway
+          --files 8
+          --lines-per-file 20
+          --rounds 1
+          --warmups 0
+      - name: Validate generated output hygiene
+        run: |
+          target/release/api-subway generate fixtures/next --framework next --format json --out /tmp/api-subway-ci
+          ! rg -F "${{ github.workspace }}" /tmp/api-subway-ci.json
