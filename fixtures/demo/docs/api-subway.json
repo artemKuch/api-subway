@@ -1,0 +1,3157 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "api-subway-live-demo",
+    "root": ".",
+    "frameworks": [
+      "express",
+      "openapi"
+    ]
+  },
+  "endpoints": [
+    {
+      "id": "ep-102a6fc5e241162e",
+      "method": "GET",
+      "path": "/billing/invoices",
+      "display_path": "/billing/invoices",
+      "district": "BILLING",
+      "framework": "express",
+      "operation_id": "listInvoices",
+      "tags": [
+        "Billing"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 99,
+          "column": 5
+        },
+        {
+          "file": "src/routes/billing.ts",
+          "line": 6,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-6faedec818c4e6b1"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 99,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-5b159fe7971dff79",
+      "method": "POST",
+      "path": "/billing/refunds",
+      "display_path": "/billing/refunds",
+      "district": "BILLING",
+      "framework": "express",
+      "operation_id": "refundPayment",
+      "tags": [
+        "Billing"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 112,
+          "column": 5
+        },
+        {
+          "file": "src/routes/billing.ts",
+          "line": 10,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-4848e7dea874d150",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "201",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-e9911c4a1418365c"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 112,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-9d34906a5398a38b",
+      "method": "GET",
+      "path": "/events",
+      "display_path": "/events",
+      "district": "EVENTS",
+      "framework": "express",
+      "operation_id": "listEvents",
+      "tags": [
+        "Events"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 129,
+          "column": 5
+        },
+        {
+          "file": "src/routes/events.ts",
+          "line": 6,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-5740f678b0fb6488"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 129,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-acf963f451ba8bcc",
+      "method": "GET",
+      "path": "/health",
+      "display_path": "/health",
+      "district": "HEALTH",
+      "framework": "express",
+      "operation_id": "health",
+      "tags": [
+        "System"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "file": "src/app.ts",
+          "line": 17,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-4a5b1957d2a04d4c"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 142,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-eb33c83b205d2d8f",
+      "method": "GET",
+      "path": "/orders",
+      "display_path": "/orders",
+      "district": "ORDERS",
+      "framework": "express",
+      "operation_id": "listOrders",
+      "tags": [
+        "Orders"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 51,
+          "column": 5
+        },
+        {
+          "file": "src/routes/orders.ts",
+          "line": 6,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-afd0c3663a861a44"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 51,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-3bb9ca64325a895f",
+      "method": "POST",
+      "path": "/orders",
+      "display_path": "/orders",
+      "district": "ORDERS",
+      "framework": "express",
+      "operation_id": "createOrder",
+      "tags": [
+        "Orders"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 63,
+          "column": 5
+        },
+        {
+          "file": "src/routes/orders.ts",
+          "line": 10,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-8e5ab3266b880c3a",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "201",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-a5da54e969b69746"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 63,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-37402d6d850a79b0",
+      "method": "PUT",
+      "path": "/orders/{id}",
+      "display_path": "/orders/{id}",
+      "district": "ORDERS",
+      "framework": "express",
+      "operation_id": "updateOrder",
+      "tags": [
+        "Orders"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 80,
+          "column": 5
+        },
+        {
+          "file": "src/routes/orders.ts",
+          "line": 14,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-4d9960ceb9cc8dc1"
+            }
+          ],
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-8e5ab3266b880c3a",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-a5da54e969b69746"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 80,
+              "column": 5
+            }
+          },
+          {
+            "kind": "heuristic",
+            "detail": "Route path exposes one or more required parameters",
+            "source": {
+              "file": "src/routes/orders.ts",
+              "line": 14,
+              "column": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-46fb94d342fd4796",
+      "method": "GET",
+      "path": "/users",
+      "display_path": "/users",
+      "district": "USERS",
+      "framework": "express",
+      "operation_id": "listUsers",
+      "tags": [
+        "Users"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 7,
+          "column": 5
+        },
+        {
+          "file": "src/routes/users.ts",
+          "line": 6,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-5140c69efcfc43a7"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 7,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-2a414d856e514926",
+      "method": "POST",
+      "path": "/users",
+      "display_path": "/users",
+      "district": "USERS",
+      "framework": "express",
+      "operation_id": "createUser",
+      "tags": [
+        "Users"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 19,
+          "column": 5
+        },
+        {
+          "file": "src/routes/users.ts",
+          "line": 10,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "bodies": [
+            {
+              "media_type": "application/json",
+              "schema_id": "schema-a82ab02e0eaac957",
+              "required": true
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "201",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-fa912d2c434d18e1"
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 19,
+              "column": 5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ep-e2f8570ab53114e0",
+      "method": "GET",
+      "path": "/users/{id}",
+      "display_path": "/users/{id}",
+      "district": "USERS",
+      "framework": "express",
+      "operation_id": "getUser",
+      "tags": [
+        "Users"
+      ],
+      "sources": [
+        {
+          "file": "openapi.yaml",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "file": "src/routes/users.ts",
+          "line": 14,
+          "column": 1
+        }
+      ],
+      "contract": {
+        "confidence": "exact",
+        "request": {
+          "parameters": [
+            {
+              "name": "id",
+              "location": "path",
+              "required": true,
+              "schema_id": "schema-4d9960ceb9cc8dc1"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "status": "200",
+            "contents": [
+              {
+                "media_type": "application/json",
+                "schema_id": "schema-fa912d2c434d18e1"
+              }
+            ]
+          },
+          {
+            "status": "404"
+          }
+        ],
+        "evidence": [
+          {
+            "kind": "open-api",
+            "detail": "Request and response contract declared by OpenAPI",
+            "source": {
+              "file": "openapi.yaml",
+              "line": 36,
+              "column": 5
+            }
+          },
+          {
+            "kind": "heuristic",
+            "detail": "Route path exposes one or more required parameters",
+            "source": {
+              "file": "src/routes/users.ts",
+              "line": 14,
+              "column": 1
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "schemas": [
+    {
+      "id": "schema-0dd554edbd187bb5",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-0e0d149b4aa783da",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-1a1efcd88345238e",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "admin"
+        },
+        {
+          "kind": "string",
+          "value": "member"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-29dab5d7471bf33a",
+      "name": "Event",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "id",
+          "schema_id": "schema-98930e77f8bd0c26",
+          "required": true
+        },
+        {
+          "name": "type",
+          "schema_id": "schema-920e0b3015239233",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 129,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-40a2ff801f995401",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "draft"
+        },
+        {
+          "kind": "string",
+          "value": "paid"
+        },
+        {
+          "kind": "string",
+          "value": "shipped"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-444f8b1a9538272b",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4848e7dea874d150",
+      "name": "RefundInput",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "amount",
+          "schema_id": "schema-5860627e287d205d",
+          "required": true
+        },
+        {
+          "name": "paymentId",
+          "schema_id": "schema-f51271f2cab903c0",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "schema_id": "schema-4fe0d4c6f7c8f09d",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4a5b1957d2a04d4c",
+      "name": "Health",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "status",
+          "schema_id": "schema-65aa1fcec2559c67",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 142,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4ae90755fe027cd1",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "open"
+        },
+        {
+          "kind": "string",
+          "value": "paid"
+        },
+        {
+          "kind": "string",
+          "value": "void"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 99,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4bb405c10da5ab38",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "admin"
+        },
+        {
+          "kind": "string",
+          "value": "member"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4d9960ceb9cc8dc1",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4e2171d6c8707582",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-4fe0d4c6f7c8f09d",
+      "kind": "string",
+      "constraints": {
+        "min_length": 3
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-5140c69efcfc43a7",
+      "kind": "array",
+      "items": "schema-fa912d2c434d18e1",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-528c84b232b08160",
+      "kind": "number",
+      "constraints": {
+        "minimum": "0"
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 99,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-5740f678b0fb6488",
+      "kind": "array",
+      "items": "schema-29dab5d7471bf33a",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 129,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-5860627e287d205d",
+      "kind": "number",
+      "constraints": {
+        "minimum": "0"
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-63f2996ae333577d",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "draft"
+        },
+        {
+          "kind": "string",
+          "value": "paid"
+        },
+        {
+          "kind": "string",
+          "value": "shipped"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-65aa1fcec2559c67",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "ok"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 142,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-6faedec818c4e6b1",
+      "kind": "array",
+      "items": "schema-a99c01443fb14145",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 99,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-7132e337de348f4f",
+      "kind": "number",
+      "constraints": {
+        "minimum": "0"
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-7188a32791cb69f0",
+      "kind": "string",
+      "format": "email",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-71ca1e78593edb85",
+      "kind": "string",
+      "constraints": {
+        "min_length": 2,
+        "max_length": 80
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-7dd8b87c1978d22e",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "failed"
+        },
+        {
+          "kind": "string",
+          "value": "pending"
+        },
+        {
+          "kind": "string",
+          "value": "succeeded"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-7fd104204d3c81fc",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-8e5ab3266b880c3a",
+      "name": "OrderInput",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "customerId",
+          "schema_id": "schema-4e2171d6c8707582",
+          "required": true
+        },
+        {
+          "name": "status",
+          "schema_id": "schema-63f2996ae333577d",
+          "required": true
+        },
+        {
+          "name": "total",
+          "schema_id": "schema-dc47d71ba91568bb",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-920e0b3015239233",
+      "kind": "string",
+      "enum_values": [
+        {
+          "kind": "string",
+          "value": "order.created"
+        },
+        {
+          "kind": "string",
+          "value": "order.updated"
+        },
+        {
+          "kind": "string",
+          "value": "user.created"
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 129,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-952a7ee30dbebac1",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 99,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-98930e77f8bd0c26",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 129,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-a5da54e969b69746",
+      "name": "Order",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "customerId",
+          "schema_id": "schema-b36b2c5b0ef8ec5e",
+          "required": true
+        },
+        {
+          "name": "id",
+          "schema_id": "schema-0e0d149b4aa783da",
+          "required": true
+        },
+        {
+          "name": "status",
+          "schema_id": "schema-40a2ff801f995401",
+          "required": true
+        },
+        {
+          "name": "total",
+          "schema_id": "schema-7132e337de348f4f",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-a82ab02e0eaac957",
+      "name": "UserInput",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "email",
+          "schema_id": "schema-cb75dd79494aa612",
+          "required": true
+        },
+        {
+          "name": "name",
+          "schema_id": "schema-71ca1e78593edb85",
+          "required": true
+        },
+        {
+          "name": "role",
+          "schema_id": "schema-1a1efcd88345238e",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-a99c01443fb14145",
+      "name": "Invoice",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "amount",
+          "schema_id": "schema-528c84b232b08160",
+          "required": true
+        },
+        {
+          "name": "id",
+          "schema_id": "schema-952a7ee30dbebac1",
+          "required": true
+        },
+        {
+          "name": "state",
+          "schema_id": "schema-4ae90755fe027cd1",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 99,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-afd0c3663a861a44",
+      "kind": "array",
+      "items": "schema-a5da54e969b69746",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-b36b2c5b0ef8ec5e",
+      "kind": "string",
+      "format": "uuid",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 51,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-c6d6b04a6c768d58",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-cb75dd79494aa612",
+      "kind": "string",
+      "format": "email",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-dc47d71ba91568bb",
+      "kind": "number",
+      "constraints": {
+        "minimum": "0"
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 63,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 80,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-e9911c4a1418365c",
+      "name": "Refund",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "amount",
+          "schema_id": "schema-ff7a9bde58b398c1",
+          "required": true
+        },
+        {
+          "name": "id",
+          "schema_id": "schema-c6d6b04a6c768d58",
+          "required": true
+        },
+        {
+          "name": "paymentId",
+          "schema_id": "schema-7fd104204d3c81fc",
+          "required": true
+        },
+        {
+          "name": "state",
+          "schema_id": "schema-7dd8b87c1978d22e",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-f51271f2cab903c0",
+      "kind": "string",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-fa912d2c434d18e1",
+      "name": "User",
+      "kind": "object",
+      "properties": [
+        {
+          "name": "email",
+          "schema_id": "schema-7188a32791cb69f0",
+          "required": true
+        },
+        {
+          "name": "id",
+          "schema_id": "schema-0dd554edbd187bb5",
+          "required": true
+        },
+        {
+          "name": "name",
+          "schema_id": "schema-444f8b1a9538272b",
+          "required": true
+        },
+        {
+          "name": "role",
+          "schema_id": "schema-4bb405c10da5ab38",
+          "required": true
+        }
+      ],
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 7,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 19,
+            "column": 5
+          }
+        },
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 36,
+            "column": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-ff7a9bde58b398c1",
+      "kind": "number",
+      "constraints": {
+        "minimum": "0"
+      },
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "open-api",
+          "detail": "Schema declared by OpenAPI",
+          "source": {
+            "file": "openapi.yaml",
+            "line": 112,
+            "column": 5
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "dep-0deabab87642d75f",
+      "name": "Events",
+      "kind": "service"
+    },
+    {
+      "id": "dep-19553b4c5896dee5",
+      "name": "Orders",
+      "kind": "datastore"
+    },
+    {
+      "id": "dep-30077558c4dc9970",
+      "name": "Prisma",
+      "kind": "datastore",
+      "packages": [
+        "@prisma/client"
+      ]
+    },
+    {
+      "id": "dep-38b12984ca61ba14",
+      "name": "Notifications",
+      "kind": "external"
+    },
+    {
+      "id": "dep-530c819560d41f73",
+      "name": "Orders",
+      "kind": "service"
+    },
+    {
+      "id": "dep-7000052920b3703f",
+      "name": "Redis",
+      "kind": "datastore",
+      "packages": [
+        "ioredis"
+      ]
+    },
+    {
+      "id": "dep-77a1adba6fb5c92b",
+      "name": "json",
+      "kind": "middleware"
+    },
+    {
+      "id": "dep-79f71da190a68b05",
+      "name": "Billing",
+      "kind": "service"
+    },
+    {
+      "id": "dep-8038363bd22fadb6",
+      "name": "Profile Enrichment",
+      "kind": "external"
+    },
+    {
+      "id": "dep-8224cb7ecac317c0",
+      "name": "audit",
+      "kind": "middleware"
+    },
+    {
+      "id": "dep-8472a1c3efe535ca",
+      "name": "Users",
+      "kind": "service"
+    },
+    {
+      "id": "dep-a3bad5154021fee5",
+      "name": "Events",
+      "kind": "datastore"
+    },
+    {
+      "id": "dep-b648ce9ab50da022",
+      "name": "Postgres client",
+      "kind": "datastore",
+      "packages": [
+        "pg"
+      ]
+    },
+    {
+      "id": "dep-b8d9e403b65eea98",
+      "name": "authorize",
+      "kind": "middleware"
+    },
+    {
+      "id": "dep-f23d2cb5bc18e260",
+      "name": "Twilio",
+      "kind": "external",
+      "packages": [
+        "twilio"
+      ]
+    },
+    {
+      "id": "dep-f3acd7a497d57ff6",
+      "name": "OpenAI",
+      "kind": "external",
+      "packages": [
+        "openai"
+      ]
+    },
+    {
+      "id": "dep-f464ac88d2f4fc49",
+      "name": "Stripe",
+      "kind": "external",
+      "packages": [
+        "stripe"
+      ]
+    },
+    {
+      "id": "dep-ff25b093dde3a184",
+      "name": "Users",
+      "kind": "datastore"
+    }
+  ],
+  "relations": [
+    {
+      "endpoint_id": "ep-102a6fc5e241162e",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-102a6fc5e241162e",
+      "dependency_id": "dep-79f71da190a68b05",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved listInvoices() call to local service module src/services/billing.ts",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-102a6fc5e241162e",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-102a6fc5e241162e",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-102a6fc5e241162e",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved listInvoices() call into local module src/services/billing.ts",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 7,
+            "column": 23
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved stripe.invoices.list() call through the stripe package",
+          "source": {
+            "file": "src/services/billing.ts",
+            "line": 6,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-30077558c4dc9970",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved database.user.create() call through the @prisma/client package",
+          "source": {
+            "file": "src/repositories/users.ts",
+            "line": 10,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved insertUser() call into local module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 10,
+            "column": 22
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-38b12984ca61ba14",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved sendWelcome() call to local integration client module src/integrations/notifications.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 11,
+            "column": 9
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-8472a1c3efe535ca",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved createUser() call to local service module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 11,
+            "column": 35
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-f23d2cb5bc18e260",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved client.messages.create() call through the twilio package",
+          "source": {
+            "file": "src/integrations/notifications.ts",
+            "line": 6,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved createUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved sendWelcome() call into local module src/integrations/notifications.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 11,
+            "column": 9
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-2a414d856e514926",
+      "dependency_id": "dep-ff25b093dde3a184",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved insertUser() call to local repository module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 10,
+            "column": 22
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-19553b4c5896dee5",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved updateOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 15,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved replaceOrder() call to local repository module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 17,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-530c819560d41f73",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved updateOrder() call to local service module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 15,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-b648ce9ab50da022",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved database.query() call through the pg package",
+          "source": {
+            "file": "src/repositories/orders.ts",
+            "line": 15,
+            "column": 9
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved replaceOrder() call into local module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 17,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved updateOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 15,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-37402d6d850a79b0",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-19553b4c5896dee5",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved insertOrder() call to local repository module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 10,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-38b12984ca61ba14",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved sendReceipt() call to local integration client module src/integrations/notifications.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 12,
+            "column": 9
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-530c819560d41f73",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved createOrder() call to local service module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-79f71da190a68b05",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved chargePayment() call to local service module src/services/billing.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 11,
+            "column": 9
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-b648ce9ab50da022",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved database.query() call through the pg package",
+          "source": {
+            "file": "src/repositories/orders.ts",
+            "line": 10,
+            "column": 9
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved insertOrder() call into local module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 10,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-f23d2cb5bc18e260",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved client.messages.create() call through the twilio package",
+          "source": {
+            "file": "src/integrations/notifications.ts",
+            "line": 10,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved sendReceipt() call into local module src/integrations/notifications.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 12,
+            "column": 9
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-3bb9ca64325a895f",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved chargePayment() call into local module src/services/billing.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 11,
+            "column": 9
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved createOrder() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved stripe.paymentIntents.create() call through the stripe package",
+          "source": {
+            "file": "src/services/billing.ts",
+            "line": 10,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-30077558c4dc9970",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved database.user.findMany() call through the @prisma/client package",
+          "source": {
+            "file": "src/repositories/users.ts",
+            "line": 6,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved findUsers() call into local module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 6,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved listUsers() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-8472a1c3efe535ca",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved listUsers() call to local service module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-46fb94d342fd4796",
+      "dependency_id": "dep-ff25b093dde3a184",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved listUsers() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 7,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved findUsers() call to local repository module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 6,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-5b159fe7971dff79",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-5b159fe7971dff79",
+      "dependency_id": "dep-79f71da190a68b05",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved refundPayment() call to local service module src/services/billing.ts",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 11,
+            "column": 35
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-5b159fe7971dff79",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-5b159fe7971dff79",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 10,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-5b159fe7971dff79",
+      "dependency_id": "dep-f464ac88d2f4fc49",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved refundPayment() call into local module src/services/billing.ts",
+          "source": {
+            "file": "src/routes/billing.ts",
+            "line": 11,
+            "column": 35
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved stripe.refunds.create() call through the stripe package",
+          "source": {
+            "file": "src/services/billing.ts",
+            "line": 14,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-9d34906a5398a38b",
+      "dependency_id": "dep-0deabab87642d75f",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved listEvents() call to local service module src/services/events.ts",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-9d34906a5398a38b",
+      "dependency_id": "dep-7000052920b3703f",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved listEvents() call into local module src/services/events.ts",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 7,
+            "column": 23
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved readEvents() call into local module src/repositories/events.ts",
+          "source": {
+            "file": "src/services/events.ts",
+            "line": 4,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved redis.lrange() call through the ioredis package",
+          "source": {
+            "file": "src/repositories/events.ts",
+            "line": 6,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-9d34906a5398a38b",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-9d34906a5398a38b",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-9d34906a5398a38b",
+      "dependency_id": "dep-a3bad5154021fee5",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved listEvents() call into local module src/services/events.ts",
+          "source": {
+            "file": "src/routes/events.ts",
+            "line": 7,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved readEvents() call to local repository module src/repositories/events.ts",
+          "source": {
+            "file": "src/services/events.ts",
+            "line": 4,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-acf963f451ba8bcc",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/app.ts",
+            "line": 17,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-acf963f451ba8bcc",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/app.ts",
+            "line": 17,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-30077558c4dc9970",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved database.user.findUnique() call through the @prisma/client package",
+          "source": {
+            "file": "src/repositories/users.ts",
+            "line": 14,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved findUser() call into local module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 16,
+            "column": 22
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved getUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 15,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-8038363bd22fadb6",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved getUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 15,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved enrichProfile() call to local integration client module src/clients/profile-enrichment.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 17,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-8472a1c3efe535ca",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved getUser() call to local service module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 15,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 14,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-f3acd7a497d57ff6",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved client.responses.create() call through the openai package",
+          "source": {
+            "file": "src/clients/profile-enrichment.ts",
+            "line": 6,
+            "column": 9
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved enrichProfile() call into local module src/clients/profile-enrichment.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 17,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved getUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 15,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-e2f8570ab53114e0",
+      "dependency_id": "dep-ff25b093dde3a184",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved getUser() call into local module src/services/users.ts",
+          "source": {
+            "file": "src/routes/users.ts",
+            "line": 15,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved findUser() call to local repository module src/repositories/users.ts",
+          "source": {
+            "file": "src/services/users.ts",
+            "line": 16,
+            "column": 22
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-19553b4c5896dee5",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved listOrders() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 7,
+            "column": 23
+          }
+        },
+        {
+          "kind": "heuristic",
+          "detail": "Resolved findOrders() call to local repository module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 6,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-530c819560d41f73",
+      "confidence": "inferred",
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "detail": "Resolved listOrders() call to local service module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-77a1adba6fb5c92b",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'express.json' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-8224cb7ecac317c0",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'audit' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-b648ce9ab50da022",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "call",
+          "detail": "Resolved database.query() call through the pg package",
+          "source": {
+            "file": "src/repositories/orders.ts",
+            "line": 6,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved findOrders() call into local module src/repositories/orders.ts",
+          "source": {
+            "file": "src/services/orders.ts",
+            "line": 6,
+            "column": 10
+          }
+        },
+        {
+          "kind": "call",
+          "detail": "Resolved listOrders() call into local module src/services/orders.ts",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 7,
+            "column": 23
+          }
+        }
+      ]
+    },
+    {
+      "endpoint_id": "ep-eb33c83b205d2d8f",
+      "dependency_id": "dep-b8d9e403b65eea98",
+      "confidence": "exact",
+      "evidence": [
+        {
+          "kind": "framework",
+          "detail": "Express registered middleware 'authorize' before the handler",
+          "source": {
+            "file": "src/routes/orders.ts",
+            "line": 6,
+            "column": 1
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": []
+}

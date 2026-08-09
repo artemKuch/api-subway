@@ -1,0 +1,1698 @@
+<!doctype html><html lang="en" data-theme="midnight"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &apos;none&apos;; script-src &apos;unsafe-inline&apos;; style-src &apos;unsafe-inline&apos;; img-src data:; connect-src &apos;none&apos;; object-src &apos;none&apos;; base-uri &apos;none&apos;; form-action &apos;none&apos;"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>Live commerce API · api-subway</title><style>:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color-scheme: dark;
+  --app-bg: #06131e;
+  --panel: #091a27;
+  --panel-2: #0c202e;
+  --panel-3: #102938;
+  --border: #1d3746;
+  --border-strong: #315467;
+  --text: #f6f1e7;
+  --muted: #8da5b5;
+  --accent: #2bd9fe;
+  --focus: #f7bd4a;
+  --schema: #78e7ac;
+  --run: #f59e0b;
+  --success: #5ce1b6;
+  --danger: #ff7b72;
+  --code-bg: #06111a;
+  --shadow: rgba(0, 0, 0, 0.52);
+}
+
+html[data-theme="paper"] {
+  color-scheme: light;
+  --app-bg: #f1eee6;
+  --panel: #faf8f2;
+  --panel-2: #fffdf8;
+  --panel-3: #eef1ed;
+  --border: #d4d9d6;
+  --border-strong: #a9b5b4;
+  --text: #17242c;
+  --muted: #68777f;
+  --accent: #087c98;
+  --focus: #9a5e00;
+  --schema: #18794e;
+  --run: #a95f00;
+  --success: #267a3e;
+  --danger: #b42318;
+  --code-bg: #f2f3ef;
+  --shadow: rgba(48, 54, 50, 0.24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.station:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: 58px minmax(0, 1fr) 34px;
+  height: 100%;
+}
+
+.topbar {
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 96%, transparent);
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  margin-right: 4px;
+  color: var(--text);
+  font-weight: 780;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.product-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #04131c;
+  font-size: 21px;
+}
+
+.project-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 250px;
+  height: 32px;
+  padding: 0 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.live-dot.watching,
+.project-chip .live-dot {
+  background: var(--success);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--success) 82%, transparent);
+}
+
+.search-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: min(340px, 29vw);
+  height: 34px;
+  margin-left: auto;
+}
+
+.search-control svg {
+  position: absolute;
+  left: 10px;
+  width: 16px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.search-control input {
+  width: 100%;
+  height: 100%;
+  padding: 0 36px 0 33px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.search-control input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.search-control kbd {
+  position: absolute;
+  right: 9px;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.topbar select,
+.icon-button,
+.compact-button,
+.backend-button,
+.filter-pills button {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.topbar select {
+  height: 34px;
+  padding: 0 28px 0 10px;
+  font-size: 13px;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon-button svg,
+.backend-button svg {
+  width: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.compact-button {
+  height: 34px;
+  padding: 0 11px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.backend-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 11px;
+  border-color: color-mix(in srgb, var(--accent) 44%, var(--border));
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.icon-button:hover,
+.compact-button:hover,
+.backend-button:hover,
+.filter-pills button:hover {
+  border-color: var(--border-strong);
+  background: var(--panel-3);
+}
+
+main,
+.map-panel {
+  min-width: 0;
+  min-height: 0;
+}
+
+.map-panel {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--app-bg);
+}
+
+.map-toolbar {
+  position: absolute;
+  z-index: 15;
+  top: 14px;
+  right: 16px;
+  left: 16px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.filter-pills,
+.map-actions {
+  display: flex;
+  gap: 5px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+}
+
+.filter-pills button {
+  height: 28px;
+  padding: 0 10px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.filter-pills button.active {
+  border-color: var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.map-actions .icon-button,
+.map-actions .compact-button {
+  height: 28px;
+}
+
+.map-actions .icon-button {
+  width: 28px;
+}
+
+.map-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  outline: none;
+  cursor: grab;
+}
+
+.map-viewport.dragging {
+  cursor: grabbing;
+}
+
+.map-viewport > .api-map {
+  --bg: #06131e;
+  --surface: #091a27;
+  --text: #f6f1e7;
+  --muted: #8da5b5;
+  --faint: #1d3746;
+  --trunk: #426070;
+  --station: #f6f1e7;
+  --badge: #0c202e;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+}
+
+html[data-theme="paper"] .map-viewport > .api-map {
+  --bg: #f1eee6;
+  --surface: #faf8f2;
+  --text: #17242c;
+  --muted: #68777f;
+  --faint: #d4d9d6;
+  --trunk: #9eabad;
+  --station: #17242c;
+  --badge: #fffdf8;
+}
+
+.map-viewport > .api-map .map-background {
+  fill: var(--app-bg);
+}
+
+.map-viewport > .api-map .map-heading {
+  display: none;
+}
+
+.map-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  color: var(--muted);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.station,
+.dependency-rail,
+.dependency-line,
+.legend-item {
+  transition: opacity 150ms ease;
+}
+
+.station:hover .endpoint-label,
+.station.window-open .endpoint-label {
+  fill: var(--accent);
+}
+
+.station.window-open .station-dot {
+  stroke: var(--accent);
+  stroke-width: 5;
+}
+
+.station.window-active .station-dot {
+  fill: var(--focus);
+  stroke: var(--focus);
+  filter: drop-shadow(0 0 7px var(--focus));
+}
+
+.station.window-open .contract-indicator {
+  display: block;
+  fill: var(--accent);
+}
+
+.station.is-muted {
+  opacity: 0.08;
+}
+
+.dependency-rail.is-muted,
+.dependency-line.is-muted,
+.legend-item.is-muted {
+  opacity: 0.035;
+}
+
+.workspace-layer {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.workspace-window {
+  position: absolute;
+  left: var(--window-x);
+  top: var(--window-y);
+  z-index: var(--window-z);
+  display: flex;
+  flex-direction: column;
+  width: var(--window-width);
+  min-width: 340px;
+  max-width: min(780px, calc(100% - 16px));
+  height: var(--window-height);
+  min-height: 320px;
+  max-height: calc(100% - 16px);
+  overflow: hidden;
+  resize: both;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--panel) 98%, transparent);
+  box-shadow:
+    0 26px 80px var(--shadow),
+    0 4px 18px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.workspace-window.active {
+  border-color: color-mix(in srgb, var(--accent) 74%, var(--border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 28px 90px var(--shadow);
+}
+
+.workspace-window.dragging {
+  opacity: 0.96;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 36%, transparent),
+    0 34px 100px var(--shadow);
+}
+
+.workspace-window.minimized {
+  height: 44px !important;
+  min-height: 44px;
+  resize: none;
+}
+
+.workspace-window.minimized .workspace-window-content,
+.workspace-window.minimized .workspace-mobile-dock {
+  display: none;
+}
+
+.workspace-window-titlebar {
+  display: flex;
+  flex: 0 0 44px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 8px 0 10px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel-2) 92%, transparent);
+  cursor: grab;
+  user-select: none;
+}
+
+.workspace-window.dragging .workspace-window-titlebar {
+  cursor: grabbing;
+}
+
+.workspace-window-titlebar strong {
+  min-width: 0;
+  overflow: hidden;
+  font: 650 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window-drag-icon,
+.backend-title-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+.backend-title-icon {
+  color: var(--accent);
+}
+
+.window-title-spacer {
+  flex: 1;
+}
+
+.workspace-window-titlebar button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.workspace-window-titlebar button:hover {
+  background: var(--panel-3);
+  color: var(--text);
+}
+
+.ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.window-drag-icon .ui-icon {
+  fill: currentColor;
+  stroke: none;
+}
+
+.endpoint-method,
+.dock-method {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 23px;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font: 800 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+}
+
+.method-get {
+  border-color: #1f7387;
+  background: #123e4a;
+  color: #7ce9ff;
+}
+
+.method-post {
+  border-color: #347b65;
+  background: #193f35;
+  color: #83e5bd;
+}
+
+.method-put {
+  border-color: #8c7432;
+  background: #453b1d;
+  color: #ffd56f;
+}
+
+.method-patch {
+  border-color: #6c54a7;
+  background: #372d57;
+  color: #cdb7ff;
+}
+
+.method-delete {
+  border-color: #98515a;
+  background: #4e282c;
+  color: #ffabb0;
+}
+
+.method-head,
+.method-options,
+.method-any,
+.dock-method.backend {
+  border-color: var(--border-strong);
+  background: var(--panel-3);
+  color: var(--muted);
+}
+
+html[data-theme="paper"] .method-get {
+  background: #d9f5fa;
+  color: #075f74;
+}
+
+html[data-theme="paper"] .method-post {
+  background: #dbf4e8;
+  color: #176646;
+}
+
+html[data-theme="paper"] .method-put {
+  background: #f9edc9;
+  color: #765300;
+}
+
+html[data-theme="paper"] .method-patch {
+  background: #eae2ff;
+  color: #533b92;
+}
+
+html[data-theme="paper"] .method-delete {
+  background: #ffe2df;
+  color: #8e2f35;
+}
+
+.workspace-window-content {
+  min-height: 0;
+  overflow: auto;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+@media (min-width: 901px) {
+  .map-panel {
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+
+  .workspace-layer {
+    overflow: visible;
+  }
+
+  .endpoint-workspace-window:not(.minimized) {
+    height: max-content;
+    min-height: 0;
+    max-height: none;
+    resize: horizontal;
+  }
+
+  .endpoint-workspace-window:not(.minimized) .workspace-window-content {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+}
+
+.endpoint-request-section,
+.endpoint-response-section {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.endpoint-request-section h3,
+.endpoint-response-section h3 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+.request-parameter-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.request-parameter-group legend {
+  display: block;
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.request-parameter-group label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.request-parameter-group input,
+.body-schema-field input,
+.body-schema-field select,
+.body-schema-field textarea,
+.request-body-editor textarea,
+.backend-json-editor {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: var(--code-bg);
+  color: var(--schema);
+  font: 11px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.request-parameter-group input {
+  height: 34px;
+  padding: 0 9px;
+}
+
+.request-parameter-group input:focus,
+.body-schema-field input:focus,
+.body-schema-field select:focus,
+.body-schema-field textarea:focus,
+.request-body-editor textarea:focus,
+.backend-json-editor:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.body-schema-card {
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--schema) 40%, var(--border));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--schema) 4%, var(--panel-2));
+}
+
+.body-schema-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 11px;
+  border-bottom: 1px solid var(--border);
+}
+
+.body-schema-heading > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.body-schema-heading span,
+.response-schema-alternatives > span {
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.body-schema-heading strong {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.body-schema-heading small {
+  color: var(--schema);
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.body-schema-heading > code {
+  flex: 0 0 auto;
+  max-width: 46%;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--schema);
+  font: 8px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+}
+
+.body-schema-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  padding: 11px;
+}
+
+.body-schema-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.body-schema-field > span,
+.nested-schema-group > legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  min-width: 0;
+}
+
+.body-schema-field > span strong,
+.nested-schema-group > legend strong {
+  color: var(--text);
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
+
+.body-schema-field > span code,
+.nested-schema-group > legend code,
+.response-schema-alternatives code {
+  color: var(--schema);
+  font: 8px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.body-schema-field > span small,
+.nested-schema-group > legend small {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.body-schema-field input,
+.body-schema-field select {
+  min-width: 0;
+  height: 36px;
+  padding: 0 9px;
+}
+
+.body-schema-field select {
+  appearance: auto;
+}
+
+.body-schema-field textarea {
+  min-height: 88px;
+  padding: 9px;
+  resize: vertical;
+}
+
+.body-schema-field input.invalid,
+.body-schema-field select.invalid,
+.body-schema-field textarea.invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger) 14%, transparent);
+}
+
+.body-schema-json-field,
+.nested-schema-group {
+  grid-column: 1 / -1;
+}
+
+.nested-schema-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 7px;
+}
+
+.nested-schema-group > legend {
+  padding: 0 5px;
+}
+
+.body-schema-field.readonly {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.request-json-view {
+  display: block;
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--schema) 40%, var(--border));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--schema) 4%, var(--panel-2));
+}
+
+.request-json-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0 11px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.request-json-heading strong {
+  color: var(--text);
+  font-size: 10px;
+}
+
+.request-json-heading code {
+  color: var(--schema);
+  font: 8px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.request-body-editor {
+  display: block;
+}
+
+.request-body-editor textarea {
+  display: block;
+  min-height: 122px;
+  padding: 10px;
+  border: 0;
+  border-radius: 0;
+  resize: vertical;
+}
+
+.request-body-editor textarea[aria-invalid="true"] {
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+.response-schema-card {
+  margin-top: 0;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+  background: color-mix(in srgb, var(--accent) 4%, var(--panel-2));
+}
+
+.response-schema-card .body-schema-heading small {
+  color: var(--accent);
+}
+
+.response-schema-card.unresolved {
+  padding: 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 42%, var(--border));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--panel-2));
+  border-style: dashed;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.response-schema-card.unresolved strong,
+.response-schema-card.unresolved code {
+  display: block;
+}
+
+.response-schema-card.unresolved strong {
+  color: var(--text);
+}
+
+.response-schema-card.unresolved code {
+  margin-top: 6px;
+  color: var(--schema);
+  font: 8px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.schema-unresolved {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.response-field-value {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--code-bg);
+}
+
+.response-field-value code {
+  min-width: 0;
+  color: var(--schema);
+  font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.response-field-value.multiline {
+  align-items: flex-start;
+  min-height: 72px;
+}
+
+.response-schema-field.missing .response-field-value {
+  border-style: dashed;
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.response-array-block {
+  grid-column: 1 / -1;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+}
+
+.response-array-block > header,
+.response-array-item > legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.response-array-block > header {
+  min-height: 34px;
+  padding: 0 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+.response-array-block > header code,
+.response-array-item > legend code {
+  color: var(--schema);
+  font: 8px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.response-array-items {
+  display: grid;
+  gap: 9px;
+  padding: 9px;
+}
+
+.response-array-item {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.response-array-item > legend {
+  width: calc(100% - 16px);
+  margin: 0 8px;
+  padding: 0 5px;
+}
+
+.response-array-item > .body-schema-fields {
+  padding-top: 8px;
+}
+
+.response-array-empty,
+.response-array-more {
+  margin: 0;
+  padding: 11px;
+  color: var(--muted);
+  font: 9px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.response-array-more {
+  border-top: 1px solid var(--border);
+}
+
+.response-schema-alternatives {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border-top: 1px solid var(--border);
+}
+
+.response-schema-alternatives code {
+  padding: 3px 5px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.window-empty-copy {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.run-request-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 39px;
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--run) 76%, #6c4300);
+  border-radius: 7px;
+  background: var(--run);
+  color: #1b1204;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.run-request-button:hover {
+  filter: brightness(1.08);
+}
+
+.request-title,
+.response-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.request-title {
+  margin-bottom: 0;
+}
+
+.payload-view-switch {
+  display: inline-flex;
+  margin-left: auto;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--panel-2);
+}
+
+.payload-view-switch button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.payload-view-switch button + button {
+  border-left: 1px solid var(--border);
+}
+
+.payload-view-switch button:hover {
+  color: var(--text);
+}
+
+.payload-view-switch button:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.payload-view-switch button.active {
+  background: color-mix(in srgb, var(--accent) 15%, var(--panel));
+  color: var(--accent);
+}
+
+.payload-view-switch .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.response-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  font: 8px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.response-status span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.response-status.success {
+  color: var(--success);
+}
+
+.response-status.error {
+  color: var(--danger);
+}
+
+.response-code {
+  max-height: 310px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--code-bg);
+}
+
+.response-code pre {
+  margin: 0;
+  padding: 11px;
+}
+
+.response-code code {
+  color: var(--schema);
+  font: 10px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.window-validation-ok,
+.window-validation-errors {
+  margin-top: 9px;
+  font: 9px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.window-validation-ok {
+  color: var(--success);
+}
+
+.window-validation-errors {
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--danger) 42%, var(--border));
+  border-radius: 6px;
+  color: var(--danger);
+}
+
+.window-validation-errors p {
+  margin: 0;
+}
+
+.window-validation-errors p + p {
+  margin-top: 5px;
+}
+
+.window-live-notice {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 14px 14px;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--success) 38%, var(--border));
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--success) 7%, var(--panel-2));
+  color: var(--success);
+  font: 9px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.backend-editor-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.backend-editor-heading div {
+  display: grid;
+  gap: 4px;
+}
+
+.backend-editor-heading span {
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.backend-editor-heading strong {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.backend-dirty-state {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--success) 44%, var(--border));
+  border-radius: 5px;
+  color: var(--success);
+  font: 8px ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+
+.backend-dirty-state.dirty {
+  border-color: color-mix(in srgb, var(--focus) 54%, var(--border));
+  color: var(--focus);
+}
+
+.backend-json-editor {
+  display: block;
+  width: calc(100% - 28px);
+  min-height: 400px;
+  margin: 0 14px;
+  padding: 12px;
+  resize: vertical;
+  tab-size: 2;
+}
+
+.backend-editor-error {
+  margin: 10px 14px 0;
+  padding: 9px;
+  border: 1px solid color-mix(in srgb, var(--danger) 50%, var(--border));
+  border-radius: 6px;
+  color: var(--danger);
+  font-size: 10px;
+}
+
+.backend-window-actions {
+  display: grid;
+  grid-template-columns: 1.3fr repeat(3, 1fr);
+  gap: 7px;
+  padding: 12px 14px 14px;
+}
+
+.backend-window-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 36px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--panel-2);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 9px;
+}
+
+.backend-window-actions button:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.backend-window-actions button.primary {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  background: color-mix(in srgb, var(--accent) 13%, var(--panel-2));
+  color: var(--accent);
+  font-weight: 750;
+}
+
+.workspace-mobile-dock {
+  display: none;
+}
+
+footer {
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 17px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 10px;
+}
+
+footer b {
+  color: var(--text);
+}
+
+.backend-status {
+  color: var(--success);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.backend-status::before {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  content: "";
+}
+
+.dashed-key {
+  border-bottom: 2px dashed var(--muted);
+}
+
+@media (max-width: 1100px) {
+  .project-chip {
+    display: none;
+  }
+
+  .search-control {
+    width: min(300px, 32vw);
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-rows: 56px minmax(0, 1fr) 31px;
+  }
+
+  .workspace-layer {
+    position: fixed;
+    z-index: 60;
+    inset: 56px 0 31px;
+    overflow: visible;
+  }
+
+  .workspace-window {
+    position: fixed;
+    right: 8px;
+    bottom: 31px;
+    left: 8px;
+    top: auto;
+    display: none;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: min(68vh, 620px, calc(100vh - 76px));
+    min-height: min(360px, calc(100vh - 76px));
+    max-height: calc(100vh - 76px);
+    resize: none;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -24px 70px var(--shadow);
+  }
+
+  .workspace-window.active {
+    display: flex;
+  }
+
+  .workspace-window.active.minimized {
+    display: flex;
+    min-height: 52px;
+    height: 52px !important;
+  }
+
+  .workspace-window-titlebar {
+    flex-basis: 52px;
+    padding-left: 12px;
+    cursor: default;
+  }
+
+  .workspace-window-titlebar button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .window-drag-icon {
+    display: none;
+  }
+
+  .workspace-mobile-dock {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex: 0 0 48px;
+    gap: 5px;
+    padding: 5px 8px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    scrollbar-width: none;
+    pointer-events: auto;
+  }
+
+  .workspace-mobile-dock::-webkit-scrollbar {
+    display: none;
+  }
+
+  .workspace-mobile-dock button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    max-width: 210px;
+    height: 38px;
+    padding: 0 9px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--panel-2);
+    color: var(--muted);
+    font: 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .workspace-mobile-dock button.active {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .workspace-mobile-dock .dock-method {
+    min-width: 34px;
+    height: 20px;
+    padding: 0 5px;
+    font-size: 7px;
+  }
+
+  .workspace-window-content {
+    overscroll-behavior: contain;
+  }
+
+  .request-parameter-group input {
+    min-height: 44px;
+  }
+
+  .body-schema-field input,
+  .body-schema-field select {
+    min-height: 44px;
+  }
+
+  .response-field-value,
+  .payload-view-switch button {
+    min-height: 44px;
+  }
+
+  .run-request-button {
+    min-height: 46px;
+  }
+
+  .backend-window-actions button {
+    min-height: 44px;
+  }
+
+  .backend-json-editor {
+    min-height: 42vh;
+  }
+
+  .filter-pills {
+    max-width: calc(100vw - 130px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar {
+    gap: 7px;
+    padding: 0 9px;
+  }
+
+  .product span:last-child,
+  .search-control kbd,
+  .topbar select,
+  .backend-button span {
+    display: none;
+  }
+
+  .search-control {
+    flex: 1;
+    width: auto;
+  }
+
+  .backend-button {
+    justify-content: center;
+    width: 42px;
+    padding: 0;
+  }
+
+  .icon-button,
+  .backend-button {
+    height: 42px;
+  }
+
+  .topbar-actions {
+    gap: 4px;
+  }
+
+  .map-toolbar {
+    top: 8px;
+    right: 8px;
+    left: 8px;
+  }
+
+  .map-actions #zoom-in,
+  .map-actions #zoom-out {
+    display: none;
+  }
+
+  .map-hint,
+  footer span:nth-child(n + 3) {
+    display: none;
+  }
+
+  .request-parameter-group {
+    grid-template-columns: 1fr;
+  }
+
+  .body-schema-fields,
+  .nested-schema-group {
+    grid-template-columns: 1fr;
+  }
+
+  .backend-window-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .response-code code,
+  .request-parameter-group input,
+  .body-schema-field input,
+  .body-schema-field select,
+  .body-schema-field textarea,
+  .request-body-editor textarea,
+  .backend-json-editor {
+    font-size: 10px;
+  }
+
+  footer {
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style></head><body><div class="app-shell"><header class="topbar"><a class="product" href="https://github.com/api-subway/api-subway" aria-label="api-subway project"><span class="product-mark" aria-hidden="true">⌁</span><span>api-subway</span></a><div class="project-chip"><span class="live-dot"></span>Live commerce API</div><label class="search-control"><span class="sr-only">Search endpoints</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg><input id="search" type="search" autocomplete="off" aria-label="Search endpoints" placeholder="Search endpoints…"><kbd aria-hidden="true">/</kbd></label><select id="method-filter" aria-label="Filter by HTTP method"><option value="all">All methods</option></select><div class="topbar-actions"><button id="open-backend" class="backend-button" type="button" aria-label="Open virtual backend"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"></ellipse><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path></svg><span>Open backend</span></button><button id="reset-backend" class="icon-button" type="button" aria-label="Reset virtual backend"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7v5h5M5.6 16a8 8 0 1 0 .4-9l-2 2"></path></svg></button><button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle color theme"><span aria-hidden="true">◐</span></button></div></header><main><section class="map-panel"><div class="map-toolbar"><div id="kind-filters" class="filter-pills" aria-label="Filter dependency lines"><button class="active" data-kind="all">All lines</button><button data-kind="middleware">Security</button><button data-kind="datastore">Data</button><button data-kind="service">Services</button><button data-kind="external">External</button></div><div class="map-actions"><button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out">−</button><button id="fit-map" class="compact-button" type="button">Fit map</button><button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in">+</button></div></div><div id="map-viewport" class="map-viewport" tabindex="0" aria-label="Interactive API map"><svg xmlns="http://www.w3.org/2000/svg" class="api-map theme-midnight" role="img" aria-labelledby="map-title map-description" viewBox="0 0 1360 1014" data-width="1360" data-height="1014"><title id="map-title">Live commerce API</title><desc id="map-description">API subway map with 10 endpoint stations and 18 dependency lines.</desc><style>
+.api-map{--bg:#071521;--surface:#0d2130;--text:#f6f1e7;--muted:#8ea5b5;--faint:#294353;--trunk:#426070;--station:#f6f1e7;--badge:#183344;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.api-map.theme-paper{--bg:#f7f4ec;--surface:#fffdf7;--text:#17242c;--muted:#68777f;--faint:#d9ddd9;--trunk:#aeb9bc;--station:#17242c;--badge:#e9eeec}.api-map.theme-auto{--bg:#f7f4ec;--surface:#fffdf7;--text:#17242c;--muted:#68777f;--faint:#d9ddd9;--trunk:#aeb9bc;--station:#17242c;--badge:#e9eeec}@media(prefers-color-scheme:dark){.api-map.theme-auto{--bg:#071521;--surface:#0d2130;--text:#f6f1e7;--muted:#8ea5b5;--faint:#294353;--trunk:#426070;--station:#f6f1e7;--badge:#183344}}.map-background{fill:var(--bg)}text{fill:var(--text)}.brand{font-size:17px;font-weight:800;letter-spacing:.08em;fill:#2bd9fe}.map-name{font-size:28px;font-weight:680;letter-spacing:-.025em}.map-meta{font-size:11px;font-weight:700;letter-spacing:.12em;fill:var(--muted)}.district-label{font-size:12px;font-weight:800;letter-spacing:.16em}.district-count{font-size:10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;text-anchor:end;fill:var(--muted)}.district-trunk{stroke:var(--trunk);stroke-width:3;fill:none;stroke-linecap:round}.empty-district{font-size:13px;fill:var(--muted)}.dependency-rail{stroke:var(--line-color);stroke-width:6;fill:none;stroke-linecap:round;opacity:.92}.dependency-line{stroke:var(--line-color);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.9}.dependency-line.inferred{stroke-dasharray:8 7;opacity:.7}.station{cursor:pointer}.station-hit-area{fill:none;pointer-events:all}.simulation-status-ring{display:none;fill:none;pointer-events:none}.station-dot{fill:var(--station);stroke:var(--bg);stroke-width:3}.interchange-ring{fill:var(--bg);stroke:var(--station);stroke-width:3}.method-badge{fill:var(--badge)}.method-get{fill:#123e4a}.method-post{fill:#193f35}.method-put{fill:#453b1d}.method-patch{fill:#372d57}.method-delete{fill:#4e282c}.method-options,.method-head,.method-any{fill:#263b49}.theme-paper .method-get,.theme-auto .method-get{fill:#d9f5fa}.theme-paper .method-post,.theme-auto .method-post{fill:#dbf4e8}.theme-paper .method-put,.theme-auto .method-put{fill:#f9edc9}.theme-paper .method-patch,.theme-auto .method-patch{fill:#eae2ff}.theme-paper .method-delete,.theme-auto .method-delete{fill:#ffe2df}@media(prefers-color-scheme:dark){.theme-auto .method-get{fill:#123e4a}.theme-auto .method-post{fill:#193f35}.theme-auto .method-put{fill:#453b1d}.theme-auto .method-patch{fill:#372d57}.theme-auto .method-delete{fill:#4e282c}}.method-text{fill:var(--text);font-size:10px;font-weight:800;text-anchor:middle;letter-spacing:.04em}.endpoint-label{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:550}.contract-indicator{display:none;fill:#f7bd4a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;font-weight:800;letter-spacing:.08em}.station.selected .contract-indicator{display:block}.legend-item path{stroke:var(--line-color);stroke-width:5;stroke-linecap:round}.legend-item circle{fill:var(--line-color)}.legend-item text{font-size:11px;font-weight:650}.legend-item .legend-kind{font-size:8px;text-transform:uppercase;letter-spacing:.1em;fill:var(--muted)}.hidden-lines{font-size:11px;fill:var(--muted)}
+</style><rect class="map-background" width="100%" height="100%" rx="18"/><g id="map-scene"><g class="map-heading"><text class="brand" x="72" y="60">api-subway</text><text class="map-name" x="72" y="99">Live commerce API</text><text class="map-meta" x="1288" y="62" text-anchor="end">10 STATIONS · 18 LINES</text></g><g class="district" data-district="BILLING"><text class="district-label" x="74.0" y="170.0">BILLING</text><text class="district-count" x="430.0" y="170.0">02</text><path class="district-trunk" d="M 430.0 206.0 L 430.0 250.0"/></g><g class="district" data-district="EVENTS"><text class="district-label" x="930.0" y="170.0">EVENTS</text><text class="district-count" x="1286.0" y="170.0">01</text><path class="district-trunk" d="M 930.0 206.0 L 930.0 206.0"/></g><g class="district" data-district="HEALTH"><text class="district-label" x="74.0" y="364.0">HEALTH</text><text class="district-count" x="430.0" y="364.0">01</text><path class="district-trunk" d="M 430.0 400.0 L 430.0 400.0"/></g><g class="district" data-district="ORDERS"><text class="district-label" x="930.0" y="320.0">ORDERS</text><text class="district-count" x="1286.0" y="320.0">03</text><path class="district-trunk" d="M 930.0 356.0 L 930.0 444.0"/></g><g class="district" data-district="USERS"><text class="district-label" x="74.0" y="514.0">USERS</text><text class="district-count" x="430.0" y="514.0">03</text><path class="district-trunk" d="M 430.0 550.0 L 430.0 638.0"/></g><g class="dependency-lines"><path class="dependency-rail" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" style="--line-color:#2bd9fe" d="M 515.0 206.0 L 515.0 638.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 206.0 L 444.0 187.3 L 505.0 187.3 L 515.0 206.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 930.0 206.0 L 916.0 187.3 L 525.0 187.3 L 515.0 206.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 250.0 L 444.0 231.3 L 505.0 231.3 L 515.0 250.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 930.0 356.0 L 916.0 337.3 L 525.0 337.3 L 515.0 356.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 400.0 L 444.0 381.3 L 505.0 381.3 L 515.0 400.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 930.0 400.0 L 916.0 381.3 L 525.0 381.3 L 515.0 400.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 930.0 444.0 L 916.0 425.3 L 525.0 425.3 L 515.0 444.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 550.0 L 444.0 531.3 L 505.0 531.3 L 515.0 550.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 594.0 L 444.0 575.3 L 505.0 575.3 L 515.0 594.0"/><path class="dependency-line exact" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 638.0 L 444.0 619.3 L 505.0 619.3 L 515.0 638.0"/><path class="dependency-rail" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" style="--line-color:#ff6f61" d="M 534.4 206.0 L 534.4 638.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 206.0 L 444.0 189.5 L 524.4 189.5 L 534.4 206.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 930.0 206.0 L 916.0 189.5 L 544.4 189.5 L 534.4 206.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 250.0 L 444.0 233.5 L 524.4 233.5 L 534.4 250.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 930.0 356.0 L 916.0 339.5 L 544.4 339.5 L 534.4 356.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 400.0 L 444.0 383.5 L 524.4 383.5 L 534.4 400.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 930.0 400.0 L 916.0 383.5 L 544.4 383.5 L 534.4 400.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 930.0 444.0 L 916.0 427.5 L 544.4 427.5 L 534.4 444.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 550.0 L 444.0 533.5 L 524.4 533.5 L 534.4 550.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 594.0 L 444.0 577.5 L 524.4 577.5 L 534.4 594.0"/><path class="dependency-line exact" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware" data-confidence="exact" style="--line-color:#ff6f61" d="M 430.0 638.0 L 444.0 621.5 L 524.4 621.5 L 534.4 638.0"/><path class="dependency-rail" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" style="--line-color:#f7bd4a" d="M 553.8 206.0 L 553.8 638.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 430.0 206.0 L 444.0 191.7 L 543.8 191.7 L 553.8 206.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 430.0 250.0 L 444.0 235.7 L 543.8 235.7 L 553.8 250.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 930.0 356.0 L 916.0 341.7 L 563.8 341.7 L 553.8 356.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 930.0 400.0 L 916.0 385.7 L 563.8 385.7 L 553.8 400.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 930.0 444.0 L 916.0 429.7 L 563.8 429.7 L 553.8 444.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 430.0 550.0 L 444.0 535.7 L 543.8 535.7 L 553.8 550.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 430.0 594.0 L 444.0 579.7 L 543.8 579.7 L 553.8 594.0"/><path class="dependency-line exact" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware" data-confidence="exact" style="--line-color:#f7bd4a" d="M 430.0 638.0 L 444.0 623.7 L 543.8 623.7 L 553.8 638.0"/><path class="dependency-rail" data-dependency-id="dep-19553b4c5896dee5" data-kind="datastore" style="--line-color:#a88bff" d="M 573.2 356.0 L 573.2 444.0"/><path class="dependency-line inferred" data-dependency-id="dep-19553b4c5896dee5" data-kind="datastore" data-confidence="inferred" style="--line-color:#a88bff" d="M 930.0 356.0 L 916.0 343.9 L 583.2 343.9 L 573.2 356.0"/><path class="dependency-line inferred" data-dependency-id="dep-19553b4c5896dee5" data-kind="datastore" data-confidence="inferred" style="--line-color:#a88bff" d="M 930.0 400.0 L 916.0 387.9 L 583.2 387.9 L 573.2 400.0"/><path class="dependency-line inferred" data-dependency-id="dep-19553b4c5896dee5" data-kind="datastore" data-confidence="inferred" style="--line-color:#a88bff" d="M 930.0 444.0 L 916.0 431.9 L 583.2 431.9 L 573.2 444.0"/><path class="dependency-rail" data-dependency-id="dep-b648ce9ab50da022" data-kind="datastore" style="--line-color:#5ce1b6" d="M 592.6 356.0 L 592.6 444.0"/><path class="dependency-line exact" data-dependency-id="dep-b648ce9ab50da022" data-kind="datastore" data-confidence="exact" style="--line-color:#5ce1b6" d="M 930.0 356.0 L 916.0 346.1 L 602.6 346.1 L 592.6 356.0"/><path class="dependency-line exact" data-dependency-id="dep-b648ce9ab50da022" data-kind="datastore" data-confidence="exact" style="--line-color:#5ce1b6" d="M 930.0 400.0 L 916.0 390.1 L 602.6 390.1 L 592.6 400.0"/><path class="dependency-line exact" data-dependency-id="dep-b648ce9ab50da022" data-kind="datastore" data-confidence="exact" style="--line-color:#5ce1b6" d="M 930.0 444.0 L 916.0 434.1 L 602.6 434.1 L 592.6 444.0"/><path class="dependency-rail" data-dependency-id="dep-30077558c4dc9970" data-kind="datastore" style="--line-color:#ff8ccd" d="M 612.1 550.0 L 612.1 638.0"/><path class="dependency-line exact" data-dependency-id="dep-30077558c4dc9970" data-kind="datastore" data-confidence="exact" style="--line-color:#ff8ccd" d="M 430.0 550.0 L 444.0 542.3 L 602.1 542.3 L 612.1 550.0"/><path class="dependency-line exact" data-dependency-id="dep-30077558c4dc9970" data-kind="datastore" data-confidence="exact" style="--line-color:#ff8ccd" d="M 430.0 594.0 L 444.0 586.3 L 602.1 586.3 L 612.1 594.0"/><path class="dependency-line exact" data-dependency-id="dep-30077558c4dc9970" data-kind="datastore" data-confidence="exact" style="--line-color:#ff8ccd" d="M 430.0 638.0 L 444.0 630.3 L 602.1 630.3 L 612.1 638.0"/><path class="dependency-rail" data-dependency-id="dep-ff25b093dde3a184" data-kind="datastore" style="--line-color:#72a7ff" d="M 631.5 550.0 L 631.5 638.0"/><path class="dependency-line inferred" data-dependency-id="dep-ff25b093dde3a184" data-kind="datastore" data-confidence="inferred" style="--line-color:#72a7ff" d="M 430.0 550.0 L 444.0 544.5 L 621.5 544.5 L 631.5 550.0"/><path class="dependency-line inferred" data-dependency-id="dep-ff25b093dde3a184" data-kind="datastore" data-confidence="inferred" style="--line-color:#72a7ff" d="M 430.0 594.0 L 444.0 588.5 L 621.5 588.5 L 631.5 594.0"/><path class="dependency-line inferred" data-dependency-id="dep-ff25b093dde3a184" data-kind="datastore" data-confidence="inferred" style="--line-color:#72a7ff" d="M 430.0 638.0 L 444.0 632.5 L 621.5 632.5 L 631.5 638.0"/><path class="dependency-rail" data-dependency-id="dep-79f71da190a68b05" data-kind="service" style="--line-color:#f58d44" d="M 650.9 206.0 L 650.9 400.0"/><path class="dependency-line inferred" data-dependency-id="dep-79f71da190a68b05" data-kind="service" data-confidence="inferred" style="--line-color:#f58d44" d="M 430.0 206.0 L 444.0 202.7 L 640.9 202.7 L 650.9 206.0"/><path class="dependency-line inferred" data-dependency-id="dep-79f71da190a68b05" data-kind="service" data-confidence="inferred" style="--line-color:#f58d44" d="M 430.0 250.0 L 444.0 246.7 L 640.9 246.7 L 650.9 250.0"/><path class="dependency-line inferred" data-dependency-id="dep-79f71da190a68b05" data-kind="service" data-confidence="inferred" style="--line-color:#f58d44" d="M 930.0 400.0 L 916.0 396.7 L 660.9 396.7 L 650.9 400.0"/><path class="dependency-rail" data-dependency-id="dep-530c819560d41f73" data-kind="service" style="--line-color:#7bdc65" d="M 670.3 356.0 L 670.3 444.0"/><path class="dependency-line inferred" data-dependency-id="dep-530c819560d41f73" data-kind="service" data-confidence="inferred" style="--line-color:#7bdc65" d="M 930.0 356.0 L 916.0 354.9 L 680.3 354.9 L 670.3 356.0"/><path class="dependency-line inferred" data-dependency-id="dep-530c819560d41f73" data-kind="service" data-confidence="inferred" style="--line-color:#7bdc65" d="M 930.0 400.0 L 916.0 398.9 L 680.3 398.9 L 670.3 400.0"/><path class="dependency-line inferred" data-dependency-id="dep-530c819560d41f73" data-kind="service" data-confidence="inferred" style="--line-color:#7bdc65" d="M 930.0 444.0 L 916.0 442.9 L 680.3 442.9 L 670.3 444.0"/><path class="dependency-rail" data-dependency-id="dep-8472a1c3efe535ca" data-kind="service" style="--line-color:#dd79ff" d="M 689.7 550.0 L 689.7 638.0"/><path class="dependency-line inferred" data-dependency-id="dep-8472a1c3efe535ca" data-kind="service" data-confidence="inferred" style="--line-color:#dd79ff" d="M 430.0 550.0 L 444.0 551.1 L 679.7 551.1 L 689.7 550.0"/><path class="dependency-line inferred" data-dependency-id="dep-8472a1c3efe535ca" data-kind="service" data-confidence="inferred" style="--line-color:#dd79ff" d="M 430.0 594.0 L 444.0 595.1 L 679.7 595.1 L 689.7 594.0"/><path class="dependency-line inferred" data-dependency-id="dep-8472a1c3efe535ca" data-kind="service" data-confidence="inferred" style="--line-color:#dd79ff" d="M 430.0 638.0 L 444.0 639.1 L 679.7 639.1 L 689.7 638.0"/><path class="dependency-rail" data-dependency-id="dep-f464ac88d2f4fc49" data-kind="external" style="--line-color:#38c7ae" d="M 709.1 206.0 L 709.1 400.0"/><path class="dependency-line exact" data-dependency-id="dep-f464ac88d2f4fc49" data-kind="external" data-confidence="exact" style="--line-color:#38c7ae" d="M 430.0 206.0 L 444.0 209.3 L 699.1 209.3 L 709.1 206.0"/><path class="dependency-line exact" data-dependency-id="dep-f464ac88d2f4fc49" data-kind="external" data-confidence="exact" style="--line-color:#38c7ae" d="M 430.0 250.0 L 444.0 253.3 L 699.1 253.3 L 709.1 250.0"/><path class="dependency-line exact" data-dependency-id="dep-f464ac88d2f4fc49" data-kind="external" data-confidence="exact" style="--line-color:#38c7ae" d="M 930.0 400.0 L 916.0 403.3 L 719.1 403.3 L 709.1 400.0"/><path class="dependency-rail" data-dependency-id="dep-38b12984ca61ba14" data-kind="external" style="--line-color:#e5d352" d="M 728.5 400.0 L 728.5 594.0"/><path class="dependency-line inferred" data-dependency-id="dep-38b12984ca61ba14" data-kind="external" data-confidence="inferred" style="--line-color:#e5d352" d="M 930.0 400.0 L 916.0 405.5 L 738.5 405.5 L 728.5 400.0"/><path class="dependency-line inferred" data-dependency-id="dep-38b12984ca61ba14" data-kind="external" data-confidence="inferred" style="--line-color:#e5d352" d="M 430.0 594.0 L 444.0 599.5 L 718.5 599.5 L 728.5 594.0"/><path class="dependency-rail" data-dependency-id="dep-f23d2cb5bc18e260" data-kind="external" style="--line-color:#2bd9fe" d="M 747.9 400.0 L 747.9 594.0"/><path class="dependency-line exact" data-dependency-id="dep-f23d2cb5bc18e260" data-kind="external" data-confidence="exact" style="--line-color:#2bd9fe" d="M 930.0 400.0 L 916.0 407.7 L 757.9 407.7 L 747.9 400.0"/><path class="dependency-line exact" data-dependency-id="dep-f23d2cb5bc18e260" data-kind="external" data-confidence="exact" style="--line-color:#2bd9fe" d="M 430.0 594.0 L 444.0 601.7 L 737.9 601.7 L 747.9 594.0"/><path class="dependency-rail" data-dependency-id="dep-a3bad5154021fee5" data-kind="datastore" style="--line-color:#ff6f61" d="M 767.4 188.0 L 767.4 224.0"/><path class="dependency-line inferred" data-dependency-id="dep-a3bad5154021fee5" data-kind="datastore" data-confidence="inferred" style="--line-color:#ff6f61" d="M 930.0 206.0 L 916.0 215.9 L 777.4 215.9 L 767.4 206.0"/><path class="dependency-rail" data-dependency-id="dep-7000052920b3703f" data-kind="datastore" style="--line-color:#f7bd4a" d="M 786.8 188.0 L 786.8 224.0"/><path class="dependency-line exact" data-dependency-id="dep-7000052920b3703f" data-kind="datastore" data-confidence="exact" style="--line-color:#f7bd4a" d="M 930.0 206.0 L 916.0 218.1 L 796.8 218.1 L 786.8 206.0"/><path class="dependency-rail" data-dependency-id="dep-0deabab87642d75f" data-kind="service" style="--line-color:#a88bff" d="M 806.2 188.0 L 806.2 224.0"/><path class="dependency-line inferred" data-dependency-id="dep-0deabab87642d75f" data-kind="service" data-confidence="inferred" style="--line-color:#a88bff" d="M 930.0 206.0 L 916.0 220.3 L 816.2 220.3 L 806.2 206.0"/><path class="dependency-rail" data-dependency-id="dep-f3acd7a497d57ff6" data-kind="external" style="--line-color:#5ce1b6" d="M 825.6 620.0 L 825.6 656.0"/><path class="dependency-line exact" data-dependency-id="dep-f3acd7a497d57ff6" data-kind="external" data-confidence="exact" style="--line-color:#5ce1b6" d="M 430.0 638.0 L 444.0 654.5 L 815.6 654.5 L 825.6 638.0"/><path class="dependency-rail" data-dependency-id="dep-8038363bd22fadb6" data-kind="external" style="--line-color:#ff8ccd" d="M 845.0 620.0 L 845.0 656.0"/><path class="dependency-line inferred" data-dependency-id="dep-8038363bd22fadb6" data-kind="external" data-confidence="inferred" style="--line-color:#ff8ccd" d="M 430.0 638.0 L 444.0 656.7 L 835.0 656.7 L 845.0 638.0"/></g><g class="stations"><g class="station" tabindex="0" role="button" aria-label="GET /billing/invoices, 0 inputs and 1 responses" data-endpoint-id="ep-102a6fc5e241162e" data-method="GET" data-path="/billing/invoices" data-dependencies="dep-77a1adba6fb5c92b,dep-79f71da190a68b05,dep-8224cb7ecac317c0,dep-b8d9e403b65eea98,dep-f464ac88d2f4fc49" data-input-count="0" data-response-count="1" transform="translate(430.0 206.0)"><title>GET /billing/invoices — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="-350" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="-326.5" y="4">GET</text><text class="endpoint-label" x="-293" y="5">/billing/invoices</text><text class="contract-indicator" x="-350" y="28">IN 0 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="POST /billing/refunds, 3 inputs and 1 responses" data-endpoint-id="ep-5b159fe7971dff79" data-method="POST" data-path="/billing/refunds" data-dependencies="dep-77a1adba6fb5c92b,dep-79f71da190a68b05,dep-8224cb7ecac317c0,dep-b8d9e403b65eea98,dep-f464ac88d2f4fc49" data-input-count="3" data-response-count="1" transform="translate(430.0 250.0)"><title>POST /billing/refunds — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-post" x="-350" y="-13" width="54" height="26" rx="6"/><text class="method-text" x="-323" y="4">POST</text><text class="endpoint-label" x="-286" y="5">/billing/refunds</text><text class="contract-indicator" x="-350" y="28">IN 3 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="GET /events, 0 inputs and 1 responses" data-endpoint-id="ep-9d34906a5398a38b" data-method="GET" data-path="/events" data-dependencies="dep-0deabab87642d75f,dep-7000052920b3703f,dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0,dep-a3bad5154021fee5" data-input-count="0" data-response-count="1" transform="translate(930.0 206.0)"><title>GET /events — express</title><rect class="station-hit-area" x="-20" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="20" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="43.5" y="4">GET</text><text class="endpoint-label" x="77" y="5">/events</text><text class="contract-indicator" x="20" y="28">IN 0 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="GET /health, 0 inputs and 1 responses" data-endpoint-id="ep-acf963f451ba8bcc" data-method="GET" data-path="/health" data-dependencies="dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0" data-input-count="0" data-response-count="1" transform="translate(430.0 400.0)"><title>GET /health — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="-350" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="-326.5" y="4">GET</text><text class="endpoint-label" x="-293" y="5">/health</text><text class="contract-indicator" x="-350" y="28">IN 0 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="GET /orders, 0 inputs and 1 responses" data-endpoint-id="ep-eb33c83b205d2d8f" data-method="GET" data-path="/orders" data-dependencies="dep-19553b4c5896dee5,dep-530c819560d41f73,dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0,dep-b648ce9ab50da022,dep-b8d9e403b65eea98" data-input-count="0" data-response-count="1" transform="translate(930.0 356.0)"><title>GET /orders — express</title><rect class="station-hit-area" x="-20" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="20" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="43.5" y="4">GET</text><text class="endpoint-label" x="77" y="5">/orders</text><text class="contract-indicator" x="20" y="28">IN 0 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="POST /orders, 3 inputs and 1 responses" data-endpoint-id="ep-3bb9ca64325a895f" data-method="POST" data-path="/orders" data-dependencies="dep-19553b4c5896dee5,dep-38b12984ca61ba14,dep-530c819560d41f73,dep-77a1adba6fb5c92b,dep-79f71da190a68b05,dep-8224cb7ecac317c0,dep-b648ce9ab50da022,dep-b8d9e403b65eea98,dep-f23d2cb5bc18e260,dep-f464ac88d2f4fc49" data-input-count="3" data-response-count="1" transform="translate(930.0 400.0)"><title>POST /orders — express</title><rect class="station-hit-area" x="-20" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-post" x="20" y="-13" width="54" height="26" rx="6"/><text class="method-text" x="47" y="4">POST</text><text class="endpoint-label" x="84" y="5">/orders</text><text class="contract-indicator" x="20" y="28">IN 3 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="PUT /orders/{id}, 4 inputs and 1 responses" data-endpoint-id="ep-37402d6d850a79b0" data-method="PUT" data-path="/orders/{id}" data-dependencies="dep-19553b4c5896dee5,dep-530c819560d41f73,dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0,dep-b648ce9ab50da022,dep-b8d9e403b65eea98" data-input-count="4" data-response-count="1" transform="translate(930.0 444.0)"><title>PUT /orders/{id} — express</title><rect class="station-hit-area" x="-20" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-put" x="20" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="43.5" y="4">PUT</text><text class="endpoint-label" x="77" y="5">/orders/{id}</text><text class="contract-indicator" x="20" y="28">IN 4 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="GET /users, 0 inputs and 1 responses" data-endpoint-id="ep-46fb94d342fd4796" data-method="GET" data-path="/users" data-dependencies="dep-30077558c4dc9970,dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0,dep-8472a1c3efe535ca,dep-b8d9e403b65eea98,dep-ff25b093dde3a184" data-input-count="0" data-response-count="1" transform="translate(430.0 550.0)"><title>GET /users — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="-350" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="-326.5" y="4">GET</text><text class="endpoint-label" x="-293" y="5">/users</text><text class="contract-indicator" x="-350" y="28">IN 0 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="POST /users, 3 inputs and 1 responses" data-endpoint-id="ep-2a414d856e514926" data-method="POST" data-path="/users" data-dependencies="dep-30077558c4dc9970,dep-38b12984ca61ba14,dep-77a1adba6fb5c92b,dep-8224cb7ecac317c0,dep-8472a1c3efe535ca,dep-b8d9e403b65eea98,dep-f23d2cb5bc18e260,dep-ff25b093dde3a184" data-input-count="3" data-response-count="1" transform="translate(430.0 594.0)"><title>POST /users — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-post" x="-350" y="-13" width="54" height="26" rx="6"/><text class="method-text" x="-323" y="4">POST</text><text class="endpoint-label" x="-286" y="5">/users</text><text class="contract-indicator" x="-350" y="28">IN 3 · OUT 1</text></g><g class="station" tabindex="0" role="button" aria-label="GET /users/{id}, 1 inputs and 2 responses" data-endpoint-id="ep-e2f8570ab53114e0" data-method="GET" data-path="/users/{id}" data-dependencies="dep-30077558c4dc9970,dep-77a1adba6fb5c92b,dep-8038363bd22fadb6,dep-8224cb7ecac317c0,dep-8472a1c3efe535ca,dep-b8d9e403b65eea98,dep-f3acd7a497d57ff6,dep-ff25b093dde3a184" data-input-count="1" data-response-count="2" transform="translate(430.0 638.0)"><title>GET /users/{id} — express</title><rect class="station-hit-area" x="-360" y="-18" width="380" height="36" rx="8"/><circle class="interchange-ring" r="12"/><circle class="station-dot" r="6"/><rect class="method-badge method-get" x="-350" y="-13" width="47" height="26" rx="6"/><text class="method-text" x="-326.5" y="4">GET</text><text class="endpoint-label" x="-293" y="5">/users/{id}</text><text class="contract-indicator" x="-350" y="28">IN 1 · OUT 2</text></g></g><g class="legend"><g class="legend-item" data-dependency-id="dep-8224cb7ecac317c0" data-kind="middleware"><path style="--line-color:#2bd9fe" d="M 72.0 728.0 L 100.0 728.0"/><circle style="--line-color:#2bd9fe" cx="86.0" cy="728.0" r="4"/><text x="112.0" y="732.0">audit</text><text class="legend-kind" x="112.0" y="746.0">middleware</text></g><g class="legend-item" data-dependency-id="dep-77a1adba6fb5c92b" data-kind="middleware"><path style="--line-color:#ff6f61" d="M 376.0 728.0 L 404.0 728.0"/><circle style="--line-color:#ff6f61" cx="390.0" cy="728.0" r="4"/><text x="416.0" y="732.0">json</text><text class="legend-kind" x="416.0" y="746.0">middleware</text></g><g class="legend-item" data-dependency-id="dep-b8d9e403b65eea98" data-kind="middleware"><path style="--line-color:#f7bd4a" d="M 680.0 728.0 L 708.0 728.0"/><circle style="--line-color:#f7bd4a" cx="694.0" cy="728.0" r="4"/><text x="720.0" y="732.0">authorize</text><text class="legend-kind" x="720.0" y="746.0">middleware</text></g><g class="legend-item" data-dependency-id="dep-19553b4c5896dee5" data-kind="datastore"><path style="--line-color:#a88bff" d="M 984.0 728.0 L 1012.0 728.0"/><circle style="--line-color:#a88bff" cx="998.0" cy="728.0" r="4"/><text x="1024.0" y="732.0">Orders</text><text class="legend-kind" x="1024.0" y="746.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-b648ce9ab50da022" data-kind="datastore"><path style="--line-color:#5ce1b6" d="M 72.0 768.0 L 100.0 768.0"/><circle style="--line-color:#5ce1b6" cx="86.0" cy="768.0" r="4"/><text x="112.0" y="772.0">Postgres client</text><text class="legend-kind" x="112.0" y="786.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-30077558c4dc9970" data-kind="datastore"><path style="--line-color:#ff8ccd" d="M 376.0 768.0 L 404.0 768.0"/><circle style="--line-color:#ff8ccd" cx="390.0" cy="768.0" r="4"/><text x="416.0" y="772.0">Prisma</text><text class="legend-kind" x="416.0" y="786.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-ff25b093dde3a184" data-kind="datastore"><path style="--line-color:#72a7ff" d="M 680.0 768.0 L 708.0 768.0"/><circle style="--line-color:#72a7ff" cx="694.0" cy="768.0" r="4"/><text x="720.0" y="772.0">Users</text><text class="legend-kind" x="720.0" y="786.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-79f71da190a68b05" data-kind="service"><path style="--line-color:#f58d44" d="M 984.0 768.0 L 1012.0 768.0"/><circle style="--line-color:#f58d44" cx="998.0" cy="768.0" r="4"/><text x="1024.0" y="772.0">Billing</text><text class="legend-kind" x="1024.0" y="786.0">service</text></g><g class="legend-item" data-dependency-id="dep-530c819560d41f73" data-kind="service"><path style="--line-color:#7bdc65" d="M 72.0 808.0 L 100.0 808.0"/><circle style="--line-color:#7bdc65" cx="86.0" cy="808.0" r="4"/><text x="112.0" y="812.0">Orders</text><text class="legend-kind" x="112.0" y="826.0">service</text></g><g class="legend-item" data-dependency-id="dep-8472a1c3efe535ca" data-kind="service"><path style="--line-color:#dd79ff" d="M 376.0 808.0 L 404.0 808.0"/><circle style="--line-color:#dd79ff" cx="390.0" cy="808.0" r="4"/><text x="416.0" y="812.0">Users</text><text class="legend-kind" x="416.0" y="826.0">service</text></g><g class="legend-item" data-dependency-id="dep-f464ac88d2f4fc49" data-kind="external"><path style="--line-color:#38c7ae" d="M 680.0 808.0 L 708.0 808.0"/><circle style="--line-color:#38c7ae" cx="694.0" cy="808.0" r="4"/><text x="720.0" y="812.0">Stripe</text><text class="legend-kind" x="720.0" y="826.0">external</text></g><g class="legend-item" data-dependency-id="dep-38b12984ca61ba14" data-kind="external"><path style="--line-color:#e5d352" d="M 984.0 808.0 L 1012.0 808.0"/><circle style="--line-color:#e5d352" cx="998.0" cy="808.0" r="4"/><text x="1024.0" y="812.0">Notifications</text><text class="legend-kind" x="1024.0" y="826.0">external</text></g><g class="legend-item" data-dependency-id="dep-f23d2cb5bc18e260" data-kind="external"><path style="--line-color:#2bd9fe" d="M 72.0 848.0 L 100.0 848.0"/><circle style="--line-color:#2bd9fe" cx="86.0" cy="848.0" r="4"/><text x="112.0" y="852.0">Twilio</text><text class="legend-kind" x="112.0" y="866.0">external</text></g><g class="legend-item" data-dependency-id="dep-a3bad5154021fee5" data-kind="datastore"><path style="--line-color:#ff6f61" d="M 376.0 848.0 L 404.0 848.0"/><circle style="--line-color:#ff6f61" cx="390.0" cy="848.0" r="4"/><text x="416.0" y="852.0">Events</text><text class="legend-kind" x="416.0" y="866.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-7000052920b3703f" data-kind="datastore"><path style="--line-color:#f7bd4a" d="M 680.0 848.0 L 708.0 848.0"/><circle style="--line-color:#f7bd4a" cx="694.0" cy="848.0" r="4"/><text x="720.0" y="852.0">Redis</text><text class="legend-kind" x="720.0" y="866.0">datastore</text></g><g class="legend-item" data-dependency-id="dep-0deabab87642d75f" data-kind="service"><path style="--line-color:#a88bff" d="M 984.0 848.0 L 1012.0 848.0"/><circle style="--line-color:#a88bff" cx="998.0" cy="848.0" r="4"/><text x="1024.0" y="852.0">Events</text><text class="legend-kind" x="1024.0" y="866.0">service</text></g><g class="legend-item" data-dependency-id="dep-f3acd7a497d57ff6" data-kind="external"><path style="--line-color:#5ce1b6" d="M 72.0 888.0 L 100.0 888.0"/><circle style="--line-color:#5ce1b6" cx="86.0" cy="888.0" r="4"/><text x="112.0" y="892.0">OpenAI</text><text class="legend-kind" x="112.0" y="906.0">external</text></g><g class="legend-item" data-dependency-id="dep-8038363bd22fadb6" data-kind="external"><path style="--line-color:#ff8ccd" d="M 376.0 888.0 L 404.0 888.0"/><circle style="--line-color:#ff8ccd" cx="390.0" cy="888.0" r="4"/><text x="416.0" y="892.0">Profile Enrichment</text><text class="legend-kind" x="416.0" y="906.0">external</text></g></g></g></svg><div class="map-hint">Scroll to zoom · drag to pan · click stations to open live endpoint windows</div></div><div id="workspace-layer" class="workspace-layer" aria-label="Virtual API workspace"></div></section></main><footer><span id="result-count"></span><span class="backend-status">Virtual backend</span><span><b>Solid</b> exact&nbsp;&nbsp; <b class="dashed-key">Dashed</b> inferred</span><span>Local only</span></footer></div><script id="api-map-data" type="application/json">{"schema_version":1,"project":{"name":"api-subway-live-demo","root":".","frameworks":["express","openapi"]},"endpoints":[{"id":"ep-102a6fc5e241162e","method":"GET","path":"/billing/invoices","display_path":"/billing/invoices","district":"BILLING","framework":"express","operation_id":"listInvoices","tags":["Billing"],"sources":[{"file":"openapi.yaml","line":99,"column":5},{"file":"src/routes/billing.ts","line":6,"column":1}],"contract":{"confidence":"exact","responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-6faedec818c4e6b1"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]}},{"id":"ep-5b159fe7971dff79","method":"POST","path":"/billing/refunds","display_path":"/billing/refunds","district":"BILLING","framework":"express","operation_id":"refundPayment","tags":["Billing"],"sources":[{"file":"openapi.yaml","line":112,"column":5},{"file":"src/routes/billing.ts","line":10,"column":1}],"contract":{"confidence":"exact","request":{"bodies":[{"media_type":"application/json","schema_id":"schema-4848e7dea874d150","required":true}]},"responses":[{"status":"201","contents":[{"media_type":"application/json","schema_id":"schema-e9911c4a1418365c"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]}},{"id":"ep-9d34906a5398a38b","method":"GET","path":"/events","display_path":"/events","district":"EVENTS","framework":"express","operation_id":"listEvents","tags":["Events"],"sources":[{"file":"openapi.yaml","line":129,"column":5},{"file":"src/routes/events.ts","line":6,"column":1}],"contract":{"confidence":"exact","responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-5740f678b0fb6488"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":129,"column":5}}]}},{"id":"ep-acf963f451ba8bcc","method":"GET","path":"/health","display_path":"/health","district":"HEALTH","framework":"express","operation_id":"health","tags":["System"],"sources":[{"file":"openapi.yaml","line":142,"column":5},{"file":"src/app.ts","line":17,"column":1}],"contract":{"confidence":"exact","responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-4a5b1957d2a04d4c"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":142,"column":5}}]}},{"id":"ep-eb33c83b205d2d8f","method":"GET","path":"/orders","display_path":"/orders","district":"ORDERS","framework":"express","operation_id":"listOrders","tags":["Orders"],"sources":[{"file":"openapi.yaml","line":51,"column":5},{"file":"src/routes/orders.ts","line":6,"column":1}],"contract":{"confidence":"exact","responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-afd0c3663a861a44"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}}]}},{"id":"ep-3bb9ca64325a895f","method":"POST","path":"/orders","display_path":"/orders","district":"ORDERS","framework":"express","operation_id":"createOrder","tags":["Orders"],"sources":[{"file":"openapi.yaml","line":63,"column":5},{"file":"src/routes/orders.ts","line":10,"column":1}],"contract":{"confidence":"exact","request":{"bodies":[{"media_type":"application/json","schema_id":"schema-8e5ab3266b880c3a","required":true}]},"responses":[{"status":"201","contents":[{"media_type":"application/json","schema_id":"schema-a5da54e969b69746"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}}]}},{"id":"ep-37402d6d850a79b0","method":"PUT","path":"/orders/{id}","display_path":"/orders/{id}","district":"ORDERS","framework":"express","operation_id":"updateOrder","tags":["Orders"],"sources":[{"file":"openapi.yaml","line":80,"column":5},{"file":"src/routes/orders.ts","line":14,"column":1}],"contract":{"confidence":"exact","request":{"parameters":[{"name":"id","location":"path","required":true,"schema_id":"schema-4d9960ceb9cc8dc1"}],"bodies":[{"media_type":"application/json","schema_id":"schema-8e5ab3266b880c3a","required":true}]},"responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-a5da54e969b69746"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}},{"kind":"heuristic","detail":"Route path exposes one or more required parameters","source":{"file":"src/routes/orders.ts","line":14,"column":1}}]}},{"id":"ep-46fb94d342fd4796","method":"GET","path":"/users","display_path":"/users","district":"USERS","framework":"express","operation_id":"listUsers","tags":["Users"],"sources":[{"file":"openapi.yaml","line":7,"column":5},{"file":"src/routes/users.ts","line":6,"column":1}],"contract":{"confidence":"exact","responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-5140c69efcfc43a7"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}}]}},{"id":"ep-2a414d856e514926","method":"POST","path":"/users","display_path":"/users","district":"USERS","framework":"express","operation_id":"createUser","tags":["Users"],"sources":[{"file":"openapi.yaml","line":19,"column":5},{"file":"src/routes/users.ts","line":10,"column":1}],"contract":{"confidence":"exact","request":{"bodies":[{"media_type":"application/json","schema_id":"schema-a82ab02e0eaac957","required":true}]},"responses":[{"status":"201","contents":[{"media_type":"application/json","schema_id":"schema-fa912d2c434d18e1"}]}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}}]}},{"id":"ep-e2f8570ab53114e0","method":"GET","path":"/users/{id}","display_path":"/users/{id}","district":"USERS","framework":"express","operation_id":"getUser","tags":["Users"],"sources":[{"file":"openapi.yaml","line":36,"column":5},{"file":"src/routes/users.ts","line":14,"column":1}],"contract":{"confidence":"exact","request":{"parameters":[{"name":"id","location":"path","required":true,"schema_id":"schema-4d9960ceb9cc8dc1"}]},"responses":[{"status":"200","contents":[{"media_type":"application/json","schema_id":"schema-fa912d2c434d18e1"}]},{"status":"404"}],"evidence":[{"kind":"open-api","detail":"Request and response contract declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}},{"kind":"heuristic","detail":"Route path exposes one or more required parameters","source":{"file":"src/routes/users.ts","line":14,"column":1}}]}}],"schemas":[{"id":"schema-0dd554edbd187bb5","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}}]},{"id":"schema-0e0d149b4aa783da","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-1a1efcd88345238e","kind":"string","enum_values":[{"kind":"string","value":"admin"},{"kind":"string","value":"member"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}}]},{"id":"schema-29dab5d7471bf33a","name":"Event","kind":"object","properties":[{"name":"id","schema_id":"schema-98930e77f8bd0c26","required":true},{"name":"type","schema_id":"schema-920e0b3015239233","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":129,"column":5}}]},{"id":"schema-40a2ff801f995401","kind":"string","enum_values":[{"kind":"string","value":"draft"},{"kind":"string","value":"paid"},{"kind":"string","value":"shipped"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-444f8b1a9538272b","kind":"string","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}}]},{"id":"schema-4848e7dea874d150","name":"RefundInput","kind":"object","properties":[{"name":"amount","schema_id":"schema-5860627e287d205d","required":true},{"name":"paymentId","schema_id":"schema-f51271f2cab903c0","required":true},{"name":"reason","schema_id":"schema-4fe0d4c6f7c8f09d","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-4a5b1957d2a04d4c","name":"Health","kind":"object","properties":[{"name":"status","schema_id":"schema-65aa1fcec2559c67","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":142,"column":5}}]},{"id":"schema-4ae90755fe027cd1","kind":"string","enum_values":[{"kind":"string","value":"open"},{"kind":"string","value":"paid"},{"kind":"string","value":"void"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]},{"id":"schema-4bb405c10da5ab38","kind":"string","enum_values":[{"kind":"string","value":"admin"},{"kind":"string","value":"member"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}}]},{"id":"schema-4d9960ceb9cc8dc1","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-4e2171d6c8707582","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-4fe0d4c6f7c8f09d","kind":"string","constraints":{"min_length":3},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-5140c69efcfc43a7","kind":"array","items":"schema-fa912d2c434d18e1","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}}]},{"id":"schema-528c84b232b08160","kind":"number","constraints":{"minimum":"0"},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]},{"id":"schema-5740f678b0fb6488","kind":"array","items":"schema-29dab5d7471bf33a","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":129,"column":5}}]},{"id":"schema-5860627e287d205d","kind":"number","constraints":{"minimum":"0"},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-63f2996ae333577d","kind":"string","enum_values":[{"kind":"string","value":"draft"},{"kind":"string","value":"paid"},{"kind":"string","value":"shipped"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-65aa1fcec2559c67","kind":"string","enum_values":[{"kind":"string","value":"ok"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":142,"column":5}}]},{"id":"schema-6faedec818c4e6b1","kind":"array","items":"schema-a99c01443fb14145","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]},{"id":"schema-7132e337de348f4f","kind":"number","constraints":{"minimum":"0"},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-7188a32791cb69f0","kind":"string","format":"email","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}}]},{"id":"schema-71ca1e78593edb85","kind":"string","constraints":{"min_length":2,"max_length":80},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}}]},{"id":"schema-7dd8b87c1978d22e","kind":"string","enum_values":[{"kind":"string","value":"failed"},{"kind":"string","value":"pending"},{"kind":"string","value":"succeeded"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-7fd104204d3c81fc","kind":"string","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-8e5ab3266b880c3a","name":"OrderInput","kind":"object","properties":[{"name":"customerId","schema_id":"schema-4e2171d6c8707582","required":true},{"name":"status","schema_id":"schema-63f2996ae333577d","required":true},{"name":"total","schema_id":"schema-dc47d71ba91568bb","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-920e0b3015239233","kind":"string","enum_values":[{"kind":"string","value":"order.created"},{"kind":"string","value":"order.updated"},{"kind":"string","value":"user.created"}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":129,"column":5}}]},{"id":"schema-952a7ee30dbebac1","kind":"string","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]},{"id":"schema-98930e77f8bd0c26","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":129,"column":5}}]},{"id":"schema-a5da54e969b69746","name":"Order","kind":"object","properties":[{"name":"customerId","schema_id":"schema-b36b2c5b0ef8ec5e","required":true},{"name":"id","schema_id":"schema-0e0d149b4aa783da","required":true},{"name":"status","schema_id":"schema-40a2ff801f995401","required":true},{"name":"total","schema_id":"schema-7132e337de348f4f","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-a82ab02e0eaac957","name":"UserInput","kind":"object","properties":[{"name":"email","schema_id":"schema-cb75dd79494aa612","required":true},{"name":"name","schema_id":"schema-71ca1e78593edb85","required":true},{"name":"role","schema_id":"schema-1a1efcd88345238e","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}}]},{"id":"schema-a99c01443fb14145","name":"Invoice","kind":"object","properties":[{"name":"amount","schema_id":"schema-528c84b232b08160","required":true},{"name":"id","schema_id":"schema-952a7ee30dbebac1","required":true},{"name":"state","schema_id":"schema-4ae90755fe027cd1","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":99,"column":5}}]},{"id":"schema-afd0c3663a861a44","kind":"array","items":"schema-a5da54e969b69746","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}}]},{"id":"schema-b36b2c5b0ef8ec5e","kind":"string","format":"uuid","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":51,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-c6d6b04a6c768d58","kind":"string","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-cb75dd79494aa612","kind":"string","format":"email","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}}]},{"id":"schema-dc47d71ba91568bb","kind":"number","constraints":{"minimum":"0"},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":63,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":80,"column":5}}]},{"id":"schema-e9911c4a1418365c","name":"Refund","kind":"object","properties":[{"name":"amount","schema_id":"schema-ff7a9bde58b398c1","required":true},{"name":"id","schema_id":"schema-c6d6b04a6c768d58","required":true},{"name":"paymentId","schema_id":"schema-7fd104204d3c81fc","required":true},{"name":"state","schema_id":"schema-7dd8b87c1978d22e","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-f51271f2cab903c0","kind":"string","confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]},{"id":"schema-fa912d2c434d18e1","name":"User","kind":"object","properties":[{"name":"email","schema_id":"schema-7188a32791cb69f0","required":true},{"name":"id","schema_id":"schema-0dd554edbd187bb5","required":true},{"name":"name","schema_id":"schema-444f8b1a9538272b","required":true},{"name":"role","schema_id":"schema-4bb405c10da5ab38","required":true}],"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":7,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":19,"column":5}},{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":36,"column":5}}]},{"id":"schema-ff7a9bde58b398c1","kind":"number","constraints":{"minimum":"0"},"confidence":"exact","evidence":[{"kind":"open-api","detail":"Schema declared by OpenAPI","source":{"file":"openapi.yaml","line":112,"column":5}}]}],"dependencies":[{"id":"dep-0deabab87642d75f","name":"Events","kind":"service"},{"id":"dep-19553b4c5896dee5","name":"Orders","kind":"datastore"},{"id":"dep-30077558c4dc9970","name":"Prisma","kind":"datastore","packages":["@prisma/client"]},{"id":"dep-38b12984ca61ba14","name":"Notifications","kind":"external"},{"id":"dep-530c819560d41f73","name":"Orders","kind":"service"},{"id":"dep-7000052920b3703f","name":"Redis","kind":"datastore","packages":["ioredis"]},{"id":"dep-77a1adba6fb5c92b","name":"json","kind":"middleware"},{"id":"dep-79f71da190a68b05","name":"Billing","kind":"service"},{"id":"dep-8038363bd22fadb6","name":"Profile Enrichment","kind":"external"},{"id":"dep-8224cb7ecac317c0","name":"audit","kind":"middleware"},{"id":"dep-8472a1c3efe535ca","name":"Users","kind":"service"},{"id":"dep-a3bad5154021fee5","name":"Events","kind":"datastore"},{"id":"dep-b648ce9ab50da022","name":"Postgres client","kind":"datastore","packages":["pg"]},{"id":"dep-b8d9e403b65eea98","name":"authorize","kind":"middleware"},{"id":"dep-f23d2cb5bc18e260","name":"Twilio","kind":"external","packages":["twilio"]},{"id":"dep-f3acd7a497d57ff6","name":"OpenAI","kind":"external","packages":["openai"]},{"id":"dep-f464ac88d2f4fc49","name":"Stripe","kind":"external","packages":["stripe"]},{"id":"dep-ff25b093dde3a184","name":"Users","kind":"datastore"}],"relations":[{"endpoint_id":"ep-102a6fc5e241162e","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/billing.ts","line":6,"column":1}}]},{"endpoint_id":"ep-102a6fc5e241162e","dependency_id":"dep-79f71da190a68b05","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved listInvoices() call to local service module src/services/billing.ts","source":{"file":"src/routes/billing.ts","line":7,"column":23}}]},{"endpoint_id":"ep-102a6fc5e241162e","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/billing.ts","line":6,"column":1}}]},{"endpoint_id":"ep-102a6fc5e241162e","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/billing.ts","line":6,"column":1}}]},{"endpoint_id":"ep-102a6fc5e241162e","dependency_id":"dep-f464ac88d2f4fc49","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved listInvoices() call into local module src/services/billing.ts","source":{"file":"src/routes/billing.ts","line":7,"column":23}},{"kind":"call","detail":"Resolved stripe.invoices.list() call through the stripe package","source":{"file":"src/services/billing.ts","line":6,"column":10}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-30077558c4dc9970","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved createUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved database.user.create() call through the @prisma/client package","source":{"file":"src/repositories/users.ts","line":10,"column":10}},{"kind":"call","detail":"Resolved insertUser() call into local module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":10,"column":22}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-38b12984ca61ba14","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved createUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":11,"column":35}},{"kind":"heuristic","detail":"Resolved sendWelcome() call to local integration client module src/integrations/notifications.ts","source":{"file":"src/services/users.ts","line":11,"column":9}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/users.ts","line":10,"column":1}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/users.ts","line":10,"column":1}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-8472a1c3efe535ca","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved createUser() call to local service module src/services/users.ts","source":{"file":"src/routes/users.ts","line":11,"column":35}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/users.ts","line":10,"column":1}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-f23d2cb5bc18e260","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved client.messages.create() call through the twilio package","source":{"file":"src/integrations/notifications.ts","line":6,"column":10}},{"kind":"call","detail":"Resolved createUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved sendWelcome() call into local module src/integrations/notifications.ts","source":{"file":"src/services/users.ts","line":11,"column":9}}]},{"endpoint_id":"ep-2a414d856e514926","dependency_id":"dep-ff25b093dde3a184","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved createUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":11,"column":35}},{"kind":"heuristic","detail":"Resolved insertUser() call to local repository module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":10,"column":22}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-19553b4c5896dee5","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved updateOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":15,"column":23}},{"kind":"heuristic","detail":"Resolved replaceOrder() call to local repository module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":17,"column":10}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-530c819560d41f73","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved updateOrder() call to local service module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":15,"column":23}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/orders.ts","line":14,"column":1}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/orders.ts","line":14,"column":1}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-b648ce9ab50da022","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved database.query() call through the pg package","source":{"file":"src/repositories/orders.ts","line":15,"column":9}},{"kind":"call","detail":"Resolved replaceOrder() call into local module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":17,"column":10}},{"kind":"call","detail":"Resolved updateOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":15,"column":23}}]},{"endpoint_id":"ep-37402d6d850a79b0","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/orders.ts","line":14,"column":1}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-19553b4c5896dee5","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"heuristic","detail":"Resolved insertOrder() call to local repository module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":10,"column":23}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-38b12984ca61ba14","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"heuristic","detail":"Resolved sendReceipt() call to local integration client module src/integrations/notifications.ts","source":{"file":"src/services/orders.ts","line":12,"column":9}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-530c819560d41f73","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved createOrder() call to local service module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/orders.ts","line":10,"column":1}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-79f71da190a68b05","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"heuristic","detail":"Resolved chargePayment() call to local service module src/services/billing.ts","source":{"file":"src/services/orders.ts","line":11,"column":9}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/orders.ts","line":10,"column":1}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-b648ce9ab50da022","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved database.query() call through the pg package","source":{"file":"src/repositories/orders.ts","line":10,"column":9}},{"kind":"call","detail":"Resolved insertOrder() call into local module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":10,"column":23}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/orders.ts","line":10,"column":1}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-f23d2cb5bc18e260","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved client.messages.create() call through the twilio package","source":{"file":"src/integrations/notifications.ts","line":10,"column":10}},{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved sendReceipt() call into local module src/integrations/notifications.ts","source":{"file":"src/services/orders.ts","line":12,"column":9}}]},{"endpoint_id":"ep-3bb9ca64325a895f","dependency_id":"dep-f464ac88d2f4fc49","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved chargePayment() call into local module src/services/billing.ts","source":{"file":"src/services/orders.ts","line":11,"column":9}},{"kind":"call","detail":"Resolved createOrder() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved stripe.paymentIntents.create() call through the stripe package","source":{"file":"src/services/billing.ts","line":10,"column":10}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-30077558c4dc9970","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved database.user.findMany() call through the @prisma/client package","source":{"file":"src/repositories/users.ts","line":6,"column":10}},{"kind":"call","detail":"Resolved findUsers() call into local module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":6,"column":10}},{"kind":"call","detail":"Resolved listUsers() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":7,"column":23}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/users.ts","line":6,"column":1}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/users.ts","line":6,"column":1}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-8472a1c3efe535ca","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved listUsers() call to local service module src/services/users.ts","source":{"file":"src/routes/users.ts","line":7,"column":23}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/users.ts","line":6,"column":1}}]},{"endpoint_id":"ep-46fb94d342fd4796","dependency_id":"dep-ff25b093dde3a184","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved listUsers() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":7,"column":23}},{"kind":"heuristic","detail":"Resolved findUsers() call to local repository module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":6,"column":10}}]},{"endpoint_id":"ep-5b159fe7971dff79","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/billing.ts","line":10,"column":1}}]},{"endpoint_id":"ep-5b159fe7971dff79","dependency_id":"dep-79f71da190a68b05","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved refundPayment() call to local service module src/services/billing.ts","source":{"file":"src/routes/billing.ts","line":11,"column":35}}]},{"endpoint_id":"ep-5b159fe7971dff79","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/billing.ts","line":10,"column":1}}]},{"endpoint_id":"ep-5b159fe7971dff79","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/billing.ts","line":10,"column":1}}]},{"endpoint_id":"ep-5b159fe7971dff79","dependency_id":"dep-f464ac88d2f4fc49","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved refundPayment() call into local module src/services/billing.ts","source":{"file":"src/routes/billing.ts","line":11,"column":35}},{"kind":"call","detail":"Resolved stripe.refunds.create() call through the stripe package","source":{"file":"src/services/billing.ts","line":14,"column":10}}]},{"endpoint_id":"ep-9d34906a5398a38b","dependency_id":"dep-0deabab87642d75f","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved listEvents() call to local service module src/services/events.ts","source":{"file":"src/routes/events.ts","line":7,"column":23}}]},{"endpoint_id":"ep-9d34906a5398a38b","dependency_id":"dep-7000052920b3703f","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved listEvents() call into local module src/services/events.ts","source":{"file":"src/routes/events.ts","line":7,"column":23}},{"kind":"call","detail":"Resolved readEvents() call into local module src/repositories/events.ts","source":{"file":"src/services/events.ts","line":4,"column":10}},{"kind":"call","detail":"Resolved redis.lrange() call through the ioredis package","source":{"file":"src/repositories/events.ts","line":6,"column":10}}]},{"endpoint_id":"ep-9d34906a5398a38b","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/events.ts","line":6,"column":1}}]},{"endpoint_id":"ep-9d34906a5398a38b","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/events.ts","line":6,"column":1}}]},{"endpoint_id":"ep-9d34906a5398a38b","dependency_id":"dep-a3bad5154021fee5","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved listEvents() call into local module src/services/events.ts","source":{"file":"src/routes/events.ts","line":7,"column":23}},{"kind":"heuristic","detail":"Resolved readEvents() call to local repository module src/repositories/events.ts","source":{"file":"src/services/events.ts","line":4,"column":10}}]},{"endpoint_id":"ep-acf963f451ba8bcc","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/app.ts","line":17,"column":1}}]},{"endpoint_id":"ep-acf963f451ba8bcc","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/app.ts","line":17,"column":1}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-30077558c4dc9970","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved database.user.findUnique() call through the @prisma/client package","source":{"file":"src/repositories/users.ts","line":14,"column":10}},{"kind":"call","detail":"Resolved findUser() call into local module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":16,"column":22}},{"kind":"call","detail":"Resolved getUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":15,"column":23}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/users.ts","line":14,"column":1}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-8038363bd22fadb6","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved getUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":15,"column":23}},{"kind":"heuristic","detail":"Resolved enrichProfile() call to local integration client module src/clients/profile-enrichment.ts","source":{"file":"src/services/users.ts","line":17,"column":10}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/users.ts","line":14,"column":1}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-8472a1c3efe535ca","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved getUser() call to local service module src/services/users.ts","source":{"file":"src/routes/users.ts","line":15,"column":23}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/users.ts","line":14,"column":1}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-f3acd7a497d57ff6","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved client.responses.create() call through the openai package","source":{"file":"src/clients/profile-enrichment.ts","line":6,"column":9}},{"kind":"call","detail":"Resolved enrichProfile() call into local module src/clients/profile-enrichment.ts","source":{"file":"src/services/users.ts","line":17,"column":10}},{"kind":"call","detail":"Resolved getUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":15,"column":23}}]},{"endpoint_id":"ep-e2f8570ab53114e0","dependency_id":"dep-ff25b093dde3a184","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved getUser() call into local module src/services/users.ts","source":{"file":"src/routes/users.ts","line":15,"column":23}},{"kind":"heuristic","detail":"Resolved findUser() call to local repository module src/repositories/users.ts","source":{"file":"src/services/users.ts","line":16,"column":22}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-19553b4c5896dee5","confidence":"inferred","evidence":[{"kind":"call","detail":"Resolved listOrders() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":7,"column":23}},{"kind":"heuristic","detail":"Resolved findOrders() call to local repository module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":6,"column":10}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-530c819560d41f73","confidence":"inferred","evidence":[{"kind":"heuristic","detail":"Resolved listOrders() call to local service module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":7,"column":23}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-77a1adba6fb5c92b","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'express.json' before the handler","source":{"file":"src/routes/orders.ts","line":6,"column":1}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-8224cb7ecac317c0","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'audit' before the handler","source":{"file":"src/routes/orders.ts","line":6,"column":1}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-b648ce9ab50da022","confidence":"exact","evidence":[{"kind":"call","detail":"Resolved database.query() call through the pg package","source":{"file":"src/repositories/orders.ts","line":6,"column":10}},{"kind":"call","detail":"Resolved findOrders() call into local module src/repositories/orders.ts","source":{"file":"src/services/orders.ts","line":6,"column":10}},{"kind":"call","detail":"Resolved listOrders() call into local module src/services/orders.ts","source":{"file":"src/routes/orders.ts","line":7,"column":23}}]},{"endpoint_id":"ep-eb33c83b205d2d8f","dependency_id":"dep-b8d9e403b65eea98","confidence":"exact","evidence":[{"kind":"framework","detail":"Express registered middleware 'authorize' before the handler","source":{"file":"src/routes/orders.ts","line":6,"column":1}}]}],"diagnostics":[]}</script><script>"use strict";(()=>{var O=(t=[])=>new Map(t.map(e=>[e.id,e])),b=(t,e,n,r=0,s=new Set,i={remaining:1e4})=>{let o=e.get(t);if(!o)return null;if(i.remaining<=0)return ne(o,n);if(i.remaining-=1,o.const_value)return C(o.const_value);if(o.enum_values?.length){let c=o.enum_values[Math.floor(n()*o.enum_values.length)];return c?C(c):null}if(r>=7||s.has(t))return ne(o,n);let a=new Set(s).add(t);switch(o.kind){case"object":return Object.fromEntries((o.properties??[]).slice(0,100).map(c=>[c.name,b(c.schema_id,e,n,r+1,a,i)]));case"array":{let c=o.constraints?.min_items??0,d=o.constraints?.max_items??3,l=Math.min(20,Math.max(c,Math.min(d,2)));return Array.from({length:l},()=>o.items?b(o.items,e,n,r+1,a,i):null)}case"union":{let c=(o.variants??[]).slice(0,20),d=c[Math.floor(n()*c.length)];return d?b(d,e,n,r+1,a,i):null}case"intersection":return(o.variants??[]).slice(0,20).reduce((c,d)=>{let l=b(d,e,n,r+1,a,i);return re(c)&&re(l)?yt(c,l):l},{});default:return ne(o,n)}},k=(t,e,n,r="$",s=0,i={remaining:1e4})=>{let o=n.get(t);if(!o)return[`${r} references an unresolved schema`];if(i.remaining<=0)return[`${r} exceeds the simulator work budget`];if(i.remaining-=1,e===null&&o.nullable)return[];if(s>=10)return[`${r} exceeds the simulator validation depth`];let a=[];switch(o.const_value&&!Ve(e,C(o.const_value))&&a.push(`${r} does not match the declared constant`),o.enum_values?.length&&!o.enum_values.some(c=>Ve(e,C(c)))&&a.push(`${r} is not one of the declared enum values`),o.kind){case"object":if(!re(e))return[`${r} must be an object`];(o.properties?.length??0)>100&&a.push(`${r} exceeds the 100-property simulator budget`);for(let c of(o.properties??[]).slice(0,100)){if(!Object.hasOwn(e,c.name)){c.required&&a.push(`${r}.${c.name} is required`);continue}a.push(...k(c.schema_id,e[c.name],n,`${r}.${c.name}`,s+1,i))}break;case"array":if(!Array.isArray(e))return[`${r} must be an array`];e.length<(o.constraints?.min_items??0)&&a.push(`${r} has too few items`),e.length>(o.constraints?.max_items??1/0)&&a.push(`${r} has too many items`),e.length>2e3&&a.push(`${r} exceeds the 2000-item simulator validation budget`),o.items&&e.slice(0,2e3).forEach((c,d)=>a.push(...k(o.items,c,n,`${r}[${d}]`,s+1,i)));break;case"string":if(typeof e!="string")return[`${r} must be a string`];gt(o,e,r,a);break;case"integer":if(typeof e!="number"||!Number.isInteger(e))return[`${r} must be an integer`];Me(o,e,r,a);break;case"number":if(typeof e!="number"||!Number.isFinite(e))return[`${r} must be a number`];Me(o,e,r,a);break;case"boolean":typeof e!="boolean"&&a.push(`${r} must be a boolean`);break;case"null":e!==null&&a.push(`${r} must be null`);break;case"union":{let c=(o.variants??[]).slice(0,20);(o.variants?.length??0)>20&&a.push(`${r} exceeds the schema-variant simulator budget`),c.length>0&&!c.some(d=>k(d,e,n,r,s+1,i).length===0)&&a.push(`${r} does not match any schema variant`);break}case"intersection":(o.variants?.length??0)>20&&a.push(`${r} exceeds the schema-variant simulator budget`);for(let c of(o.variants??[]).slice(0,20))a.push(...k(c,e,n,r,s+1,i));break;case"unknown":break}return a},ne=(t,e)=>{switch(t.kind){case"string":return ht(t,e);case"integer":return Ae(t,!0);case"number":return Ae(t,!1);case"boolean":return e()>=.5;case"null":return null;case"object":case"intersection":return{};case"array":return[];case"union":case"unknown":return null}},ht=(t,e)=>{let n=Math.floor(e()*1e4).toString().padStart(4,"0"),r=(()=>{switch(t.format){case"email":return`user-${n}@example.com`;case"uuid":return ft(e);case"date-time":return"2026-01-15T10:30:00Z";case"date":return"2026-01-15";case"uri":case"url":return`https://example.com/resource-${n}`;case"ipv4":return"192.0.2.1";default:return`sample-${n}`}})(),s=Math.min(t.constraints?.min_length??0,512);r.length<s&&(r=r.padEnd(s,"x"));let i=t.constraints?.max_length;return i!==void 0&&r.length>i&&(r=r.slice(0,Math.min(i,512))),r.length>512&&(r=r.slice(0,512)),r},Ae=(t,e)=>{let n=Number(t.constraints?.minimum??(e?1:1.5)),r=Number(t.constraints?.maximum??n+100),s=Number.isFinite(n)?n:1,i=Number.isFinite(r)?r:s+100,o=Math.min(i,s+(e?1:.5));return e?Math.round(o):o},ft=t=>{let e=Array.from({length:16},()=>Math.floor(t()*256));e[6]=(e[6]??0)&15|64,e[8]=(e[8]??0)&63|128;let n=e.map(r=>r.toString(16).padStart(2,"0"));return`${n.slice(0,4).join("")}-${n.slice(4,6).join("")}-${n.slice(6,8).join("")}-${n.slice(8,10).join("")}-${n.slice(10).join("")}`},gt=(t,e,n,r)=>{if(e.length<(t.constraints?.min_length??0)&&r.push(`${n} is shorter than minLength`),e.length>(t.constraints?.max_length??1/0)&&r.push(`${n} is longer than maxLength`),t.constraints?.pattern)if(!bt(t.constraints.pattern))r.push(`${n} uses a pattern outside the safe simulator subset`);else try{new RegExp(t.constraints.pattern).test(e)||r.push(`${n} does not match the declared pattern`)}catch{r.push(`${n} uses a pattern unsupported by this browser`)}let s=wt[t.format??""];s&&!s(e)&&r.push(`${n} must match the ${t.format} format`)},bt=t=>{if(t.length>128)return!1;let e=!1,n=!1;for(let r=0;r<t.length;r+=1){let s=t[r];if(e){if(s&&/[1-9]/.test(s))return!1;e=!1;continue}if(s==="\\"){e=!0;continue}if(s==="["&&!n){n=!0;continue}if(s==="]"&&n){n=!1;continue}if(!n){if(s==="("||s===")"||s==="|"||s==="+"||s==="*"||s==="?")return!1;if(s==="{"){let i=t.indexOf("}",r+1);if(i<0)return!1;let o=t.slice(r+1,i);if(!/^\d+$/.test(o)||Number(o)>256)return!1;r=i}else if(s==="}")return!1}}return!e&&!n},Me=(t,e,n,r)=>{let s=Number(t.constraints?.minimum??-1/0),i=Number(t.constraints?.maximum??1/0);e<s&&r.push(`${n} is below minimum`),e>i&&r.push(`${n} is above maximum`)},C=t=>{switch(t.kind){case"string":return t.value;case"integer":case"number":return Number(t.value);case"boolean":return t.value==="true";case"null":return null}},Ve=(t,e)=>JSON.stringify(t)===JSON.stringify(e),re=t=>typeof t=="object"&&t!==null&&!Array.isArray(t),yt=(t,e)=>{let n=[...Object.entries(t),...Object.entries(e)].slice(-100);return Object.fromEntries(n)},J=t=>{let e=t>>>0||1;return()=>{e+=1831565813;let n=e;return n=Math.imul(n^n>>>15,n|1),n^=n+Math.imul(n^n>>>7,n|61),((n^n>>>14)>>>0)/4294967296}},wt={email:t=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t),uuid:t=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(t),date:t=>{let e=/^(\d{4})-(\d{2})-(\d{2})$/.exec(t);if(!e)return!1;let n=Number(e[1]),r=Number(e[2]),s=Number(e[3]),i=new Date(Date.UTC(n,r-1,s));return i.getUTCFullYear()===n&&i.getUTCMonth()===r-1&&i.getUTCDate()===s},"date-time":t=>/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(t)&&Number.isFinite(Date.parse(t)),ipv4:t=>{let e=t.split(".");return e.length===4&&e.every(n=>/^\d{1,3}$/.test(n)&&Number(n)<=255)},uri:Et,url:St};function Et(t){try{return!!new URL(t).protocol}catch{return!1}}function St(t){try{let e=new URL(t);return/^(?:https?|ftp):$/.test(e.protocol)&&!!e.hostname}catch{return!1}}var f=t=>typeof t=="object"&&t!==null&&!Array.isArray(t);var $t=100,_e=20,kt=10,Rt=1e4,T=(t,e,n,r,s=0,i=new Set,o={remaining:Rt})=>{let a=n.get(t);if(!a||o.remaining<=0)return e;if(o.remaining-=1,e===null&&a.nullable)return null;if(s>=kt||i.has(t))return b(t,n,r,s,i);let c=new Set(i).add(t);switch(a.kind){case"object":return xt(a,e,n,r,s,c,o);case"array":return vt(a,e,n,r,s,c,o);case"union":return At(a,e,n,r,s,c,o);case"intersection":return Mt(a,e,n,r,s,c,o);case"unknown":return e;default:return k(t,e,n).length===0?e:b(t,n,r,s,i,o)}},xt=(t,e,n,r,s,i,o)=>{let a=f(e)?e:void 0,c={};for(let d of(t.properties??[]).slice(0,$t)){let l=!!(a&&Object.hasOwn(a,d.name));if(!l&&!d.required)continue;let p=l?a?.[d.name]:b(d.schema_id,n,r,s+1,i,o);Oe(c,d.name,T(d.schema_id,p??null,n,r,s+1,i,o))}return c},vt=(t,e,n,r,s,i,o)=>{let a=Array.isArray(e)?e:b(t.id,n,r,s,new Set,o);return!Array.isArray(a)||!t.items?a:a.map(c=>T(t.items,c,n,r,s+1,i,o))},At=(t,e,n,r,s,i,o)=>{let a=(t.variants??[]).slice(0,_e),c=a.find(d=>k(d,e,n,"$",0,o).length===0)??a[0];return c?T(c,e,n,r,s+1,i,o):e},Mt=(t,e,n,r,s,i,o)=>{let a={};for(let c of(t.variants??[]).slice(0,_e)){let d=T(c,e,n,r,s+1,i,o);if(!f(d))return b(t.id,n,r,s,new Set,o);for(let[l,p]of Object.entries(d))Oe(a,l,p)}return a},Oe=(t,e,n)=>{Object.defineProperty(t,e,{configurable:!0,enumerable:!0,value:n,writable:!0})};var x=()=>Object.fromEntries([]),$=(t,e,n)=>{Object.defineProperty(t,e,{value:n,configurable:!0,enumerable:!0,writable:!0})},P=(t,e)=>Object.hasOwn(t,e)?t[e]:void 0;var X=class{constructor(e,n){this.map=e;this.store=n;this.endpoints=new Map(e.endpoints.map(r=>[r.id,r])),this.schemas=O(e.schemas)}endpoints;schemas;defaultRequest(e){let n=this.requireEndpoint(e),r=this.requireOperation(e),s=Vt(),i=this.store.resource(r.resource);for(let c of n.contract?.request?.parameters??[]){let d=c.location==="path"&&c.name===r.pathParameter?i?.records[0]?.[i.primaryKey]:void 0;$(s[c.location],c.name,d??b(c.schema_id,this.schemas,J(ie(e,c.name))))}let o=n.contract?.request?.bodies?.[0]?.schema_id,a=o?b(o,this.schemas,J(ie(e,"body"))):null;return{parameters:s,body:a}}execute(e,n){let r=this.requireEndpoint(e),s=this.requireOperation(e),i=this.validateRequest(r,n);if(i.length>0){let a=this.errorStatus(r,["422","400"]);return this.finalizeResult(r,{endpointId:e,status:a,body:{error:"Request validation failed",message:"Request validation failed",details:i}},i)}let o=this.executeOperation(r,s,n);return this.finalizeResult(r,o,i)}operation(e){return this.requireOperation(e)}executeOperation(e,n,r){let s=this.store.resource(n.resource);if(!s)return this.errorResult(e,["500"],"Virtual resource is unavailable");let i=s.records,o=s.primaryKey,a=n.pathParameter?r.parameters.path[n.pathParameter]:void 0,c=i.findIndex(d=>Je(d[o],a));switch(n.kind){case"list":{let d=_t(i,r.parameters.query);return this.successResult(e,n,this.listResponse(n,d))}case"read":return c>=0?this.successResult(e,n,i[c]):this.errorResult(e,["404"],"Record not found");case"create":{if(!f(r.body))return this.errorResult(e,["422","400"],"Request body must be an object");let d={...r.body};return Object.hasOwn(d,o)||$(d,o,Jt(n.resource,o,i)),this.store.commitResource(n.resource,[...i,d],e.id),this.successResult(e,n,d,n.resource)}case"replace":case"update":{if(!f(r.body))return this.errorResult(e,["422","400"],"Request body must be an object");if(c<0)return this.errorResult(e,["404"],"Record not found");let d=i[c],l=n.kind==="update"?{...d,...r.body}:{...r.body};$(l,o,d[o]??a??null);let p=[...i];return p[c]=l,this.store.commitResource(n.resource,p,e.id),this.successResult(e,n,l,n.resource)}case"delete":return c<0?this.errorResult(e,["404"],"Record not found"):(this.store.commitResource(n.resource,i.filter((d,l)=>l!==c),e.id),this.successResult(e,n,null,n.resource));case"head":return this.successResult(e,n,null);case"options":{let d=this.store.operations(),l=this.map.endpoints.filter(p=>d[p.id]?.resource===n.resource).map(p=>p.method);return this.successResult(e,n,{allow:[...new Set(l)]})}case"action":return this.successResult(e,n,r.body)}}validateRequest(e,n){let r=[];for(let i of e.contract?.request?.parameters??[]){let o=n.parameters[i.location][i.name];if(o===void 0){i.required&&r.push(`${i.location}.${i.name} is required`);continue}r.push(...k(i.schema_id,o,this.schemas,`${i.location}.${i.name}`))}let s=e.contract?.request?.bodies?.[0];return s&&(n.body===null&&s.required?r.push("body is required"):n.body!==null&&r.push(...k(s.schema_id,n.body,this.schemas,"body"))),r}validateResponse(e,n){return e?k(e,n,this.schemas,"response"):[]}listResponse(e,n){if(!e.responseSchemaId)return n;let r=e.responseSchemaId?this.schemas.get(e.responseSchemaId):void 0;if(r?.kind==="array")return n;let s=r?.properties?.find(i=>/^(?:data|items|records|results)$/i.test(i.name)?this.schemas.get(i.schema_id)?.kind==="array":!1);return s?{[s.name]:n,total:n.length}:{items:n,total:n.length}}finalizeResult(e,n,r){let s=this.responseSchemaId(e,n.status),i=s?T(s,n.body,this.schemas,J(ie(e.id,`response:${n.status}`))):n.body;return{...n,body:i,requestErrors:r,responseErrors:this.validateResponse(s,i)}}responseSchemaId(e,n){let r=e.contract?.responses??[];return(r.find(s=>s.status===n)??r.find(s=>/^[1-5]XX$/i.test(s.status)&&s.status[0]===n[0])??r.find(s=>s.status==="default"))?.contents?.[0]?.schema_id}successResult(e,n,r,s){return{endpointId:e.id,status:n.responseStatus,body:r,changedResource:s}}errorResult(e,n,r){let s=this.errorStatus(e,n);return{endpointId:e.id,status:s,body:this.responseSchemaId(e,s)?{error:r,message:r}:{error:r}}}errorStatus(e,n){let r=e.contract?.responses??[];return n.find(s=>r.some(i=>i.status===s))??n[0]??"500"}requireEndpoint(e){let n=this.endpoints.get(e);if(!n)throw new Error(`Unknown endpoint: ${e}`);return n}requireOperation(e){let n=this.store.operation(e);if(!n)throw new Error(`No virtual operation for ${e}`);return n}},Vt=()=>({path:x(),query:x(),header:x(),cookie:x()}),_t=(t,e)=>{let n=new Set(["page","limit","offset","cursor"]),r=Object.entries(e).filter(([c,d])=>!n.has(c)&&d!==null&&d!==""),s=t.filter(c=>r.every(([d,l])=>Je(c[d],l))),i=Math.min(100,se(e.limit)??s.length),o=se(e.page),a=se(e.offset)??(o!==void 0&&o>0?(o-1)*i:0);return s.slice(a,a+i)},se=t=>{let e=typeof t=="number"?t:Number(t);return Number.isFinite(e)&&e>=0?Math.floor(e):void 0},ie=(t,e)=>Ot({endpointId:t,field:e}),Ot=t=>{let e=JSON.stringify(t),n=2166136261;for(let r of e)n^=r.codePointAt(0)??0,n=Math.imul(n,16777619);return n>>>0||1},Je=(t,e)=>(typeof t=="string"||typeof t=="number")&&(typeof e=="string"||typeof e=="number")?String(t)===String(e):JSON.stringify(t)===JSON.stringify(e),Jt=(t,e,n)=>{let r=t.endsWith("s")?t.slice(0,-1):t,s=new Set(n.map(i=>String(i[e])));for(let i=1;i<=n.length+1;i+=1){let o=`${r}-${String(i).padStart(3,"0")}`;if(!s.has(o))return o}throw new Error(`Could not allocate an identifier for ${t}`)};var Tt=200,Bt="api-subway-overflow",Be=128,Ie=(t,e=42)=>{let n=O(t.schemas),r=x(),s=new Map,i=new Map,o=new Set;for(let c of t.endpoints){let d=It(c.path),l=i.get(d.resourceKey),p=!l&&i.size>=Tt-1,m=l??(p?Bt:Ht(d.resource,d.resourceKey,o));i.set(d.resourceKey,m),o.add(m);let g=je(c),_={endpointId:c.id,kind:Nt(c.method,d),resource:m,primaryKey:Pt(d.pathParameter),pathParameter:d.pathParameter,responseStatus:zt(c.method,g?.status),responseSchemaId:g?.contents?.[0]?.schema_id,confidence:d.actionRoute||p?"inferred":"exact"};$(r,c.id,_);let ve=s.get(m)??[];ve.push(c),s.set(m,ve)}let a=x();for(let[c,d]of s){let p=d.map(m=>r[m.id]).find(m=>m?.pathParameter)?.primaryKey??"id";$(a,c,{primaryKey:p,records:qt(c,p,d,n,e)})}return{resources:a,operations:r}},It=t=>{let e=t.split("/").filter(Boolean);if(e.length===0)return{resource:"root",resourceKey:"root",itemRoute:!1,actionRoute:!1};let n=e.at(-1)??"root",r=oe(n),s=e.map(oe).filter(l=>!!l).at(-1),o=!r&&Lt(n),a=e.filter(l=>!oe(l)&&!jt(l)),c=o&&a.length>1?a.slice(0,-1):a,d=(c.length>0?c:[n]).join("/");return{resource:Xt(c.at(-1)??n??"root"),resourceKey:d,pathParameter:s,itemRoute:!!r,actionRoute:o}},jt=t=>/^(?:api|rest|graphql|v\d+(?:\.\d+)?)$/i.test(t),Lt=t=>/^(?:action|search|login|logout|callback|health|status|sync|export|import|verify|cancel|confirm|preview|send|retry|approve|reject)(?:[-_].*)?$/i.test(t),Nt=(t,e)=>{if(e.actionRoute)return"action";switch(t){case"GET":return e.itemRoute?"read":"list";case"POST":return e.itemRoute?"action":"create";case"PUT":return e.itemRoute?"replace":"action";case"PATCH":return e.itemRoute?"update":"action";case"DELETE":return e.itemRoute?"delete":"action";case"HEAD":return"head";case"OPTIONS":return"options";default:return"action"}},qt=(t,e,n,r,s)=>{let i=Ct(n,r);return[0,1].map(o=>{let a=i?b(i,r,J(s+o+t.length)):{},c=f(a)?{...a}:{value:a};return Object.hasOwn(c,e)||(c[e]=`${Dt(t)}-${String(o+1).padStart(3,"0")}`),c})},Ct=(t,e)=>{for(let n of t){let r=je(n)?.contents?.[0]?.schema_id;if(!r)continue;let s=e.get(r);if(s?.kind==="array"&&s.items)return s.items;if(s?.kind==="object"){let i=s.properties?.find(a=>{if(!/^(?:data|items|records|results)$/i.test(a.name))return!1;let c=e.get(a.schema_id);return c?.kind==="array"&&c.items});return(i?e.get(i.schema_id):void 0)?.items??r}}return t.flatMap(n=>n.contract?.request?.bodies??[]).map(n=>n.schema_id).find(n=>e.get(n)?.kind==="object")},oe=t=>/^\{(?:\*{0,2})?([^}]+)\}$/.exec(t)?.[1],Pt=t=>t&&!/id$/i.test(t)?t:"id",Xt=t=>(t.replace(/^\{+|\}+$/g,"").replace(/[^a-zA-Z0-9_-]/g,"-").toLocaleLowerCase()||"root").slice(0,Be),Ht=(t,e,n)=>{if(!n.has(t))return t;let r=Wt(e);for(let s=0;s<=n.size;s+=1){let i=s===0?r:`${r}-${s}`,o=`${t.slice(0,Be-i.length-1)}-${i}`;if(!n.has(o))return o}throw new Error("Could not allocate a unique virtual resource name")},Wt=t=>{let e=2166136261;for(let n of t)e^=n.codePointAt(0)??0,e=Math.imul(e,16777619);return(e>>>0).toString(16).padStart(8,"0")},Dt=t=>t.endsWith("ies")?`${t.slice(0,-3)}y`:t.endsWith("s")?t.slice(0,-1):t,Te=t=>t==="POST"?"201":t==="DELETE"?"204":"200",zt=(t,e)=>{if(e&&/^[1-5]\d\d$/.test(e))return e;if(e&&/^[1-5]XX$/i.test(e)){let n=Te(t);return n[0]===e[0]?n:`${e[0]}00`}return Te(t)},je=t=>{let e=t.contract?.responses??[];return e.find(Kt)??e.find(Ne)??e.find(Le)??e[0]},Le=t=>!!t.contents?.length,Ne=t=>/^2(?:\d\d|XX)$/i.test(t.status),Kt=t=>Ne(t)&&Le(t);var qe=200,ae=2e3,Ft=300,Gt=20,Ce=128,Pe=128,He=1e5,B=2e6,W=class{initial;current;listeners=new Set;constructor(e){let n=ce({resources:e.resources}),r={...e,resources:n.resources};this.initial=v(r),this.current=v(r)}snapshot(){return v(this.current)}editableSnapshot(){return{resources:v(this.current.resources)}}resource(e){let n=P(this.current.resources,e);return n?v(n):void 0}operation(e){let n=P(this.current.operations,e);return n?v(n):void 0}operations(){return v(this.current.operations)}commitResource(e,n,r){let s=P(this.current.resources,e);if(!s)throw new Error(`Unknown virtual resource: ${e}`);return We(n,e,s.primaryKey),$(this.current.resources,e,{primaryKey:s.primaryKey,records:v(n)}),this.publish({endpointId:r,resource:e})}replaceEditableSnapshot(e){let n=ce(e);return this.current.resources=v(n.resources),this.publish({endpointId:"virtual-backend:apply",resource:"*"})}reset(){return this.current.resources=v(this.initial.resources),this.publish({endpointId:"virtual-backend:reset",resource:"*"})}subscribe(e){return this.listeners.add(e),()=>this.listeners.delete(e)}publish(e){for(let n of this.listeners)try{n(e)}catch(r){queueMicrotask(()=>{throw r})}return e}},ce=t=>{if(!H(t))throw new Error("Virtual backend JSON must be an object");if(Xe(t,["resources"],"Virtual backend"),!H(t.resources))throw new Error("Virtual backend JSON must contain a resources object");let e=Object.entries(t.resources);if(e.length>qe)throw new Error(`Virtual backend exceeds the ${qe}-resource budget`);let n=x(),r={remaining:He};for(let[s,i]of e){if(s.trim().length===0||s.length>Ce)throw new Error(`Resource names must contain between 1 and ${Ce} characters`);if(!H(i))throw new Error(`Resource ${s} must be an object`);if(Xe(i,["primaryKey","records"],`Resource ${s}`),typeof i.primaryKey!="string"||i.primaryKey.trim().length===0||i.primaryKey.length>Pe)throw new Error(`Resource ${s} must declare a primaryKey between 1 and ${Pe} characters`);if(!Array.isArray(i.records))throw new Error(`Resource ${s} must contain a records array`);let o=i.records;We(o,s,i.primaryKey,r),$(n,s,{primaryKey:i.primaryKey,records:o})}return{resources:n}},ue=t=>{if(t.length>B||new TextEncoder().encode(t).byteLength>B)throw new Error("Virtual backend JSON is limited to 2 MB");let e=JSON.parse(t);return ce(e)};function We(t,e,n,r={remaining:He}){if(t.length>ae)throw new Error(`Resource ${e} exceeds the ${ae}-record budget`);let s=new Set;for(let[i,o]of t.entries()){if(!de(o,0,r))throw new Error(`Resource ${e} record ${i} is not bounded JSON`);if(!f(o))throw new Error(`Resource ${e} record ${i} must be a JSON object`);let a=Object.hasOwn(o,n)?o[n]:void 0;if(!(typeof a=="string"&&a.length>0||typeof a=="number"&&Number.isFinite(a)))throw new Error(`Resource ${e} record ${i} must contain a string or number ${n}`);let c=String(a);if(s.has(c))throw new Error(`Resource ${e} contains duplicate ${n} ${c}`);s.add(c)}}var de=(t,e,n)=>{if(e>Gt||n.remaining<=0)return!1;if(n.remaining-=1,t===null||typeof t=="string"||typeof t=="boolean")return!0;if(typeof t=="number")return Number.isFinite(t);if(Array.isArray(t))return t.length<=ae&&t.every(s=>de(s,e+1,n));if(!H(t))return!1;let r=Object.entries(t);return r.length<=Ft&&r.every(([,s])=>de(s,e+1,n))},H=t=>{if(typeof t!="object"||t===null||Array.isArray(t))return!1;let e=Object.getPrototypeOf(t);return e===Object.prototype||e===null},Xe=(t,e,n)=>{let r=Object.keys(t).find(s=>!e.includes(s));if(r)throw new Error(`${n} contains unsupported property ${r}`)},v=t=>structuredClone(t);var u=t=>t.replace(/[&<>"']/g,e=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[e]??e),D=t=>`method-${t.toLocaleLowerCase().replace(/[^a-z0-9_-]/g,"-")||"unknown"}`,y=t=>JSON.stringify(t,null,2)??"null",w=t=>`<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${{close:'<path d="M5 5l14 14M19 5L5 19"/>',minimize:'<path d="M5 12h14"/>',play:'<path d="m8 5 11 7-11 7Z"/>',database:'<ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',reset:'<path d="M4 7v5h5M5.6 16a8 8 0 1 0 .4-9l-2 2"/>',import:'<path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3"/>',export:'<path d="M12 21V9m0 0 4 4m-4-4-4 4M5 6V3h14v3"/>',drag:'<circle cx="8" cy="6" r="1"/><circle cx="16" cy="6" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="18" r="1"/><circle cx="16" cy="18" r="1"/>',schema:'<rect x="4" y="4" width="6" height="5" rx="1"/><rect x="14" y="15" width="6" height="5" rx="1"/><path d="M10 6.5h4a2 2 0 0 1 2 2V15M7 9v3a3 3 0 0 0 3 3h4"/>',json:'<path d="M8 3H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v6a2 2 0 0 0 2 2h2M16 3h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v6a2 2 0 0 1-2 2h-2"/>'}[t]}</svg>`,De=t=>typeof t=="string"?t:t===void 0?"":y(t);var ze=(t,e)=>`<article class="workspace-window backend-workspace-window ${e?"active":""} ${t.minimized?"minimized":""}" data-window-id="${u(t.id)}" style="--window-x:${t.x}px;--window-y:${t.y}px;--window-width:${t.width}px;--window-height:${t.height}px;--window-z:${t.zIndex}">
+    <header class="workspace-window-titlebar" data-window-drag-handle>
+      <span class="window-drag-icon">${w("drag")}</span>
+      <span class="backend-title-icon">${w("database")}</span>
+      <strong>Virtual backend</strong>
+      <span class="window-title-spacer"></span>
+      <button type="button" data-window-action="minimize" aria-label="Minimize virtual backend">${w("minimize")}</button>
+      <button type="button" data-window-action="close" aria-label="Close virtual backend">${w("close")}</button>
+    </header>
+    <div class="workspace-window-content">
+      <div class="backend-editor-heading"><div><span>Editable JSON store</span><strong>Apply replaces the backend and resets endpoint windows</strong></div><span class="backend-dirty-state ${t.dirty?"dirty":""}">${t.dirty?"Unsaved changes":"Synced"}</span></div>
+      <textarea class="backend-json-editor" data-backend-json spellcheck="false" aria-label="Virtual backend JSON">${u(t.jsonText)}</textarea>
+      ${t.error?`<div class="backend-editor-error" role="alert">${u(t.error)}</div>`:""}
+      ${t.notice?`<div class="window-live-notice"><span class="live-dot watching"></span>${u(t.notice)}</div>`:""}
+      <div class="backend-window-actions">
+        <button type="button" data-window-action="backend-apply" class="primary">Apply JSON</button>
+        <button type="button" data-window-action="backend-reset">${w("reset")}<span>Reset</span></button>
+        <button type="button" data-window-action="backend-import">${w("import")}<span>Import</span></button>
+        <button type="button" data-window-action="backend-export">${w("export")}<span>Export</span></button>
+        <input type="file" data-backend-file accept="application/json,.json" class="sr-only">
+      </div>
+    </div>
+  </article>`;var K=500,Yt=8,Ut=1e4,Ye=(t,e,n,r)=>{let s=n.get(e);if(!s)return'<div class="schema-unresolved">The request body schema could not be resolved.</div>';let i={remaining:K},o=s.kind==="object"?(s.properties??[]).slice(0,K).map(a=>le(a.name,a.schema_id,a.required,f(t)?t[a.name]:void 0,[a.name],n,0,new Set([e]),i)).join(""):le("Body",e,!0,t,[],n,0,new Set,i);return`<section class="body-schema-card"><header class="body-schema-heading"><div><span>Body \xB7 ${u(r)}</span><strong>${u(s.name??"Request schema")}</strong><small>Fill the typed fields \u2014 Body JSON is built automatically</small></div><code>${u(A(e,n))}</code></header><div class="body-schema-fields">${o||'<p class="schema-unresolved">This object schema has no declared fields.</p>'}</div></section>`},A=(t,e,n=0,r=new Set)=>{let s=e.get(t);return s?n>=Yt||r.has(t)?s.kind:s.kind==="array"?s.items?`array<${A(s.items,e,n+1,new Set(r).add(t))}>`:"array":s.enum_values?.length?`${s.kind} \xB7 enum`:s.format?`${s.kind} \xB7 ${s.format}`:s.kind:"unresolved"},Ue=(t,e)=>{switch(e){case"string":return t;case"integer":{if(!t.trim())throw new Error("Expected an integer");let n=Number(t);if(!Number.isInteger(n))throw new Error("Expected an integer");return n}case"number":{if(!t.trim())throw new Error("Expected a number");let n=Number(t);if(!Number.isFinite(n))throw new Error("Expected a finite number");return n}case"boolean":return t==="true";case"enum":case"json":{let n=JSON.parse(t);if(!pe(n,0,{remaining:Ut}))throw new Error("Expected bounded JSON");return n}}},Qe=(t,e,n)=>{if(!e)return n??null;let r=e.split("/").slice(1).map(a=>a.replace(/~1/g,"/").replace(/~0/g,"~")),s=f(t)?structuredClone(t):{},i=s;for(let a of r.slice(0,-1)){let c=Object.hasOwn(i,a)?i[a]:void 0;if(c!==void 0&&f(c))i=c;else{let d={};Ke(i,a,d),i=d}}let o=r.at(-1);return o&&(n===void 0?delete i[o]:Ke(i,o,n)),s},Ke=(t,e,n)=>{Object.defineProperty(t,e,{configurable:!0,enumerable:!0,value:n,writable:!0})},le=(t,e,n,r,s,i,o,a,c)=>{if(c.remaining<=0)return"";c.remaining-=1;let d=i.get(e),l=A(e,i);if(!d)return Ge(t,n,r,s,l);if(d.kind==="object"&&o<3&&!a.has(e)){let p=r!==void 0&&f(r)?r:{},m=new Set(a).add(e);return`<fieldset class="nested-schema-group"><legend>${I(t,l,n,d)}</legend>${(d.properties??[]).slice(0,K).map(g=>le(g.name,g.schema_id,g.required,p[g.name],[...s,g.name],i,o+1,m,c)).join("")}</fieldset>`}if(d.enum_values?.length){let p=JSON.stringify(r??z(d.enum_values[0]));return`<label class="body-schema-field"><span>${I(t,l,n,d)}</span><select aria-label="${u(Y(s,t))}" data-body-field-path="${u(G(s))}" data-body-field-kind="enum" data-body-field-required="${n}">${d.enum_values.slice(0,K).map(m=>{let g=JSON.stringify(z(m));return`<option value="${u(g)}" ${g===p?"selected":""}>${u(String(z(m)))}</option>`}).join("")}</select></label>`}switch(d.kind){case"string":return Fe(t,n,typeof r=="string"?r:"",s,"string",l,d,Qt(d.format));case"integer":case"number":return Fe(t,n,typeof r=="number"?String(r):"",s,d.kind,l,d,"number");case"boolean":return`<label class="body-schema-field"><span>${I(t,l,n,d)}</span><select aria-label="${u(Y(s,t))}" data-body-field-path="${u(G(s))}" data-body-field-kind="boolean" data-body-field-required="${n}"><option value="true" ${r===!0?"selected":""}>true</option><option value="false" ${r===!1?"selected":""}>false</option></select></label>`;case"null":return`<div class="body-schema-field readonly"><span>${I(t,l,n,d)}</span><code>null</code></div>`;default:return Ge(t,n,r,s,l,d)}},Fe=(t,e,n,r,s,i,o,a)=>`<label class="body-schema-field"><span>${I(t,i,e,o)}</span><input aria-label="${u(Y(r,t))}" type="${a}" value="${u(n)}" data-body-field-path="${u(G(r))}" data-body-field-kind="${s}" data-body-field-required="${e}" ${e?"required":""} ${s==="integer"?'step="1"':""} autocomplete="off" spellcheck="false"></label>`,Ge=(t,e,n,r,s,i)=>`<label class="body-schema-field body-schema-json-field"><span>${I(t,s,e,i)}</span><textarea aria-label="${u(Y(r,t))}" data-body-field-path="${u(G(r))}" data-body-field-kind="json" data-body-field-required="${e}" spellcheck="false">${u(y(n??null))}</textarea></label>`,I=(t,e,n,r)=>`<strong>${u(t)}${n?" *":""}</strong><code>${u(e)}</code>${F(r)?`<small>${u(F(r))}</small>`:""}`,F=t=>{if(!t)return"";if(t.enum_values?.length){let r=t.enum_values.slice(0,50),s=t.enum_values.length-r.length;return`one of ${r.map(i=>String(z(i))).join(", ")}${s>0?`, +${s} more`:""}`}let e=t.constraints;if(!e)return t.nullable?"nullable":"";let n=[];return e.min_length!==void 0&&n.push(`min ${e.min_length} chars`),e.max_length!==void 0&&n.push(`max ${e.max_length} chars`),e.minimum!==void 0&&n.push(`min ${e.minimum}`),e.maximum!==void 0&&n.push(`max ${e.maximum}`),e.min_items!==void 0&&n.push(`min ${e.min_items} items`),e.max_items!==void 0&&n.push(`max ${e.max_items} items`),t.nullable&&n.push("nullable"),n.join(" \xB7 ")},G=t=>t.map(e=>e.replace(/~/g,"~0").replace(/\//g,"~1")).map(e=>`/${e}`).join(""),Y=(t,e)=>t.length>0?t.join("."):e,Qt=t=>t==="email"?"email":t==="date"?"date":t==="uri"||t==="url"?"url":"text",z=t=>{switch(t.kind){case"string":return t.value;case"integer":case"number":return Number(t.value);case"boolean":return t.value==="true";case"null":return null}},pe=(t,e,n)=>{if(e>20||n.remaining<=0)return!1;if(n.remaining-=1,t===null||typeof t=="string"||typeof t=="boolean")return!0;if(typeof t=="number")return Number.isFinite(t);if(Array.isArray(t))return t.length<=2e3&&t.every(s=>pe(s,e+1,n));if(typeof t!="object")return!1;let r=Object.entries(t);return r.length<=300&&r.every(([,s])=>pe(s,e+1,n))};var me=20,ge=4,U=500,Ze=(t,e,n,r)=>{let s=t.contract?.responses??[],i=nn(s,e,n?.status),o=i?.contents?.[0],a=i?s.filter(d=>d.status!==i.status):s;if(!i||!o)return`<section class="response-schema-card unresolved"><strong>${n?`No response schema declared for ${u(n.status)}`:"No response body schema was proven"}</strong>${fe(a)}</section>`;let c=r.get(o.schema_id);return c?`<section class="body-schema-card response-schema-card"><header class="body-schema-heading"><div><span>Response \xB7 ${u(i.status)} \xB7 ${u(o.media_type)}</span><strong>${u(c.name??"Response schema")}</strong><small>Read-only values shaped by this endpoint contract</small></div><code>${u(A(o.schema_id,r))}</code></header>${Zt(o.schema_id,n?.body,!!n,r)}${fe(a)}</section>`:`<section class="response-schema-card unresolved"><strong>Response schema could not be resolved</strong><code>${u(o.schema_id)}</code>${fe(a)}</section>`},et=t=>`<div class="response-code"><pre><code>${u(y(t?.body??{message:"Run the virtual endpoint to see its response"}))}</code></pre></div>`,Zt=(t,e,n,r)=>{let s=r.get(t);if(!s)return'<p class="schema-unresolved">Unresolved schema</p>';let i={remaining:U};if(s.kind==="object"){let o=e!==void 0&&f(e)?e:{};return`<div class="body-schema-fields response-schema-fields">${(s.properties??[]).slice(0,U).map(c=>N(c.name,c.schema_id,c.required,o[c.name],[c.name],n,r,0,new Set([t]),i)).join("")||'<p class="schema-unresolved">This response object has no declared fields.</p>'}</div>`}return s.kind==="array"?`<div class="body-schema-fields response-schema-fields">${tt(s,e,[],n,r,0,new Set([t]),i)}</div>`:`<div class="body-schema-fields response-schema-fields">${N("response",t,!0,e,[],n,r,0,new Set,i)}</div>`},N=(t,e,n,r,s,i,o,a,c,d)=>{if(d.remaining<=0)return"";d.remaining-=1;let l=o.get(e),p=A(e,o);if(l?.kind==="object"&&a<ge&&!c.has(e)&&(!i||r!==void 0)){let m=r!==void 0&&f(r)?r:{},g=new Set(c).add(e);return`<fieldset class="nested-schema-group response-schema-group"><legend>${he(t,p,n,l)}</legend>${(l.properties??[]).slice(0,U).map(_=>N(_.name,_.schema_id,_.required,m[_.name],[...s,_.name],i,o,a+1,g,d)).join("")}</fieldset>`}return l?.kind==="array"&&a<ge&&!c.has(e)&&(!i||r!==void 0)?`<fieldset class="nested-schema-group response-schema-group response-array-group"><legend>${he(t,p,n,l)}</legend>${tt(l,r,s,i,o,a+1,new Set(c).add(e),d)}</fieldset>`:`<div class="body-schema-field response-schema-field ${r===void 0?"missing":""}"><span>${he(t,p,n,l)}</span><output class="response-field-value" data-response-field-path="${u(rt(s))}" aria-label="${u(`response.${s.join(".")||t}`)}"><code>${u(nt(r,i))}</code></output></div>`},tt=(t,e,n,r,s,i,o,a)=>{let c=Array.isArray(e)?e:[],d=c.slice(0,me),l=t.items;if(!l)return tn("items",e,n,r,"array");if(r&&c.length===0)return'<div class="response-array-empty">Empty array \xB7 0 items</div>';let p=r?d:[void 0];return`<div class="response-array-block"><header><strong>${r?`${c.length} ${c.length===1?"item":"items"}`:"Item schema"}</strong><code>${u(A(t.id,s))}</code></header><div class="response-array-items">${p.map((m,g)=>en(l,m,[...n,String(g)],g,r,s,i,o,a)).join("")}</div>${c.length>me?`<p class="response-array-more">${c.length-me} more items \xB7 switch to JSON to inspect all</p>`:""}</div>`},en=(t,e,n,r,s,i,o,a,c)=>{let d=i.get(t);if(d?.kind!=="object"||o>=ge)return N(`Item ${r+1}`,t,!0,e,n,s,i,o,a,c);let l=e!==void 0&&f(e)?e:{},p=new Set(a).add(t);return`<fieldset class="response-array-item"><legend><strong>${s?`Item ${r+1}`:"Item"}</strong><code>${u(A(t,i))}</code></legend><div class="body-schema-fields response-schema-fields">${(d.properties??[]).slice(0,U).map(m=>N(m.name,m.schema_id,m.required,l[m.name],[...n,m.name],s,i,o+1,p,c)).join("")}</div></fieldset>`},tn=(t,e,n,r,s)=>`<div class="body-schema-field response-schema-field"><span><strong>${u(t)}</strong><code>${u(s)}</code></span><output class="response-field-value multiline" data-response-field-path="${u(rt(n))}"><code>${u(nt(e,r))}</code></output></div>`,he=(t,e,n,r)=>{let s=F(r);return`<strong>${u(t)}${n?" *":""}</strong><code>${u(e)}</code>${s?`<small>${u(s)}</small>`:""}`},nt=(t,e)=>t===void 0?e?"Not returned":"Run endpoint":typeof t=="string"?t:t===null||typeof t=="number"||typeof t=="boolean"?String(t):y(t),nn=(t,e,n)=>n?t.find(r=>r.status===n)??t.find(r=>r.status==="default"):t.find(r=>r.status===e&&r.contents?.length)??t.find(r=>/^2\d\d$/.test(r.status)&&r.contents?.length)??t.find(r=>r.contents?.length)??t[0],fe=t=>t.length>0?`<div class="response-schema-alternatives"><span>Also declared</span>${t.map(e=>`<code>${u(e.status)}${e.contents?.[0]?` \xB7 ${u(e.contents[0].media_type)}`:" \xB7 no body"}</code>`).join("")}</div>`:"",rt=t=>t.map(e=>e.replace(/~/g,"~0").replace(/\//g,"~1")).map(e=>`/${e}`).join("");var rn={path:"Path",query:"Query",header:"Headers",cookie:"Cookies"},it=(t,e,n,r,s)=>{let i=e.contract?.request?.parameters??[],o=e.contract?.request?.bodies?.[0],a=t.response,c=[...a?.requestErrors??[],...a?.responseErrors??[]],d=a?/^2\d\d$/.test(a.status):!1;return`<article class="workspace-window endpoint-workspace-window ${s?"active":""} ${t.minimized?"minimized":""}" data-window-id="${u(t.id)}" data-endpoint-id="${u(e.id)}" data-method="${u(e.method)}" data-path="${u(e.path)}" style="--window-x:${t.x}px;--window-y:${t.y}px;--window-width:${t.width}px;--window-height:${t.height}px;--window-z:${t.zIndex}">
+    <header class="workspace-window-titlebar" data-window-drag-handle>
+      <span class="window-drag-icon">${w("drag")}</span>
+      <span class="endpoint-method ${D(e.method)}">${u(e.method)}</span>
+      <strong>${u(e.path)}</strong>
+      <span class="window-title-spacer"></span>
+      <button type="button" data-window-action="minimize" aria-label="Minimize ${u(e.method)} ${u(e.path)}">${w("minimize")}</button>
+      <button type="button" data-window-action="close" aria-label="Close ${u(e.method)} ${u(e.path)}">${w("close")}</button>
+    </header>
+    <div class="workspace-window-content">
+      <section class="endpoint-request-section">
+        <div class="request-title"><h3>Request</h3>${o?st("request",t.requestView):""}</div>
+        ${sn(t,i,r)}
+        ${o?t.requestView==="schema"?Ye(t.request.body,o.schema_id,r,o.media_type):on(t,o.media_type):'<p class="window-empty-copy">No request body</p>'}
+        ${t.requestError?`<div class="window-validation-errors request-view-error" role="alert"><p>${u(t.requestError)}</p></div>`:""}
+        <button type="button" class="run-request-button" data-window-action="run">${w("play")}<span>Run</span></button>
+      </section>
+      <section class="endpoint-response-section">
+        <div class="response-title"><h3>Response</h3>${a?`<span class="response-status ${d?"success":"error"}"><span></span>${u(an(a.status))}</span>`:""}${st("response",t.responseView)}</div>
+        ${t.responseView==="schema"?Ze(e,n.responseStatus,a,r):et(a)}
+        ${c.length>0?`<div class="window-validation-errors">${c.map(l=>`<p>${u(l)}</p>`).join("")}</div>`:a?'<div class="window-validation-ok">\u2713 Request and response conform to the available contract</div>':""}
+      </section>
+      ${t.notice?`<div class="window-live-notice"><span class="live-dot watching"></span>${u(t.notice)}</div>`:""}
+    </div>
+  </article>`},sn=(t,e,n)=>e?.length?["path","query","header","cookie"].map(r=>{let s=e.filter(i=>i.location===r);return s.length===0?"":`<fieldset class="request-parameter-group"><legend>${rn[r]}</legend>${s.map(i=>`<label><span><strong>${u(i.name)}${i.required?" *":""}</strong><code>${u(A(i.schema_id,n))}</code></span><input type="text" data-request-location="${r}" data-request-name="${u(i.name)}" value="${u(De(t.request.parameters[r][i.name]))}" autocomplete="off" spellcheck="false"></label>`).join("")}</fieldset>`}).join(""):"",on=(t,e)=>`<label class="request-body-editor request-json-view"><span class="request-json-heading"><strong>Body JSON</strong><code>${u(e)}</code></span><textarea data-request-body spellcheck="false" aria-label="Body JSON"${t.requestError?' aria-invalid="true"':""}>${u(t.bodyText)}</textarea></label>`,st=(t,e)=>`<div class="${t}-view-switch payload-view-switch" role="group" aria-label="${t==="request"?"Request body view":"Response view"}"><button type="button" data-window-action="${t}-schema" class="${e==="schema"?"active":""}" aria-label="Show ${t} as schema" aria-pressed="${e==="schema"}">${w("schema")}<span>Schema</span></button><button type="button" data-window-action="${t}-json" class="${e==="json"?"active":""}" aria-label="Show ${t} as JSON" aria-pressed="${e==="json"}">${w("json")}<span>JSON</span></button></div>`,an=t=>({200:"200 OK",201:"201 Created",202:"202 Accepted",204:"204 No Content",400:"400 Bad Request",404:"404 Not Found",422:"422 Unprocessable Entity",500:"500 Internal Error"})[t]??t;var Q="virtual-backend",cn=["path","query","header","cookie"],dn=1e5,Z=class{constructor(e,n,r,s){this.root=e;this.store=r;this.engine=s;this.endpointById=new Map(n.endpoints.map(i=>[i.id,i])),this.schemas=O(n.schemas),this.root.addEventListener("click",i=>this.handleClick(i)),this.root.addEventListener("input",i=>this.handleInput(i)),this.root.addEventListener("change",i=>{this.handleChange(i)}),this.root.addEventListener("pointerdown",i=>this.handlePointerDown(i)),this.root.addEventListener("pointermove",i=>this.handlePointerMove(i)),this.root.addEventListener("pointerup",i=>this.handlePointerUp(i)),this.root.addEventListener("pointercancel",i=>this.handlePointerUp(i)),this.store.subscribe(i=>this.receiveBackendChange(i))}endpointById;schemas;windows=new Map;compactLayout=globalThis.matchMedia("(max-width: 900px)");activeWindowId;drag;zIndex=10;cascade=0;committing=!1;queuedChange;openEndpoint(e,n){let r=this.windows.get(be(e));if(r?.kind==="endpoint"){r.minimized=!1,this.focusWindow(r.id),this.render();return}let s=this.endpointById.get(e);if(!s)return;let i=this.engine.defaultRequest(e),o=this.endpointGeometry(n),a={id:be(e),kind:"endpoint",endpointId:e,request:i,bodyText:y(i.body),requestView:"schema",responseView:"schema",minimized:!1,...o};(ye(s.method)||s.method==="OPTIONS")&&(a.response=this.engine.execute(e,i)),this.windows.set(a.id,a),this.activeWindowId=a.id,this.render()}openBackend(){let e=this.windows.get(Q);if(e?.kind==="backend"){e.minimized=!1,this.focusWindow(e.id),this.render();return}let n={id:Q,kind:"backend",jsonText:y(this.store.editableSnapshot()),dirty:!1,minimized:!1,...this.backendGeometry()};this.windows.set(n.id,n),this.activeWindowId=n.id,this.render()}resetBackend(){this.commit(()=>this.store.reset());let e=this.windows.get(Q);e?.kind==="backend"&&(e.dirty=!1,e.error=void 0,e.jsonText=y(this.store.editableSnapshot())),this.flushQueuedChange()}render(){this.captureGeometry();let e=[...this.windows.values()].sort((n,r)=>n.zIndex-r.zIndex);this.root.innerHTML=this.renderMobileDock(e)+e.map(n=>{let r=n.id===this.activeWindowId;if(n.kind==="backend")return ze(n,r);let s=this.endpointById.get(n.endpointId);return s?it(n,s,this.engine.operation(s.id),this.schemas,r):""}).join(""),this.applyActiveState()}renderMobileDock(e){return e.length<2?"":`<nav class="workspace-mobile-dock" aria-label="Open API windows">${e.map(n=>{let r=n.id===this.activeWindowId;if(n.kind==="backend")return`<button type="button" data-focus-window="${Q}" class="${r?"active":""}"><span class="dock-method backend">DB</span><span>Backend</span></button>`;let s=this.endpointById.get(n.endpointId);return s?`<button type="button" data-focus-window="${u(n.id)}" class="${r?"active":""}"><span class="dock-method ${D(s.method)}">${u(s.method)}</span><span>${u(s.path)}</span></button>`:""}).join("")}</nav>`}handleClick(e){if(!(e.target instanceof Element))return;let n=e.target.closest("[data-focus-window]");if(n?.dataset.focusWindow){let o=this.windows.get(n.dataset.focusWindow);o?.minimized?(o.minimized=!1,this.focusWindow(o.id),this.render()):this.focusWindow(n.dataset.focusWindow);return}let r=e.target.closest("[data-window-id]");if(!r?.dataset.windowId)return;this.focusWindow(r.dataset.windowId);let s=e.target.closest("[data-window-action]");if(!s?.dataset.windowAction)return;let i=this.windows.get(r.dataset.windowId);if(i)switch(s.dataset.windowAction){case"close":this.closeWindow(i.id);break;case"minimize":i.minimized=!i.minimized,this.render();break;case"run":i.kind==="endpoint"&&this.runEndpoint(i);break;case"request-schema":case"request-json":i.kind==="endpoint"&&this.switchRequestView(i,s.dataset.windowAction==="request-schema"?"schema":"json");break;case"response-schema":case"response-json":i.kind==="endpoint"&&(i.responseView=s.dataset.windowAction==="response-schema"?"schema":"json",this.render());break;case"backend-apply":i.kind==="backend"&&this.applyBackendJson(i);break;case"backend-reset":this.resetBackend();break;case"backend-import":r.querySelector("[data-backend-file]")?.click();break;case"backend-export":this.exportBackend();break}}handleInput(e){if(!(e.target instanceof HTMLInputElement||e.target instanceof HTMLTextAreaElement||e.target instanceof HTMLSelectElement))return;let n=e.target.closest("[data-window-id]");if(!n?.dataset.windowId)return;let r=this.windows.get(n.dataset.windowId);if(!r)return;if(r.kind==="backend"&&e.target.matches("[data-backend-json]")){r.jsonText=e.target.value,r.dirty=!0,r.error=void 0,n.querySelector(".backend-dirty-state")?.classList.add("dirty");let d=n.querySelector(".backend-dirty-state");d&&(d.textContent="Unsaved changes");return}if(r.kind!=="endpoint")return;let s=e.target.dataset.bodyFieldPath,i=e.target.dataset.bodyFieldKind;if(s!==void 0&&i){let d=e.target.dataset.bodyFieldRequired==="true";try{let l=!d&&e.target.value.trim()===""?void 0:Ue(e.target.value,i);r.request.body=Qe(r.request.body,s,l),r.bodyText=y(r.request.body);let p=n.querySelector("[data-request-body]");p&&(p.value=r.bodyText),e.target.classList.remove("invalid"),e.target.removeAttribute("aria-invalid"),e.target.removeAttribute("title")}catch(l){e.target.classList.add("invalid"),e.target.setAttribute("aria-invalid","true"),e.target.title=j(l,"Invalid field value")}return}if(e.target.matches("[data-request-body]")){r.bodyText=e.target.value,r.requestError=void 0,e.target.removeAttribute("aria-invalid"),n.querySelector(".request-view-error")?.remove();return}let o=e.target.dataset.requestLocation,a=e.target.dataset.requestName;if(!o||!a||!cn.includes(o))return;let c=un(e.target.value);c===void 0?delete r.request.parameters[o][a]:$(r.request.parameters[o],a,c)}async handleChange(e){if(!(e.target instanceof HTMLInputElement)||!e.target.matches("[data-backend-file]"))return;let n=e.target.closest("[data-window-id]"),r=n?.dataset.windowId?this.windows.get(n.dataset.windowId):void 0,s=e.target.files?.[0];if(e.target.value="",!(r?.kind!=="backend"||!s)){if(s.size>B){r.error="Import is limited to 2 MB",this.render();return}try{let i=await s.text();ue(i),r.jsonText=i,r.dirty=!0,r.error=void 0,r.notice=`${s.name} loaded \xB7 Apply JSON to replace the backend`}catch(i){r.error=j(i,"The selected file is not valid JSON")}this.render()}}runEndpoint(e){let n;try{n=we(e.bodyText)}catch(r){let s=j(r,"Request body is not valid JSON");e.requestError=s,e.response=ot(e.endpointId,s),e.notice="Request was not sent to the virtual backend",this.render();return}e.requestError=void 0,e.request.body=n;try{this.committing=!0,e.response=this.engine.execute(e.endpointId,e.request),e.notice=e.response.changedResource?`Updated ${e.response.changedResource} in virtual backend`:"Request completed"}catch(r){e.response=ot(e.endpointId,j(r,"Virtual endpoint execution failed"))}finally{this.committing=!1}this.flushQueuedChange()}switchRequestView(e,n){if(n==="json"){e.requestView="json",this.render();return}try{e.request.body=we(e.bodyText),e.requestError=void 0,e.requestView="schema"}catch(r){e.requestError=j(r,"Request body is not valid JSON")}this.render()}applyBackendJson(e){try{let n=ue(e.jsonText);this.committing=!0,this.store.replaceEditableSnapshot(n),e.dirty=!1,e.error=void 0,e.notice="Backend JSON applied",e.jsonText=y(this.store.editableSnapshot())}catch(n){e.error=j(n,"Virtual backend JSON is invalid"),e.notice=void 0}finally{this.committing=!1}this.flushQueuedChange()}exportBackend(){let e=new Blob([y(this.store.editableSnapshot())],{type:"application/json"}),n=URL.createObjectURL(e),r=document.createElement("a");r.href=n,r.download="api-subway-backend.json",r.click(),setTimeout(()=>URL.revokeObjectURL(n),0)}receiveBackendChange(e){if(this.committing){this.queuedChange=e;return}this.applyBackendChange(e)}flushQueuedChange(){let e=this.queuedChange;this.queuedChange=void 0,e?this.applyBackendChange(e):this.render()}applyBackendChange(e){let n=e.resource==="*",r=this.endpointById.get(e.endpointId),s=r?`${r.method} ${r.path}`:e.endpointId==="virtual-backend:reset"?"Backend reset":"Backend JSON",i=e.endpointId==="virtual-backend:reset"?"Backend reset":"Backend JSON applied";for(let o of this.windows.values()){if(o.kind==="backend"){o.dirty||(o.jsonText=y(this.store.editableSnapshot())),o.notice=n?`${i} \xB7 endpoint windows reset`:`${s} updated ${e.resource}`;continue}if(n){this.resetEndpointWindow(o,i);continue}let a=this.engine.operation(o.endpointId);if(!(a.resource===e.resource))continue;o.notice=`${s} changed ${a.resource}`;let d=this.endpointById.get(o.endpointId);d&&ye(d.method)&&(o.response=this.engine.execute(o.endpointId,o.request))}this.render()}resetEndpointWindow(e,n){let r=this.endpointById.get(e.endpointId),s=this.engine.defaultRequest(e.endpointId);e.request=s,e.bodyText=y(s.body),e.requestView="schema",e.responseView="schema",e.requestError=void 0,e.notice=`${n} \xB7 window reset`,e.response=r&&(ye(r.method)||r.method==="OPTIONS")?this.engine.execute(e.endpointId,s):void 0}commit(e){try{this.committing=!0,e()}finally{this.committing=!1}}closeWindow(e){this.windows.delete(e),this.activeWindowId===e&&(this.activeWindowId=[...this.windows.values()].sort((n,r)=>r.zIndex-n.zIndex)[0]?.id),this.render()}focusWindow(e){let n=this.windows.get(e);n&&(this.zIndex+=1,n.zIndex=this.zIndex,this.activeWindowId=e,this.applyActiveState())}applyActiveState(){this.root.querySelectorAll("[data-window-id]").forEach(n=>{n.classList.toggle("active",n.dataset.windowId===this.activeWindowId),n.style.zIndex=String(this.windows.get(n.dataset.windowId??"")?.zIndex??1)}),this.root.querySelectorAll("[data-focus-window]").forEach(n=>{n.classList.toggle("active",n.dataset.focusWindow===this.activeWindowId)});let e=new Set([...this.windows.values()].filter(n=>n.kind==="endpoint").map(n=>n.endpointId));document.querySelectorAll(".station").forEach(n=>{let r=n.dataset.endpointId;n.classList.toggle("window-open",!!(r&&e.has(r))),n.classList.toggle("window-active",!!(r&&this.windows.get(this.activeWindowId??"")?.kind==="endpoint"&&be(r)===this.activeWindowId))})}handlePointerDown(e){if(!(e.target instanceof Element))return;let n=e.target.closest("[data-window-id]");if(!n?.dataset.windowId||(this.focusWindow(n.dataset.windowId),!e.target.closest("[data-window-drag-handle]")||e.target.closest("button, input, textarea, select")||this.compactLayout.matches))return;let s=this.windows.get(n.dataset.windowId);s&&(e.preventDefault(),n.setPointerCapture(e.pointerId),this.drag={pointerId:e.pointerId,windowId:s.id,startX:e.clientX,startY:e.clientY,originX:s.x,originY:s.y,element:n},n.classList.add("dragging"))}handlePointerMove(e){if(!this.drag||this.drag.pointerId!==e.pointerId)return;let n=this.windows.get(this.drag.windowId);if(!n)return;let r=this.clampPosition(this.drag.originX+e.clientX-this.drag.startX,this.drag.originY+e.clientY-this.drag.startY,n.width,n.height);n.x=r.x,n.y=r.y,this.drag.element.style.setProperty("--window-x",`${r.x}px`),this.drag.element.style.setProperty("--window-y",`${r.y}px`)}handlePointerUp(e){!this.drag||this.drag.pointerId!==e.pointerId||(this.drag.element.classList.remove("dragging"),this.drag.element.hasPointerCapture(e.pointerId)&&this.drag.element.releasePointerCapture(e.pointerId),this.drag=void 0,this.captureGeometry())}captureGeometry(){if(this.compactLayout.matches)return;let e=this.root.getBoundingClientRect();this.root.querySelectorAll("[data-window-id]").forEach(n=>{let r=this.windows.get(n.dataset.windowId??"");if(!r||r.minimized)return;let s=n.getBoundingClientRect();s.width<240||s.height<160||(r.x=s.left-e.left,r.y=s.top-e.top,r.width=s.width,r.height=s.height)})}endpointGeometry(e){let n=this.root.clientWidth||globalThis.innerWidth,r=this.root.clientHeight||globalThis.innerHeight,s=Math.min(480,Math.max(340,n-32)),i=Math.min(650,Math.max(420,r-48)),o=this.cascade++,a=o%2,c=Math.floor(o/2)%5,d=n-s-18,l=Math.max(18,d-s*.78),p=this.clampPosition(a===0?l:d,38+c*34,s,i);return this.zIndex+=1,{...p,width:s,height:i,zIndex:this.zIndex}}backendGeometry(){let e=this.root.clientWidth||globalThis.innerWidth,n=this.root.clientHeight||globalThis.innerHeight,r=Math.min(560,Math.max(340,e-32)),s=Math.min(700,Math.max(420,n-48)),i=this.clampPosition(e-r-38,46,r,s);return this.zIndex+=1,{...i,width:r,height:s,zIndex:this.zIndex}}clampPosition(e,n,r,s){let i=this.root.clientWidth||globalThis.innerWidth,o=this.root.clientHeight||globalThis.innerHeight;return{x:Math.max(8,Math.min(e,Math.max(8,i-r-8))),y:Math.max(8,Math.min(n,Math.max(8,o-s-8)))}}},be=t=>`endpoint:${t}`,ye=t=>t==="GET"||t==="HEAD",un=t=>{let e=t.trim();if(e)try{return we(e)}catch{return t}},we=t=>{if(t.length>B||new TextEncoder().encode(t).byteLength>B)throw new Error("JSON input is limited to 2 MB");let e=JSON.parse(t);if(!Ee(e,0,{remaining:dn}))throw new Error("Value must be finite, bounded JSON");return e},Ee=(t,e,n)=>{if(e>20||n.remaining<=0)return!1;if(n.remaining-=1,t===null||typeof t=="string"||typeof t=="boolean")return!0;if(typeof t=="number")return Number.isFinite(t);if(Array.isArray(t))return t.length<=2e3&&t.every(s=>Ee(s,e+1,n));if(typeof t!="object")return!1;let r=Object.entries(t);return r.length<=300&&r.every(([,s])=>Ee(s,e+1,n))},ot=(t,e)=>({endpointId:t,status:"422",body:{error:e},requestErrors:[e],responseErrors:[]}),j=(t,e)=>t instanceof Error?t.message:e;var S=t=>{let e=document.querySelector(t);if(!e)throw new Error(`api-subway viewer is missing ${t}`);return e},L=JSON.parse(S("#api-map-data").textContent??"{}"),R=S(".api-map"),M=S("#map-viewport"),at=S("#workspace-layer"),$e=S("#search"),ke=S("#method-filter"),ln=S("#result-count"),pn=S("#open-backend"),mn=S("#reset-backend"),Se=globalThis.matchMedia("(max-width: 900px)"),ee=(R.getAttribute("viewBox")??"0 0 1200 800").split(/\s+/).map(Number),V=[ee[0]??0,ee[1]??0,ee[2]??1200,ee[3]??800],h=[...V],q="all",E,hn=new Map(L.dependencies.map(t=>[t.id,t])),Re=()=>{if(Se.matches){let e=V[2]*.82,n=V[3]*.82;h=[V[0]+(V[2]-e)/2,V[1],e,n]}else h=[...V];R.setAttribute("viewBox",h.join(" ")),R.setAttribute("preserveAspectRatio",Se.matches?"xMidYMin meet":"xMidYMid meet")};Re();Se.addEventListener("change",Re);for(let t of[...new Set(L.endpoints.map(e=>e.method))]){let e=document.createElement("option");e.value=t,e.textContent=t,ke.append(e)}var fn=Ie(L),ct=new W(fn),gn=new X(L,ct),xe=new Z(at,L,ct,gn),te=()=>{let t=$e.value.trim().toLocaleLowerCase(),e=ke.value,n=0;R.querySelectorAll(".station").forEach(r=>{let s=!t||`${r.dataset.method??""} ${r.dataset.path??""}`.toLocaleLowerCase().includes(t),i=e==="all"||r.dataset.method===e,o=(r.dataset.dependencies??"").split(","),a=q==="all"||o.some(d=>hn.get(d)?.kind===q),c=s&&i&&a;r.classList.toggle("is-muted",!c),c&&(n+=1)}),R.querySelectorAll(".dependency-rail,.dependency-line,.legend-item").forEach(r=>{r.classList.toggle("is-muted",q!=="all"&&r.dataset.kind!==q)}),ln.textContent=`${n} of ${L.endpoints.length} stations`},dt=()=>R.setAttribute("viewBox",h.join(" ")),ut=(t,e,n)=>{let r=R.getBoundingClientRect();if(r.width===0||r.height===0)return;let s=h[0]+(e-r.left)/r.width*h[2],i=h[1]+(n-r.top)/r.height*h[3],o=Math.min(V[2]*2,Math.max(V[2]*.22,h[2]*t)),a=o*(h[3]/h[2]),c=(s-h[0])/h[2],d=(i-h[1])/h[3];h=[s-c*o,i-d*a,o,a],dt()},lt=t=>{let e=R.getBoundingClientRect();ut(t,e.left+e.width/2,e.top+e.height/2)},pt=(t,e,n)=>{let r=t.dataset.endpointId;if(!r)return;let s=at.getBoundingClientRect(),i=t.getBoundingClientRect();xe.openEndpoint(r,{x:(e??i.right)-s.left,y:(n??i.top+i.height/2)-s.top})};$e.addEventListener("input",te);ke.addEventListener("change",te);S("#kind-filters").addEventListener("click",t=>{if(!(t.target instanceof HTMLButtonElement))return;let e=t.target.dataset.kind;e&&(q=e,document.querySelectorAll("#kind-filters button").forEach(n=>n.classList.toggle("active",n===t.target)),te())});S("#theme-toggle").addEventListener("click",()=>{let t=document.documentElement;t.dataset.theme=t.dataset.theme==="paper"?"midnight":"paper"});S("#zoom-in").addEventListener("click",()=>lt(.82));S("#zoom-out").addEventListener("click",()=>lt(1.22));S("#fit-map").addEventListener("click",()=>{Re()});pn.addEventListener("click",()=>xe.openBackend());mn.addEventListener("click",()=>xe.resetBackend());R.addEventListener("click",t=>{if(E?.moved||!(t.target instanceof Element))return;let e=t.target.closest(".station");e&&pt(e,t.clientX,t.clientY)});R.addEventListener("keydown",t=>{if(!(t.target instanceof Element))return;let e=t.target.closest(".station");!e||t.key!=="Enter"&&t.key!==" "||(t.preventDefault(),pt(e))});M.addEventListener("wheel",t=>{t.preventDefault(),ut(t.deltaY>0?1.1:.9,t.clientX,t.clientY)},{passive:!1});M.addEventListener("pointerdown",t=>{t.button!==0||!(t.target instanceof Element)||t.target.closest(".station")||(M.setPointerCapture(t.pointerId),E={pointerId:t.pointerId,startX:t.clientX,startY:t.clientY,viewX:h[0],viewY:h[1],moved:!1},M.classList.add("dragging"))});M.addEventListener("pointermove",t=>{if(!E||E.pointerId!==t.pointerId)return;let e=R.getBoundingClientRect(),n=t.clientX-E.startX,r=t.clientY-E.startY;Math.abs(n)+Math.abs(r)>3&&(E.moved=!0),h[0]=E.viewX-n/e.width*h[2],h[1]=E.viewY-r/e.height*h[3],dt()});var mt=t=>{if(!E||E.pointerId!==t.pointerId)return;M.hasPointerCapture(t.pointerId)&&M.releasePointerCapture(t.pointerId),M.classList.remove("dragging");let e=E.moved;E=e?{pointerId:-1,startX:0,startY:0,viewX:0,viewY:0,moved:!0}:void 0,e&&setTimeout(()=>E=void 0,0)};M.addEventListener("pointerup",mt);M.addEventListener("pointercancel",mt);document.addEventListener("keydown",t=>{let e=document.activeElement,n=e instanceof HTMLInputElement||e instanceof HTMLTextAreaElement||e instanceof HTMLSelectElement;t.key==="/"&&!n&&(t.preventDefault(),$e.focus())});te();})();
+</script></body></html>
