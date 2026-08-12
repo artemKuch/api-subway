@@ -1,0 +1,25 @@
+version = 1
+frameworks = ["auto"]
+openapi = []
+
+[output]
+base = "docs/api-subway"
+formats = ["svg", "html"]
+theme = "auto"
+
+[scan]
+exclude = ["generated/**", "vendor/**"]
+
+[map]
+group_by = "path-prefix"
+max_lines = 12
+min_line_stations = 2
+include_routes = []
+exclude_routes = ["/internal/**"]
+
+[[dependency]]
+name = "Billing service"
+kind = "service"
+path_globs = ["src/modules/billing/**"]
+packages = ["@acme/billing"]
+pin = true
